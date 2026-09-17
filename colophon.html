@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Zebra Coffee | Colophon</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="How the Zebra Coffee website was built">
+        <meta name="author" content="Nurzhan">
+    </head>
+    <body>
+        <header>
+            <h1>Zebra Coffee</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="colophon.html">Colophon</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="faq.html">Fag</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section>
+                <h2>How This Site Was Made</h2>
+                <!-- I'm explaining the process here instead of just listing tools,
+                     because the assignment asks for reflection on choices, not
+                     just a technical summary. -->
+                <article>
+                    <h3>Tools and Process</h3>
+                    <p>
+                        I wrote all the code by hand in <i>Visual Studio Code</i>,
+                        without using any page builders or templates, since the
+                        assignment required writing plain HTML myself. The project
+                        is organized into four pages — <code>index.html</code>,
+                        <code>menu.html</code>, <code>booking.html</code>, and
+                        <code>colophon.html</code> — all linked through the same
+                        navigation menu, with a shared <code>images/</code> folder
+                        for photos.
+                    </p>
+                    <p>
+                        Most of the content came from visiting Zebra Coffee in
+                        person. I took photos of the interior and the menu board
+                        on site, and wrote down the address, opening hours, and
+                        phone number in a paper notebook before typing them into
+                        the <i>aside</i> section. The customer quote on the booking
+                        page is a real review I collected, not something I made up.
+                        For the location link, I used <i>2GIS</i> to find the exact
+                        map entry for the cafe.
+                    </p>
+                    <p>
+                        I tried to pick tags based on meaning rather than
+                        appearance — for example, using <code>&lt;aside&gt;</code>
+                        for contact details because they're supporting information,
+                        not part of the main story, and <code>&lt;q&gt;</code> for
+                        the inline customer quote instead of just styling it in
+                        bold. <!-- span used here purely as a styling hook for a
+                        future CSS highlight — the phrase itself carries no distinct
+                        semantic meaning like emphasis, importance, or a technical
+                        term, so no other tag fits better. -->
+                        <span>Every tag choice was made with a reason</span>, not by
+                        default habit.
+                    </p>
+                </article>
+                <article>
+                    <h3>Code Example</h3>
+                    <p>Here's a snippet from the aside on the home page, used to display contact information separately from the main article text:</p>
+                <pre><code>&lt;aside&gt;
+    &lt;h3&gt;Contact Info&lt;/h3&gt;
+        &lt;p&gt;&lt;strong&gt;Address:&lt;/strong&gt; Dr. Park Avenue – 1, block 39, Astana, Kazakhstan&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Opening hours:&lt;/strong&gt; 08:00–21:00, daily&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Phone:&lt;/strong&gt; +7 747 029 0093&lt;/p&gt;
+&lt;/aside&gt;</code></pre>
+                </article>
+                <article>
+                    <h3>Editor Shortcuts</h3>
+                    <p>
+                        To save a file I pressed <kbd>Ctrl</kbd> + <kbd>S</kbd>,
+                        and after pushing the project to GitHub the terminal
+                        printed something like
+                        <samp>main -&gt; main</samp> to confirm the upload worked.
+                    </p>
+                </article>
+                <div>
+                    <!-- I used a div here instead of section/article because this
+                    is just a small credits note grouped together for layout
+                    purposes — it isn't a standalone piece of content (article)
+                    or a distinct topic of its own (section), just a wrapper. -->
+                    <p>
+                        Photos and menu prices were sourced directly from Zebra
+                        Coffee during two visits, on <time datetime="2026-09-09">September 9</time>
+                        and <time datetime="2026-09-10">September 10, 2026</time>.
+                    </p>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Zebra Coffee</p>
+        </footer>
+    </body>
+</html>

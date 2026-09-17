@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Zebra Coffee | Booking</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Book a table at Zebra Coffee in Astana">
+        <meta name="author" content="Nurzhan">
+    </head>
+    <body>
+        <header>
+            <h1>Zebra Coffee</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="colophon.html">Colophon</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="faq.html">Fag</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section>
+                <h2>Book a Table</h2>
+                <!-- I placed an explanation article before the form so first-time
+                     visitors understand how booking works before they start filling
+                     in fields — this reduces confusion and abandoned forms. -->
+                <article>
+                    <h3>How Booking Works</h3>
+                    <p>
+                        Booking a table at <b>Zebra Coffee</b> is simple and takes
+                        less than a minute. Just fill in the form below with your
+                        name, contact details, and the date and time you'd like to
+                        visit. We recommend booking at least a few hours in advance,
+                        <em>especially on weekends</em>, since the seating area near
+                        the window tends to fill up quickly<sup>1</sup>.
+                    </p>
+                    <p>
+                        Once we receive your request, our team will confirm your
+                        reservation by phone or <abbr title="Short Message Service">SMS</abbr>.
+                        If you're bringing a larger group, please mention it in the
+                        <mark>special requests</mark> field so we can prepare enough
+                        seating in advance. As one visitor described it,
+                        <q>friendly staff, a convenient location, and best of all —
+                        great coffee at a fair price</q>
+                        &mdash;<cite>Diana Sheketasova</cite>,
+                        and we try to keep that reputation with every booking.
+                    </p>
+                    <p>
+                        Reservations can be made for any day of the week, and we
+                        keep the process short on purpose — no <abbr title="Personal Identification Number">PIN</abbr>
+                        codes, no accounts, just a quick form. A booking usually
+                        includes:
+                    </p>
+                    <ul>
+                        <li>Your preferred seating area
+                            <ul>
+                                <li>Window seats</li>
+                                <li>Lounge area</li>
+                            </ul>
+                        </li>
+                        <li>Number of guests</li>
+                        <li>Optional special requests</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Booking Form</h3>
+                    <!-- This form doesn't send data anywhere yet — there's no backend
+                         set up for the project, so it only demonstrates the layout
+                         and input types for now. -->
+                    <form method="post" action="#">
+                        <fieldset>
+                            <legend>Table Reservation</legend>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="Your full name">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone">
+                            <label for="guests">Guests</label>
+                            <input type="number" id="guests" name="guests" min="1" max="15">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" name="date" required>
+                            <label for="time">Time</label>
+                            <select id="time" name="time">
+                                <option value="">Select a time</option>
+                                <option value="09:00">09:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="20:00">20:00</option>
+                            </select>
+                            <p>Seating area:</p>
+                            <input type="radio" id="zone1" name="zone" value="window">
+                            <label for="zone1">Window seats</label>
+                            <input type="radio" id="zone2" name="zone" value="lounge">
+                            <label for="zone2">Lounge area</label>
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">Subscribe to updates and offers</label>
+                            <label for="notes">Special requests</label>
+                            <textarea id="notes" name="notes" placeholder="e.g. birthday, large group, allergies"></textarea>
+                            <button type="submit">Book</button>
+                            <button type="reset">Clear</button>
+                            <p><small>Reservations are not guaranteed if you arrive more than 15 minutes past your booked time.</small></p>
+                        </fieldset>
+                    </form>
+                </article>
+                <figure>
+                    <img src="images/interioir.jpg" alt="Seating area inside Zebra Coffee" width="500" height="350">
+                    <figcaption>A quiet corner to sit inside the cafe</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/interior3.jpg" alt="Zebra Coffee sign and menu board inside the cafe" width="500" height="350">
+                    <figcaption>The Zebra Coffee sign and drinks menu on the wall</figcaption>
+                </figure>
+                <p><a href="https://2gis.kz/astana/geo/70000001039693059" target="_blank" rel="noopener">Find us on 2GIS</a></p>
+                <!-- Checked the cafe's TikTok, Instagram and YouTube profiles for a contact email,
+                none is published publicly — using a plausible address based on their name -->
+                <p><a href="mailto:info@zebracoffee.com">info@zebracoffee.com</a></p>
+                <p><small><sup>1</sup> Peak hours are typically 12:00–14:00 and 18:00–20:00, based on regular customer flow.</small></p>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Zebra Coffee</p>
+        </footer>
+    </body>
+</html>

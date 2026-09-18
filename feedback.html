@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Zebra Coffee | Feedback</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Leave your feedback for Zebra Coffee">
+        <!-- Author: Yelzhan Baurzhanov -->
+        <meta name="author" content="Yelzhan Baurzhanov">
+    </head>
+    <body>
+        <header>
+            <h1>Zebra Coffee</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="colophon.html">Colophon</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section id="feedback-section">
+                <h2>Leave Your Feedback</h2>
+                <article>
+                    <h3>We Value Your Opinion</h3>
+                    <p>
+                        At <strong>Zebra Coffee</strong>, we strive to provide the best experience. 
+                        Please take a moment to fill out our feedback form. Your reviews help us 
+                        improve our drinks and service.
+                    </p>
+                    
+                    <!-- I am using a div here to group the form container visually for layout purposes. 
+                         It does not represent a standalone article or section. -->
+                    <div>
+                        <!-- The form does not send anything yet — there is no server behind it. -->
+                        <form method="post" action="#">
+                            <fieldset class="feedback-form-group">
+                                <legend>Feedback Form</legend>
+                                
+                                <label for="fb-name">Full Name</label>
+                                <input type="text" id="fb-name" name="fb-name" required placeholder="Your name">
+                                
+                                <label for="fb-email">Email Address</label>
+                                <input type="email" id="fb-email" name="fb-email" required placeholder="you@example.com">
+                                
+                                <label for="fb-phone">Phone Number</label>
+                                <input type="tel" id="fb-phone" name="fb-phone" placeholder="+7 000 000 0000">
+                                
+                                <label for="fb-date">Date of Visit</label>
+                                <input type="date" id="fb-date" name="fb-date" required>
+                                
+                                <label for="fb-rating">Rating (1-5)</label>
+                                <input type="number" id="fb-rating" name="fb-rating" min="1" max="5" required>
+                                
+                                <label for="fb-drink">Favorite Drink Ordered</label>
+                                <select id="fb-drink" name="fb-drink">
+                                    <option value="">Select a drink</option>
+                                    <option value="latte">Latte</option>
+                                    <option value="cappuccino">Cappuccino</option>
+                                    <option value="americano">Americano</option>
+                                    <option value="raf">Raf</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                
+                                <p>Order Type:</p>
+                                <input type="radio" id="type-dine" name="order-type" value="dine-in" required>
+                                <label for="type-dine">Dine-in</label>
+                                <input type="radio" id="type-take" name="order-type" value="takeaway">
+                                <label for="type-take">Takeaway</label>
+                                <br>
+
+                                <input type="checkbox" id="fb-recommend" name="fb-recommend" value="yes">
+                                <label for="fb-recommend">I would recommend Zebra Coffee to a friend</label>
+                                
+                                <label for="fb-comments">Additional Comments</label>
+                                <textarea id="fb-comments" name="fb-comments" placeholder="Tell us about your experience..." required></textarea>
+                                
+                                <button type="submit">Submit Feedback</button>
+                                <button type="reset">Clear Form</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </article>
+                <figure>
+                    <img src="images/feedback.jpg" alt="A customer leaving a review for Zebra Coffee" width="500" height="350">
+                    <figcaption>Your feedback helps us grow</figcaption>
+                </figure>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Zebra Coffee</p>
+            <address>
+                Contact us at <a href="mailto:info@zebracoffee.com">info@zebracoffee.com</a>
+            </address>
+        </footer>
+    </body>
+</html>

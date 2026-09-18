@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zebra Coffee | Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Menu and prices at Zebra Coffee in Astana">
+    <meta name="author" content="Nurzhan">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/nurzhan.css">
+    <style>
+        figcaption {
+            font-style: italic;
+            color: #6b5a45;
+            margin-top: 10px;
+        }
+        main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 32px 100px;
+        }
+        section > h2 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        .menu-subtitle {
+            color: #6b5a45;
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+        }
+        article {
+            background-color: #fffaf5;
+            padding: 28px;
+            margin: 28px 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(80, 60, 40, 0.08);
+        }
+        article h3 {
+            font-size: 1.7rem;
+            margin-top: 0;
+            color: #1a1a1a;
+        }
+        #menu-intro {
+            background-color: #f5ede4;
+            border-left: 5px solid #a08360;
+        }
+        #menu-intro ol {
+            line-height: 2;
+            padding-left: 28px;
+        }
+        .intro-text {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: #40382f;
+        }
+        .highlight {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            color: #6b5a45;
+            margin-bottom: 18px;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .drink-table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .drink-table caption {
+            padding: 14px;
+            font-weight: 600;
+            color: #6b5a45;
+        }
+        .drink-table th {
+            background-color: #f5ede4;
+        }
+        .drink-table td,
+        .drink-table th {
+            padding: 14px 18px;
+        }
+        .drink-table tbody tr:hover {
+            background-color: #faf5ef;
+        }
+        .flavor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 35px 0;
+        }
+        .flavor-grid article {
+            margin: 0;
+            transition: transform 0.2s ease;
+        }
+        .flavor-grid article:hover {
+            transform: translateY(-4px);
+        }
+        .flavor-grid ul {
+            line-height: 2;
+            padding-left: 22px;
+        }
+        .flavor-grid p,
+        .flavor-grid dd {
+            line-height: 1.7;
+            color: #51483e;
+        }
+        .drink-description {
+            color: #6b5a45;
+            font-style: italic;
+        }
+        .price-note {
+            color: #ffffff !important;
+            background-color: #1a1a1a;
+            padding: 12px 18px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        figure {
+            text-align: center;
+            margin: 45px auto;
+        }
+        figure img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 8px 25px rgba(50, 40, 30, 0.15);
+        }
+        figure figcaption {
+            font-size: 1rem;
+        }
+        .book-cta {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        .book-cta:hover {
+            background-color: #a08360;
+        }
+        @media (max-width: 700px) {
+            main {
+                padding: 25px 16px 100px;
+            }
+            .flavor-grid {
+                grid-template-columns: 1fr;
+            }
+            section > h2 {
+                font-size: 2.2rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+            }
+            article {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Zebra Coffee</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="menu.html" class="nav-link">Menu</a></li>
+        <li><a href="booking.html" class="nav-link">Booking</a></li>
+        <li><a href="colophon.html" class="nav-link">Colophon</a></li>
+        <li><a href="feedback.html" class="nav-link">Feedback</a></li>
+        <li><a href="FAQ.html" class="nav-link">FAQ</a></li>
+    </ul>
+</nav>
+<main>
+<section>
+    <h2>Menu</h2>
+    <p class="menu-subtitle">
+        Take a break. Grab a coffee. Stay a little longer.
+    </p>
+    <!-- Quick navigation -->
+    <article id="menu-intro">
+        <p class="highlight">
+            Your coffee, your way.
+        </p>
+        <p>
+            <a href="#coffee-card">Jump to Coffee Card</a>
+            &nbsp; | &nbsp;
+            <a href="#signature-drinks">Jump to Signature Drinks</a>
+        </p>
+        <h3>How to Order</h3>
+        <span class="float-note">☕</span>
+        <ol type="A">
+            <li>Choose your favourite drink.</li>
+            <li>Pick the size you want.</li>
+            <li>Add a flavour if you like.</li>
+            <li>Sit back and enjoy your coffee.</li>
+        </ol>
+    </article>
+    <!-- About -->
+    <article>
+        <h3>About Our Menu</h3>
+        <p class="intro-text">
+            At Zebra Coffee, we believe that a good coffee can make
+            an ordinary day a little better.
+        </p>
+        <p class="intro-text">
+            Our menu combines familiar classics with creative drinks
+            for different tastes and moods. You can choose from
+            espresso-based favourites such as latte, cappuccino,
+            americano, raf, mocaccino and flat white.
+        </p>
+        <p class="intro-text">
+            If you prefer something cold, we also have frappes,
+            iced coffee, lemonades, iced tea and refreshing fruit drinks.
+            Matcha lovers can choose between Green Matcha,
+            Sakura Matcha and Blue Matcha.
+        </p>
+        <p class="intro-text">
+            Looking for something different?
+            Try one of our signature drinks with unique flavour
+            combinations created especially for Zebra Coffee.
+        </p>
+        <p class="intro-text">
+            Whether you are here for a quick morning coffee,
+            a meeting with friends or simply a quiet break,
+            we hope you find something you love.
+        </p>
+        <p class="price-note">
+            Prices may change without prior notice.
+        </p>
+    </article>
+    <!-- Coffee -->
+    <article>
+        <h3 id="coffee-card">Coffee Card</h3>
+        <p class="drink-description">
+            Classic coffee favourites, prepared fresh by our baristas.
+        </p>
+        <div class="table-wrapper">
+            <table class="drink-table">
+                <caption>Choose your size</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Drink</th>
+                        <th scope="col">250 ml</th>
+                        <th scope="col">360 ml</th>
+                        <th scope="col">480 ml</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Latte</th>
+                        <td>990&nbsp;₸</td>
+                        <td>1040&nbsp;₸</td>
+                        <td>1090&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Cappuccino</th>
+                        <td>990&nbsp;₸</td>
+                        <td>1040&nbsp;₸</td>
+                        <td>1090&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Americano</th>
+                        <td>790&nbsp;₸</td>
+                        <td>890&nbsp;₸</td>
+                        <td>990&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Raf</th>
+                        <td>1190&nbsp;₸</td>
+                        <td>1290&nbsp;₸</td>
+                        <td>1390&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mocaccino</th>
+                        <td>1090&nbsp;₸</td>
+                        <td>1190&nbsp;₸</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Flat White</th>
+                        <td>1090&nbsp;₸</td>
+                        <td>&mdash;</td>
+                        <td>&mdash;</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Espresso</th>
+                        <td>600&nbsp;₸ (30 ml)</td>
+                        <td>700&nbsp;₸ (60 ml)</td>
+                        <td>&mdash;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+    <!-- Special drinks -->
+    <div class="flavor-grid">
+        <article>
+            <h3>Frappe</h3>
+            <p class="highlight">
+                350 ml &mdash; 1290&nbsp;₸
+            </p>
+            <p>
+                A sweet and refreshing cold coffee drink.
+            </p>
+            <ul>
+                <li>Chocolate</li>
+                <li>Peanut Urbech</li>
+                <li>Salted Caramel</li>
+            </ul>
+        </article>
+        <article>
+            <h3>Ice Latte / Ice Cappuccino</h3>
+            <p class="highlight">
+                450 ml &mdash; 1290&nbsp;₸
+            </p>
+            <p>
+                Cool, creamy and easy to customize.
+                Choose your favourite flavour:
+            </p>
+            <p>
+                Mango, Mint, Pistachio, Raspberry, Amaretto,
+                Melon, Hazelnut, Cherry, Coconut, Blackcurrant,
+                Pear or Peach.
+            </p>
+        </article>
+        <article>
+            <h3>Coffee Terms</h3>
+            <dl>
+                <dt><strong>Espresso</strong></dt>
+                <dd>
+                    A small and concentrated coffee drink.
+                </dd>
+
+                <dt><strong>Latte</strong></dt>
+                <dd>
+                    Espresso combined with smooth steamed milk.
+                </dd>
+
+                <dt><strong>Matcha</strong></dt>
+                <dd>
+                    Finely ground green tea powder with a rich flavour.
+                </dd>
+            </dl>
+        </article>
+    </div>
+    <!-- Cold drinks -->
+    <article>
+        <h3>Cold &amp; Refreshing</h3>
+        <p class="drink-description">
+            Perfect for a warm day or whenever you want something refreshing.
+        </p>
+        <div class="table-wrapper">
+            <table class="drink-table">
+                <caption>Iced coffee, tea and refreshing drinks</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Drink</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Bumble Coffee</th>
+                        <td>350 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Espresso Tonic</th>
+                        <td>350 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nitro Tea</th>
+                        <td>350 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ice Spanish Peach</th>
+                        <td>450 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ice Cherry</th>
+                        <td>450 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ice Tea Peach</th>
+                        <td>450 ml</td>
+                        <td>1090&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ice Latte Pomegranate</th>
+                        <td>450 ml</td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+    <!-- Matcha -->
+    <article>
+        <h3>Matcha Tea</h3>
+        <p class="drink-description">
+            Creamy matcha drinks with a choice of flavour.
+        </p>
+        <div class="table-wrapper">
+            <table class="drink-table">
+                <caption>
+                    360 ml &mdash; 1090&nbsp;₸ / 450 ml &mdash; 1290&nbsp;₸
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Drink</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Latte Green Matcha</th>
+                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Latte Sakura Matcha</th>
+                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Latte Blue Matcha</th>
+                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+    <!-- Lemonades -->
+    <article>
+        <h3>Lemonades</h3>
+        <p class="drink-description">
+            Fresh and fruity drinks made for a sunny day.
+        </p>
+        <div class="table-wrapper">
+            <table class="drink-table">
+                <caption>450 ml</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Drink</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Watermelon &amp; Strawberry</th>
+                        <td>990&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tropical</th>
+                        <td>990&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5 Forest Berries</th>
+                        <td>1090&nbsp;₸</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+    <!-- Signature drinks -->
+    <article>
+        <h3 id="signature-drinks">Zebra Signatures</h3>
+        <p class="drink-description">
+            Our special coffee creations for those who want to try something different.
+        </p>
+        <div class="table-wrapper">
+            <table class="drink-table">
+                <caption>Signature Drinks &mdash; 360 ml</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Drink</th>
+                        <th scope="col">Flavours</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Latte</th>
+                        <td>
+                            Pomegranate, Blueberry, Spanish Peach
+                        </td>
+                        <td>1290&nbsp;₸</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Raf</th>
+                        <td>
+                            Lavender, Citrus, Peanut Urbech, Turan Coffee
+                        </td>
+                        <td>1390&nbsp;₸</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+    <!-- Photo -->
+    <figure>
+        <img
+            src="images/coffee.jpg"
+            alt="Holding a cup of coffee from Zebra Coffee"
+            width="500"
+            height="450"
+            style="border: 3px solid #a08360; border-radius: 8px;"
+        >
+        <figcaption>
+            A little coffee break
+        </figcaption>
+    </figure>
+</section>
+</main>
+<a href="booking.html" class="book-cta">
+    Book a table
+</a>
+<footer>
+    <p>&copy; 2026 Zebra Coffee</p>
+</footer>
+</body>
+</html>

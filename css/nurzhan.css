@@ -1,0 +1,226 @@
+.about-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 24px 16px;
+}
+
+.about-content figure {
+    flex: 0 0 40%;
+    margin: 0;
+}
+
+.about-content figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+.about-content article {
+    flex: 1;
+}
+
+/* На узких экранах — фото сверху, текст снизу */
+@media (max-width: 700px) {
+    .about-content {
+        flex-direction: column;
+    }
+}
+
+/* ============================================
+   1. Positioning: relative + absolute
+   - header is the positioning context (relative)
+   - the badge sits on top of the photo (absolute), positioned
+     relative to that nearest positioned ancestor
+   ============================================ */
+header {
+    position: relative;
+}
+
+figure {
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+
+/* ============================================
+   2. ::before — decorative quotation mark
+   ============================================ */
+blockquote::before {
+    content: '"';
+    font-size: 2rem;
+    font-weight: bold;
+    color: #a08360;
+    margin-right: 4px;
+}
+
+/* ============================================
+   3. ::after — small icon after contact links
+   ============================================ */
+#contact-info a::after {
+    content: ' ↗';
+    font-size: 0.85em;
+}
+
+/* ============================================
+   4. :focus — visible outline for keyboard navigation
+   ============================================ */
+.nav-link:focus {
+    outline: 3px solid #a08360;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   5. :first-child / :nth-child
+   ============================================ */
+nav ul li:first-child .nav-link {
+    font-weight: 700;
+}
+
+
+/* ============================================
+   6. Attribute selector — phone links styled differently
+   from regular links
+   ============================================ */
+a[href^="tel:"] {
+    font-weight: 600;
+    text-decoration: underline dotted;
+}
+
+/* ============================================
+   7. Child selector — direct <li> children of nav ul only
+   ============================================ */
+nav ul > li {
+    list-style: none;
+}
+
+/* ============================================
+   8. Adjacent sibling — first paragraph right after an <h3>
+   gets a different top margin than the rest
+   ============================================ */
+h3 + p {
+    margin-top: 4px;
+}
+
+/* ============================================
+   9. Grouping selector — same font-family for both heading
+   levels instead of repeating the rule twice
+   ============================================ */
+h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* ============================================
+   10. Centering technique #3: margin auto
+   - both the heading and the content share the same max-width
+     and margin so they line up on the same left edge
+   ============================================ */
+h2 {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.about-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+/* ============================================
+   position: static — explicitly declared on <section>, even
+   though static is the default value, to demonstrate awareness
+   of the positioning scheme rather than leaving it implicit
+   ============================================ */
+section {
+    position: static;
+}
+
+/* ============================================
+   float + clear — the icon floats left of the ordered list,
+   text/list wraps around it; clear stops the wrap on the next
+   element so later content doesn't get squeezed
+   ============================================ */
+.float-note {
+    float: left;
+    font-size: 2.5rem;
+    margin-right: 12px;
+}
+
+#menu-intro ol {
+    clear: both;
+}
+
+/* ============================================
+   Table wrapper — scrollable on small screens instead of
+   breaking the layout
+   ============================================ */
+.table-wrapper {
+    overflow-x: auto;
+    margin: 24px 0;
+}
+
+.drink-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.drink-table th,
+.drink-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eae0d4;
+    text-align: left;
+}
+
+/* ============================================
+   Grid-секция — three related cards laid out in equal columns
+   ============================================ */
+.flavor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.flavor-grid article {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+@media (max-width: 700px) {
+    .flavor-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Specificity conflict, resolved with !important
+   - the id selector (#price-note) is normally more specific
+     than a class, so it would win by default
+   - !important on the class rule intentionally overrides that,
+     forcing white text instead of the id's black — used here
+     only to demonstrate the technique, not as a normal practice
+   ============================================ */
+.price-note {
+    color: #ffffff !important;
+    background-color: #1a1a1a;
+    padding: 8px 16px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+#price-note {
+    color: #000000;
+}

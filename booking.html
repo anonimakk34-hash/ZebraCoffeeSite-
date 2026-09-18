@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zebra Coffee | Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Book a table at Zebra Coffee in Astana">
+    <meta name="author" content="Nurzhan">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/nurzhan.css">
+    <style>
+        /* ==============================
+           Booking page layout
+           ============================== */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 45px 32px 80px;
+        }
+        section > h2 {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+        }
+        .booking-subtitle {
+            color: #6b5a45;
+            font-size: 1.15rem;
+            margin-bottom: 35px;
+        }
+        /* ==============================
+           Information card
+           ============================== */
+        .booking-info {
+            background-color: #fffaf5;
+            padding: 32px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(70, 50, 30, 0.08);
+            border-left: 5px solid #a08360;
+        }
+
+        .booking-info h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        .booking-info p {
+            line-height: 1.8;
+            color: #40382f;
+        }
+        .booking-info ul {
+            line-height: 2;
+            color: #40382f;
+        }
+        .booking-info mark {
+            background-color: #e8d6c0;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        /* ==============================
+           Booking form card
+           ============================== */
+        .booking-form-card {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(70, 50, 30, 0.1);
+            margin-bottom: 40px;
+        }
+        .booking-form-card h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        fieldset {
+            border: 1px solid #dfd0bf;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        legend {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 0 10px;
+            color: #1a1a1a;
+        }
+        /* ==============================
+           Form fields
+           ============================== */
+        form label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: 600;
+            color: #40382f;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="tel"],
+        form input[type="number"],
+        form input[type="date"],
+        form select,
+        form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border: 1px solid #d7c7b5;
+            border-radius: 9px;
+            background-color: #fffaf5;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            outline: none;
+            border-color: #a08360;
+            box-shadow: 0 0 0 3px rgba(160, 131, 96, 0.15);
+        }
+        form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        /* ==============================
+           Radio and checkbox
+           ============================== */
+        .choice-title {
+            margin-top: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .choice-group {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .choice-group label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin: 0;
+            font-weight: 500;
+        }
+        .choice-group input {
+            accent-color: #a08360;
+        }
+        .newsletter {
+            margin: 22px 0;
+        }
+        .newsletter label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            font-weight: 500;
+        }
+        .newsletter input {
+            accent-color: #a08360;
+        }
+        /* ==============================
+           Buttons
+           ============================== */
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        form button {
+            border: none;
+            padding: 13px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease,
+                        background-color 0.2s ease;
+        }
+        form button[type="submit"] {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        form button[type="submit"]:hover {
+            background-color: #a08360;
+            transform: translateY(-2px);
+        }
+        form button[type="reset"] {
+            background-color: #eee4d8;
+            color: #1a1a1a;
+        }
+        form button[type="reset"]:hover {
+            background-color: #dfd0bf;
+        }
+        /* ==============================
+           Small reservation note
+           ============================== */
+        .reservation-note {
+            margin-top: 20px;
+            color: #6b5a45;
+            line-height: 1.6;
+        }
+        /* ==============================
+           Photos
+           ============================== */
+        .booking-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .booking-gallery figure {
+            margin: 0;
+            background-color: #fffaf5;
+            padding: 12px;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(70, 50, 30, 0.08);
+        }
+        .booking-gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+        }
+        .booking-gallery figcaption {
+            padding: 12px 5px 5px;
+            text-align: center;
+            font-style: italic;
+            color: #6b5a45;
+        }
+        /* ==============================
+           Contact card
+           ============================== */
+        .booking-contact {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 28px 32px;
+            border-radius: 16px;
+            margin-top: 35px;
+        }
+        .booking-contact h3 {
+            color: #ffffff;
+            margin-top: 0;
+        }
+        .booking-contact p {
+            line-height: 1.7;
+        }
+        .booking-contact a {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .booking-contact a:hover {
+            color: #d4b896;
+        }
+        /* ==============================
+           Footer note
+           ============================== */
+        .peak-note {
+            color: #6b5a45;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        /* ==============================
+           Mobile
+           ============================== */
+        @media (max-width: 700px) {
+            main {
+                padding: 30px 16px 70px;
+            }
+            section > h2 {
+                font-size: 2.2rem;
+            }
+            .booking-info,
+            .booking-form-card {
+                padding: 22px;
+            }
+            fieldset {
+                padding: 18px;
+            }
+            .booking-gallery {
+                grid-template-columns: 1fr;
+            }
+            .booking-gallery img {
+                height: 250px;
+            }
+            .form-buttons {
+                flex-direction: column;
+            }
+            form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Zebra Coffee</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="menu.html" class="nav-link">Menu</a></li>
+        <li><a href="booking.html" class="nav-link">Booking</a></li>
+        <li><a href="colophon.html" class="nav-link">Colophon</a></li>
+        <li><a href="feedback.html" class="nav-link">Feedback</a></li>
+        <li><a href="FAQ.html" class="nav-link">FAQ</a></li>
+    </ul>
+</nav>
+<main>
+<section>
+    <h2>Book a Table</h2>
+    <p class="booking-subtitle">
+        Choose your time, pick your favourite spot, and let us take care of the rest.
+    </p>
+    <!-- ==============================
+         Booking information
+         ============================== -->
+    <article class="booking-info">
+        <h3>Your Coffee Break Starts Here</h3>
+        <p>
+            Booking a table at <b>Zebra Coffee</b> is simple and takes
+            less than a minute. Fill in the form below with your name,
+            contact details, preferred date and time.
+        </p>
+        <p>
+            We recommend booking a few hours in advance,
+            <em>especially on weekends</em>, when our most comfortable
+            seats can fill up quickly<sup>1</sup>.
+        </p>
+        <p>
+            Once we receive your request, our team will confirm your
+            reservation by phone or
+            <abbr title="Short Message Service">SMS</abbr>.
+            If you are coming with a larger group, please mention it
+            in the <mark>special requests</mark> field.
+        </p>
+        <p>
+            As one visitor described the cafe,
+            <q>friendly staff, a convenient location, and great coffee at a fair price</q>
+            &mdash; <cite>Diana Sheketasova</cite>.
+        </p>
+        <p>
+            No complicated registration, no
+            <abbr title="Personal Identification Number">PIN</abbr>
+            codes and no unnecessary steps. Just choose your details
+            and send your booking request.
+        </p>
+        <ul>
+            <li>
+                Preferred seating area
+                <ul>
+                    <li>Window seats</li>
+                    <li>Lounge area</li>
+                </ul>
+            </li>
+            <li>Number of guests</li>
+            <li>Optional special requests</li>
+        </ul>
+    </article>
+    <!-- ==============================
+         Booking form
+         ============================== -->
+    <article class="booking-form-card">
+        <h3>Reserve Your Table</h3>
+        <form method="post" action="#">
+            <fieldset>
+                <legend>Table Reservation</legend>
+                <label for="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Your full name"
+                >
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="you@example.com"
+                >
+                <label for="phone">Phone</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+7 (___) ___-__-__"
+                >
+                <label for="guests">Number of Guests</label>
+                <input
+                    type="number"
+                    id="guests"
+                    name="guests"
+                    min="1"
+                    max="15"
+                    placeholder="1–15"
+                >
+                <label for="date">Date</label>
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                >
+                <label for="time">Time</label>
+                <select id="time" name="time">
+                    <option value="">Select a time</option>
+                    <option value="09:00">09:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="20:00">20:00</option>
+                </select>
+                <p class="choice-title">
+                    Seating area:
+                </p>
+                <div class="choice-group">
+                    <label for="zone1">
+                        <input
+                            type="radio"
+                            id="zone1"
+                            name="zone"
+                            value="window"
+                        >
+                        Window seats
+                    </label>
+                    <label for="zone2">
+                        <input
+                            type="radio"
+                            id="zone2"
+                            name="zone"
+                            value="lounge"
+                        >
+                        Lounge area
+                    </label>
+                </div>
+                <div class="newsletter">
+                    <label for="newsletter">
+                        <input
+                            type="checkbox"
+                            id="newsletter"
+                            name="newsletter"
+                        >
+                        Subscribe to updates and offers
+                    </label>
+                </div>
+                <label for="notes">
+                    Special requests
+                </label>
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder="Birthday, large group, allergies, or anything else we should know..."
+                ></textarea>
+                <div class="form-buttons">
+                    <button type="submit">
+                        Book My Table
+                    </button>
+                    <button type="reset">
+                        Clear
+                    </button>
+                </div>
+                <p class="reservation-note">
+                    <small>
+                        Reservations are not guaranteed if you arrive more than
+                        15 minutes past your booked time.
+                    </small>
+                </p>
+            </fieldset>
+        </form>
+    </article>
+    <!-- ==============================
+         Cafe photos
+         ============================== -->
+    <div class="booking-gallery">
+        <figure>
+            <img
+                src="images/interioir.jpg"
+                alt="Seating area inside Zebra Coffee"
+                width="500"
+                height="350"
+            >
+            <figcaption>
+                A quiet corner for your coffee break
+            </figcaption>
+        </figure>
+        <figure>
+            <img
+                src="images/interior3.jpg"
+                alt="Zebra Coffee sign and menu board inside the cafe"
+                width="500"
+                height="350"
+            >
+            <figcaption>
+                Welcome to Zebra Coffee
+            </figcaption>
+        </figure>
+    </div>
+    <!-- ==============================
+         Contact information
+         ============================== -->
+    <div class="booking-contact">
+        <h3>Find Us</h3>
+        <p>
+            Ready for a coffee break?
+            Find Zebra Coffee on 2GIS and come visit us.
+        </p>
+        <p>
+            <a
+                href="https://2gis.kz/astana/geo/70000001039693059"
+                target="_blank"
+                rel="noopener"
+            >
+                Find us on 2GIS ↗
+            </a>
+        </p>
+        <p>
+            <a href="mailto:info@zebracoffee.com">
+                info@zebracoffee.com
+            </a>
+        </p>
+    </div>
+    <p class="peak-note">
+        <small>
+            <sup>1</sup>
+            Peak hours are typically 12:00–14:00 and 18:00–20:00,
+            based on regular customer flow.
+        </small>
+    </p>
+</section>
+</main>
+<footer>
+    <p>&copy; 2026 Zebra Coffee</p>
+</footer>
+</body>
+</html>

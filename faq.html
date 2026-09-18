@@ -16,83 +16,88 @@
         </header>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="menu.html">Menu</a></li>
-                <li><a href="booking.html">Booking</a></li>
-                <li><a href="colophon.html">Colophon</a></li>
-                <li><a href="feedback.html">Feedback</a></li>
-                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="booking.html" class="nav-link">Booking</a></li>
+                <li><a href="colophon.html" class="nav-link">Colophon</a></li>
+                <li><a href="feedback.html" class="nav-link">Feedback</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
             </ul>
         </nav>
         <main>
-            <section id="faq-section" class="faq-grid">
-                <h2>Frequently Asked Questions</h2>
-                <article>
-                    <h3>Visiting Us</h3>
-                    <p>
-                        We get a lot of questions about our location, seating, and menu. 
-                        Below is a quick guide to help you plan your visit to Zebra Coffee.
-                        <!-- I am using a span here because I need an inline hook to potentially style this specific phrase later, and no semantic tag like em or strong applies to this purely decorative choice. -->
-                        <span>We look forward to serving you!</span>
-                    </p>
+    <section id="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-grid">
+            <article>
+                <h3>Visiting Us</h3>
+                <p>
+                    We get a lot of questions about our location, seating, and menu. 
+                    Below is a quick guide to help you plan your visit to Zebra Coffee.
+                    <span>We look forward to serving you!</span>
+                </p>
 
-                    <h4>What to Expect</h4>
-                    <ol type="I">
-                        <li>Warm and cozy atmosphere</li>
-                        <li>Free Wi-Fi for all customers</li>
-                        <li>Plenty of power outlets for laptops</li>
-                    </ol>
+                <h4>What to Expect</h4>
+                <ol type="I">
+                    <li>Warm and cozy atmosphere</li>
+                    <li>Free Wi-Fi for all customers</li>
+                    <li>Plenty of power outlets for laptops</li>
+                </ol>
 
-                    <h4>House Rules</h4>
-                    <ul>
-                        <li>No outside food or drinks allowed</li>
-                        <li>Keep phone calls at a low volume</li>
-                        <li>Pets are welcome on the outdoor patio</li>
-                    </ul>
-                </article>
+                <h4>House Rules</h4>
+                <ul>
+                    <li>No outside food or drinks allowed</li>
+                    <li>Keep phone calls at a low volume</li>
+                    <li>Pets are welcome on the outdoor patio</li>
+                </ul>
+            </article>
 
-                <article>
-                    <h3>Expected Wait Times</h3>
-                    <table>
-                        <caption>Average wait times during opening hours</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">Time of Day</th>
-                                <th scope="col">Expected Wait</th>
-                                <th scope="col">Crowd Level</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">08:00 &ndash; 11:00</th>
-                                <td>5 minutes</td>
-                                <td>Low</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">12:00 &ndash; 14:00</th>
-                                <td>15 minutes</td>
-                                <td>High</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">15:00 &ndash; 18:00</th>
-                                <td>10 minutes</td>
-                                <td>Medium</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">18:00 &ndash; 21:00</th>
-                                <td>10 minutes</td>
-                                <td>Medium</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <figure class="floated-container">
-                    <img src="images/faq-coffee.jpg" class="floated-img" alt="Barista preparing a drink at Zebra Coffee" width="500" height="350">
-                    <figcaption class="static-text">Our baristas hard at work</figcaption>
-                </figure>
+            <article>
+                <h3>Expected Wait Times</h3>
+                <table>
+                    <caption>Average wait times during opening hours</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Time of Day</th>
+                            <th scope="col">Expected Wait</th>
+                            <th scope="col">Crowd Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">08:00 &ndash; 11:00</th>
+                            <td>5 minutes</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12:00 &ndash; 14:00</th>
+                            <td>15 minutes</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">15:00 &ndash; 18:00</th>
+                            <td>10 minutes</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">18:00 &ndash; 21:00</th>
+                            <td>10 minutes</td>
+                            <td>Medium</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <!-- Теперь этот блок находится ВНУТРИ сетки и встанет справа от таблицы -->
+            <figure class="floated-container">
+                <div class="badge">Updated</div>
+                <img src="images/faq-coffee.jpg" class="floated-img" alt="Barista preparing a drink at Zebra Coffee">
+                <p class="static-text">Our baristas are hard at work making sure your wait time is as short as possible. We value your time and always try to serve your coffee fast and fresh.</p>
                 <div class="clearfix"></div>
-            </section>
-        </main>
+            </figure>
+        </div>
+    </section>
+</main>
         <footer>
             <p>&copy; 2026 Zebra Coffee</p>
             <address>

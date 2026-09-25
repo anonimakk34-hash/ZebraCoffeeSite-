@@ -3,12 +3,19 @@
     padding: 20px 0;
 }
 
+#fag-h2{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 /* CSS Grid used here because it handles 2-dimensional rigid card layouts better than Flexbox. */
 .faq-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
     align-items: start;
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 /* Превращаем статьи FAQ в аккуратные карточки */
@@ -29,7 +36,7 @@
 /* Выравнивание списков внутри центрированного блока */
 .faq-grid > article:first-child ul, 
 .faq-grid > article:first-child ol {
-    text-align: left;
+    text-align: center;
     display: inline-block;
     margin: 0 auto;
 }
@@ -44,6 +51,15 @@
 /* =========================================
    ФОРМА ОБРАТНОЙ СВЯЗИ
    ========================================= */
+
+
+
+.g{
+    margin-left: 40px;
+    margin-right: 40px;
+    
+}
+
 .feedback-form-group {
     display: flex;
     flex-direction: row; 
@@ -61,6 +77,9 @@
     border: 1px solid #e8e0d5;
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    margin-left: 40px;
+    margin-right: 40px;
+    
 }
 
 /* Заголовок формы внутри белой карточки */
@@ -74,13 +93,14 @@
     position: absolute;
     top: 30px;
     left: 40px;
+    right: 40px;
     margin: 0;
     padding: 0;
     font-size: 1.8rem;
     font-weight: 600;
     font-family: 'Playfair Display', Georgia, serif;
     color: #5D4037;
-    text-align: left;
+    text-align: center;
     background-color: transparent;
 }
 
@@ -98,6 +118,8 @@
 .feedback-form-group > p {
     margin-top: 15px;
     margin-bottom: -5px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 /* Большие поля ввода (занимают 100% ширины) */
@@ -194,6 +216,8 @@ button[type="reset"]:hover {
 
 .floated-img {
     float: left;
+    max-width: 45%;
+    height: auto;
     margin-right: 30px;
     margin-bottom: 15px;
     border-radius: 10px;
@@ -261,88 +285,132 @@ button.submit-btn:hover {
 }
 
 /* =========================================
-   COLOPHON PAGE STYLES
+   AUTH PAGES (Login / Register)
+   Reuses the same palette and card style as the
+   rest of the site: cream/beige background, white
+   rounded cards, brown (#5D4037) accents, Playfair
+   Display headings.
    ========================================= */
-.colophon_cards, .colophon-cards {
+
+#auth-section {
     display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
+    justify-content: center;
+    padding: 60px 16px;
 }
 
-.colophon-card {
+.auth-card {
+    width: 100%;
+    max-width: 440px;
     background-color: #ffffff;
-    padding: 35px;
+    padding: 45px 40px;
     border: 1px solid #e8e0d5;
     border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
 }
 
-.colophon-card h3 {
-    color: #5D4037;
+.auth-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.5rem;
-    margin-top: 0;
-    border-bottom: 1px dashed #dcd3c9;
-    padding-bottom: 15px;
-}
-
-.colophon-card p {
-    color: #4a4a4a;
-    line-height: 1.8;
-    text-align: justify;
-}
-
-/* Стилизация тегов кода и клавиш внутри colophon */
-.colophon-card code {
-    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.8rem;
+    font-weight: 600;
     color: #5D4037;
-    background-color: #faf8f5;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-weight: bold;
-    border: 1px solid #e8e0d5;
+    text-align: center;
+    margin: 0 0 8px;
 }
 
-.colophon-card pre {
-    background-color: #1a1a1a;
-    color: #f5ede4;
-    padding: 25px;
-    border-radius: 12px;
-    overflow-x: auto;
-    box-shadow: inset 0 4px 12px rgba(0,0,0,0.3);
-    border: 1px solid #000000;
-    margin-top: 20px;
+.auth-subtitle {
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 0.95rem;
+    margin: 0 0 30px;
 }
 
-.colophon-card pre code {
-    color: #f5ede4; 
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    font-weight: normal;
+/* Form layout — mirrors .feedback-form-group's field styling */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.colophon-card kbd {
-    background-color: #faf8f5;
-    border: 1px solid #dcd3c9;
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
+.auth-form label {
+    font-weight: 600;
     color: #333333;
-    box-shadow: 0 3px 0 #dcd3c9, 0 4px 5px rgba(0,0,0,0.05);
-    margin: 0 4px;
-    display: inline-block;
-    transform: translateY(-2px);
+    font-size: 0.95rem;
+    margin-top: 10px;
 }
 
-.colophon-card samp {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #5D4037;
-    color: #ffffff;
-    padding: 5px 12px;
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="tel"],
+.auth-form input[type="password"] {
+    padding: 14px 16px;
+    border: 1px solid #dcd3c9;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: #faf8f5;
+    transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+    border: 1px solid #5D4037;
+    box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1);
+    outline: none;
+    background-color: #ffffff;
+}
+
+/* Remember-me / forgot-password row */
+.auth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.auth-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auth-checkbox label {
+    margin-top: 0;
+    font-weight: 400;
+}
+
+.auth-link {
+    color: #5D4037;
+    font-size: 0.9rem;
+    text-decoration: underline dotted;
+}
+
+.auth-link:hover {
+    color: #1a1a1a;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 24px;
+    color: #4a4a4a;
+    font-size: 0.9rem;
+}
+
+.auth-switch a {
+    color: #5D4037;
+    font-weight: 600;
+    text-decoration: underline dotted;
+}
+
+.auth-switch a:hover {
+    color: #1a1a1a;
+}
+
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 35px 24px;
+    }
+}
     border-radius: 20px;
     font-size: 0.85rem;
     letter-spacing: 0.5px;

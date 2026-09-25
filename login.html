@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Zebra Coffee | Log In</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Log in to your Zebra Coffee account">
+        <meta name="author" content="Yelzhan Baurzhanov">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/yelzhan.css">
+    </head>
+    <body>
+        <header>
+            <h1>Zebra Coffee</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="booking.html" class="nav-link">Booking</a></li>
+                <li><a href="feedback.html" class="nav-link">Feedback</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                <li><a href="register.html" class="nav-link">Register</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section id="auth-section">
+                <div class="auth-card">
+                    <h2 class="auth-title">Welcome Back</h2>
+                    <p class="auth-subtitle">Log in to manage your bookings and orders.</p>
+
+                    <!-- The form does not send anything yet — there is no server behind it. -->
+                    <form method="post" action="#" class="auth-form">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" name="login-email" required placeholder="you@example.com">
+
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="login-password" required placeholder="Enter your password">
+
+                        <div class="auth-row">
+                            <span class="auth-checkbox">
+                                <input type="checkbox" id="login-remember" name="login-remember" value="yes">
+                                <label for="login-remember">Remember me</label>
+                            </span>
+                            <a href="#" class="auth-link">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Log In</button>
+                    </form>
+
+                    <p class="auth-switch">Don't have an account? <a href="register.html">Register here</a></p>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Zebra Coffee</p>
+            <address>
+                Call us: <a href="tel:+77470290093">+7 747 029 0093</a>
+            </address>
+        </footer>
+    </body>
+</html>

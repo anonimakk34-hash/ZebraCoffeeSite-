@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Zebra Coffee | Register</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Create a new Zebra Coffee account">
+        <meta name="author" content="Yelzhan Baurzhanov">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/yelzhan.css">
+    </head>
+    <body>
+        <header>
+            <h1>Zebra Coffee</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="booking.html" class="nav-link">Booking</a></li>
+                <li><a href="feedback.html" class="nav-link">Feedback</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                <li><a href="login.html" class="nav-link">Log In</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section id="auth-section">
+                <div class="auth-card">
+                    <h2 class="auth-title">Create Your Account</h2>
+                    <p class="auth-subtitle">Join Zebra Coffee to book tables and save your favorite orders.</p>
+
+                    <!-- The form does not send anything yet — there is no server behind it. -->
+                    <form method="post" action="#" class="auth-form">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" name="reg-name" required placeholder="Your name">
+
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" name="reg-email" required placeholder="you@example.com">
+
+                        <label for="reg-phone">Phone Number</label>
+                        <input type="tel" id="reg-phone" name="reg-phone" placeholder="+7 000 000 0000">
+
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" name="reg-password" required placeholder="Create a password">
+
+                        <label for="reg-password-confirm">Confirm Password</label>
+                        <input type="password" id="reg-password-confirm" name="reg-password-confirm" required placeholder="Re-enter your password">
+
+                        <div class="auth-row">
+                            <span class="auth-checkbox">
+                                <input type="checkbox" id="reg-terms" name="reg-terms" value="yes" required>
+                                <label for="reg-terms">I agree to the Terms &amp; Conditions</label>
+                            </span>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Register</button>
+                    </form>
+
+                    <p class="auth-switch">Already have an account? <a href="login.html">Log in here</a></p>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Zebra Coffee</p>
+            <address>
+                Call us: <a href="tel:+77470290093">+7 747 029 0093</a>
+            </address>
+        </footer>
+    </body>
+</html>

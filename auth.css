@@ -1,0 +1,141 @@
+/* =========================================
+   AUTH PAGES (Login / Register)
+   Reuses the same palette and card style as the
+   rest of the site (see base.css and yelzhan.css):
+   cream/beige background, white rounded cards,
+   brown (#5D4037) accents, Playfair Display headings.
+   ========================================= */
+
+#auth-section {
+    padding: 60px 16px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background-color: #e8e0d5;
+    padding: 45px 40px;
+    border: 1px solid #e8e0d5;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+.auth-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #5D4037;
+    text-align: center;
+    margin: 0 0 8px;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 0.95rem;
+    margin: 0 0 30px;
+}
+
+/* Form layout — mirrors .feedback-form-group's field styling */
+.auth-form {
+    gap: 6px;
+}
+
+.auth-form label {
+    font-weight: 600;
+    color: #333333;
+    font-size: 0.95rem;
+    margin-top: 10px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="tel"],
+.auth-form input[type="password"] {
+    padding: 14px 16px;
+    border: 1px solid #dcd3c9;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: #faf8f5;
+    transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+    border: 1px solid #5D4037;
+    box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1);
+    outline: none;
+    background-color: #ffffff;
+}
+
+/* Remember-me / forgot-password row */
+.auth-row {
+    margin-top: 12px;
+    gap: 10px;
+}
+
+.auth-checkbox {
+    gap: 8px;
+}
+
+.auth-checkbox label {
+    margin-top: 0;
+    font-weight: 400;
+}
+
+.auth-link {
+    color: #5D4037;
+    font-size: 0.9rem;
+    text-decoration: underline dotted;
+}
+
+.auth-link:hover {
+    color: #1a1a1a;
+}
+
+/* Submit button — same specificity pattern as the feedback form's
+   button.submit-btn so it wins over the lower-specificity .submit-btn rule */
+button.submit-btn {
+    flex: 0 1 auto;
+    width: 100%;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 22px;
+}
+
+button.submit-btn:hover {
+    background-color: #5D4037;
+    transform: translateY(-2px);
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 24px;
+    color: #4a4a4a;
+    font-size: 0.9rem;
+}
+
+.auth-switch a {
+    color: #5D4037;
+    font-weight: 600;
+    text-decoration: underline dotted;
+}
+
+.auth-switch a:hover {
+    color: #1a1a1a;
+}
+
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 35px 24px;
+    }
+}

@@ -6,57 +6,90 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Log in to your Zebra Coffee account">
         <meta name="author" content="Yelzhan Baurzhanov">
+        
+        <!-- Requirement: Bootstrap Version 5.3.3 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
+        <!-- Custom CSS loaded after Bootstrap -->
         <link rel="stylesheet" href="css/base.css">
         <link rel="stylesheet" href="css/yelzhan.css">
     </head>
     <body>
-        <header>
+        <!-- I am using container-fluid here so the header spans the full width of the viewport -->
+        <header class="container-fluid text-center py-3">
             <h1>Zebra Coffee</h1>
         </header>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="menu.html" class="nav-link">Menu</a></li>
-                <li><a href="booking.html" class="nav-link">Booking</a></li>
-                <li><a href="feedback.html" class="nav-link">Feedback</a></li>
-                <li><a href="faq.html" class="nav-link">FAQ</a></li>
-                <li><a href="register.html" class="nav-link">Register</a></li>
-            </ul>
+
+        <!-- Bootstrap responsive navbar that collapses on screens smaller than 768px -->
+        <nav class="navbar navbar-expand-md bg-header mb-4">
+            <div class="container">
+                <button class="navbar-toggler mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav gap-3">
+                        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+                        <li class="nav-item"><a href="booking.html" class="nav-link">Booking</a></li>
+                        <li class="nav-item"><a href="feedback.html" class="nav-link">Feedback</a></li>
+                        <li class="nav-item"><a href="faq.html" class="nav-link">FAQ</a></li>
+                        <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                    </ul>
+                </div>
+            </div>
         </nav>
-        <main>
+
+        <!-- I am using container here to constrain the main content width, keeping it centered on large screens -->
+        <main class="container my-5">
             <section id="auth-section">
-                <div class="auth-card">
-                    <h2 class="auth-title">Welcome Back</h2>
-                    <p class="auth-subtitle">Log in to manage your bookings and orders.</p>
+                <!-- Center the column horizontally -->
+                <div class="row justify-content-center">
+                    <!-- col-12 for 375px phones, col-md-8 for 768px tablets, col-lg-5 for desktops -->
+                    <div class="col-12 col-md-8 col-lg-5">
+                        <div class="auth-card p-4 border rounded shadow-sm bg-white">
+                            <h2 class="auth-title text-center mb-2">Welcome Back</h2>
+                            <p class="auth-subtitle text-center text-muted mb-4">Log in to manage your bookings and orders.</p>
 
-                    <!-- The form does not send anything yet — there is no server behind it. -->
-                    <form method="post" action="#" class="auth-form">
-                        <label for="login-email">Email Address</label>
-                        <input type="email" id="login-email" name="login-email" required placeholder="you@example.com">
+                            <!-- The form does not send anything yet — there is no server behind it. -->
+                            <form method="post" action="#">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label fw-bold">Email Address</label>
+                                    <input type="email" class="form-control bg-light" id="login-email" name="login-email" required placeholder="you@example.com">
+                                </div>
 
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" name="login-password" required placeholder="Enter your password">
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label fw-bold">Password</label>
+                                    <input type="password" class="form-control bg-light" id="login-password" name="login-password" required placeholder="Enter your password">
+                                </div>
 
-                        <div class="auth-row">
-                            <span class="auth-checkbox">
-                                <input type="checkbox" id="login-remember" name="login-remember" value="yes">
-                                <label for="login-remember">Remember me</label>
-                            </span>
-                            <a href="#" class="auth-link">Forgot password?</a>
+                                <!-- Flex utility replaces .auth-row -->
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="login-remember" name="login-remember" value="yes">
+                                        <label class="form-check-label text-muted" for="login-remember">Remember me</label>
+                                    </div>
+                                    <a href="#" class="auth-link text-decoration-none fw-bold">Forgot password?</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-dark w-100 py-2 text-uppercase fw-bold">Log In</button>
+                            </form>
+
+                            <p class="auth-switch text-center mt-4 mb-0 text-muted">
+                                Don't have an account? <a href="register.html" class="fw-bold text-decoration-none">Register here</a>
+                            </p>
                         </div>
-
-                        <button type="submit" class="submit-btn">Log In</button>
-                    </form>
-
-                    <p class="auth-switch">Don't have an account? <a href="register.html">Register here</a></p>
+                    </div>
                 </div>
             </section>
         </main>
-        <footer>
-            <p>&copy; 2026 Zebra Coffee</p>
-            <address>
-                Call us: <a href="tel:+77470290093">+7 747 029 0093</a>
+
+        <!-- I am using container-fluid here so the footer spans the full width of the viewport -->
+        <footer class="container-fluid bg-light text-center py-4 border-top mt-5">
+            <p class="mb-1">&copy; 2026 Zebra Coffee</p>
+            <address class="mb-0">
+                Call us: <a href="tel:+77470290093" class="text-decoration-none">+7 747 029 0093</a>
             </address>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmxc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

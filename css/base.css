@@ -6,7 +6,6 @@
    - Decorative serif font for the main heading, default font for body text
    ============================================ */
 
-/* cyrillic */
 @font-face {
   font-family: 'Playfair Display';
   font-style: normal;
@@ -59,18 +58,17 @@ header h1 {
     margin: 0;
 }
 
-/* Navigation */
-nav ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    list-style: none;
-    padding: 16px;
-    margin: 0;
+/* Shared cream background for the navbar, so it reads as one
+   continuous block with the header above it. Put this class
+   directly on the <nav> element (not the <ul>) so the color
+   spans the full bar regardless of Bootstrap's container width. */
+.bg-header {
     background-color: #f5ede4;
 }
 
+/* Brand override for Bootstrap's .nav-link: white rounded "pill"
+   buttons instead of Bootstrap's plain text links. Works because
+   this file loads after the Bootstrap CDN, so this wins the cascade. */
 .nav-link {
     background-color: #ffffff;
     color: #1a1a1a;

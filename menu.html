@@ -6,527 +6,279 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Menu and prices at Zebra Coffee in Astana">
     <meta name="author" content="Nurzhan">
+    <!-- Bootstrap 5.3.3 CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/nurzhan.css">
-    <style>
-        figcaption {
-            font-style: italic;
-            color: #6b5a45;
-            margin-top: 10px;
-        }
-        main {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 40px 32px 100px;
-        }
-        section > h2 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-        .menu-subtitle {
-            color: #6b5a45;
-            font-size: 1.15rem;
-            margin-bottom: 40px;
-        }
-        article {
-            background-color: #fffaf5;
-            padding: 28px;
-            margin: 28px 0;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(80, 60, 40, 0.08);
-        }
-        article h3 {
-            font-size: 1.7rem;
-            margin-top: 0;
-            color: #1a1a1a;
-        }
-        #menu-intro {
-            background-color: #f5ede4;
-            border-left: 5px solid #a08360;
-        }
-        #menu-intro ol {
-            line-height: 2;
-            padding-left: 28px;
-        }
-        .intro-text {
-            font-size: 1.08rem;
-            line-height: 1.8;
-            color: #40382f;
-        }
-        .highlight {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.5rem;
-            color: #6b5a45;
-            margin-bottom: 18px;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        .drink-table {
-            background-color: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .drink-table caption {
-            padding: 14px;
-            font-weight: 600;
-            color: #6b5a45;
-        }
-        .drink-table th {
-            background-color: #f5ede4;
-        }
-        .drink-table td,
-        .drink-table th {
-            padding: 14px 18px;
-        }
-        .drink-table tbody tr:hover {
-            background-color: #faf5ef;
-        }
-        .flavor-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin: 35px 0;
-        }
-        .flavor-grid article {
-            margin: 0;
-            transition: transform 0.2s ease;
-        }
-        .flavor-grid article:hover {
-            transform: translateY(-4px);
-        }
-        .flavor-grid ul {
-            line-height: 2;
-            padding-left: 22px;
-        }
-        .flavor-grid p,
-        .flavor-grid dd {
-            line-height: 1.7;
-            color: #51483e;
-        }
-        .drink-description {
-            color: #6b5a45;
-            font-style: italic;
-        }
-        .price-note {
-            color: #ffffff !important;
-            background-color: #1a1a1a;
-            padding: 12px 18px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        figure {
-            text-align: center;
-            margin: 45px auto;
-        }
-        figure img {
-            max-width: 100%;
-            height: auto;
-            box-shadow: 0 8px 25px rgba(50, 40, 30, 0.15);
-        }
-        figure figcaption {
-            font-size: 1rem;
-        }
-        .book-cta {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 30px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 100;
-        }
-        .book-cta:hover {
-            background-color: #a08360;
-        }
-        @media (max-width: 700px) {
-            main {
-                padding: 25px 16px 100px;
-            }
-            .flavor-grid {
-                grid-template-columns: 1fr;
-            }
-            section > h2 {
-                font-size: 2.2rem;
-            }
-            nav ul {
-                flex-wrap: wrap;
-            }
-            article {
-                padding: 20px;
-            }
-        }
-    </style>
 </head>
 <body>
-<header>
-    <h1>Zebra Coffee</h1>
+
+<header class="bg-header text-center py-4">
+    <h1 class="mb-0">Zebra Coffee</h1>
 </header>
-<nav>
-    <ul>
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="menu.html" class="nav-link">Menu</a></li>
-        <li><a href="booking.html" class="nav-link">Booking</a></li>
-        <li><a href="feedback.html" class="nav-link">Feedback</a></li>
-        <li><a href="FAQ.html" class="nav-link">FAQ</a></li>
-        <li><a href="register.html" class="nav-link">Register</a></li>
-    </ul>
+
+<!-- Bootstrap navbar with a collapsible toggler for small screens -->
+<nav class="navbar navbar-expand-md bg-header">
+    <div class="container">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav mx-auto gap-2">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="menu.html" class="nav-link active">Menu</a></li>
+                <li class="nav-item"><a href="booking.html" class="nav-link">Booking</a></li>
+                <li class="nav-item"><a href="feedback.html" class="nav-link">Feedback</a></li>
+                <li class="nav-item"><a href="FAQ.html" class="nav-link">FAQ</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
+
 <main>
+<!-- container = fixed, readable max-width for body content -->
+<div class="container py-5">
 <section>
-    <h2>Menu</h2>
-    <p class="menu-subtitle">
+    <h2 class="display-5 mb-1">Menu</h2>
+    <p class="lead text-muted mb-4">
         Take a break. Grab a coffee. Stay a little longer.
     </p>
-    <!-- Quick navigation -->
-    <article id="menu-intro">
-        <p class="highlight">
-            Your coffee, your way.
-        </p>
-        <p>
-            <a href="#coffee-card">Jump to Coffee Card</a>
-            &nbsp; | &nbsp;
-            <a href="#signature-drinks">Jump to Signature Drinks</a>
-        </p>
-        <h3>How to Order</h3>
-        <span class="float-note">☕</span>
-        <ol type="A">
-            <li>Choose your favourite drink.</li>
-            <li>Pick the size you want.</li>
-            <li>Add a flavour if you like.</li>
-            <li>Sit back and enjoy your coffee.</li>
-        </ol>
-    </article>
-    <!-- About -->
-    <article>
-        <h3>About Our Menu</h3>
-        <p class="intro-text">
-            At Zebra Coffee, we believe that a good coffee can make
-            an ordinary day a little better.
-        </p>
-        <p class="intro-text">
-            Our menu combines familiar classics with creative drinks
-            for different tastes and moods. You can choose from
-            espresso-based favourites such as latte, cappuccino,
-            americano, raf, mocaccino and flat white.
-        </p>
-        <p class="intro-text">
-            If you prefer something cold, we also have frappes,
-            iced coffee, lemonades, iced tea and refreshing fruit drinks.
-            Matcha lovers can choose between Green Matcha,
-            Sakura Matcha and Blue Matcha.
-        </p>
-        <p class="intro-text">
-            Looking for something different?
-            Try one of our signature drinks with unique flavour
-            combinations created especially for Zebra Coffee.
-        </p>
-        <p class="intro-text">
-            Whether you are here for a quick morning coffee,
-            a meeting with friends or simply a quiet break,
-            we hope you find something you love.
-        </p>
-        <p class="price-note">
-            Prices may change without prior notice.
-        </p>
-    </article>
-    <!-- Coffee -->
-    <article>
-        <h3 id="coffee-card">Coffee Card</h3>
-        <p class="drink-description">
-            Classic coffee favourites, prepared fresh by our baristas.
-        </p>
-        <div class="table-wrapper">
-            <table class="drink-table">
-                <caption>Choose your size</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Drink</th>
-                        <th scope="col">250 ml</th>
-                        <th scope="col">360 ml</th>
-                        <th scope="col">480 ml</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Latte</th>
-                        <td>990&nbsp;₸</td>
-                        <td>1040&nbsp;₸</td>
-                        <td>1090&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Cappuccino</th>
-                        <td>990&nbsp;₸</td>
-                        <td>1040&nbsp;₸</td>
-                        <td>1090&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Americano</th>
-                        <td>790&nbsp;₸</td>
-                        <td>890&nbsp;₸</td>
-                        <td>990&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Raf</th>
-                        <td>1190&nbsp;₸</td>
-                        <td>1290&nbsp;₸</td>
-                        <td>1390&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Mocaccino</th>
-                        <td>1090&nbsp;₸</td>
-                        <td>1190&nbsp;₸</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Flat White</th>
-                        <td>1090&nbsp;₸</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Espresso</th>
-                        <td>600&nbsp;₸ (30 ml)</td>
-                        <td>700&nbsp;₸ (60 ml)</td>
-                        <td>&mdash;</td>
-                    </tr>
-                </tbody>
-            </table>
+
+    <!-- Row 1: ordering steps (Bootstrap List Group component) + quick-jump card,
+         responsive columns col-lg-7 / col-lg-5 -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-7">
+            <article class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="fs-4 fw-semibold font-display">
+                        Your coffee, your way.
+                    </p>
+                    <h3 class="h5">How to Order</h3>
+                    <!--
+                      Bootstrap "Numbered list group" component, adapted from
+                      https://getbootstrap.com/docs/5.3/components/list-group/#numbered
+                      Changed: replaced the placeholder "Cras justo odio" text with
+                      our own four ordering steps; removed the badge/count markup
+                      from the docs example since we didn't need extra counters.
+                    -->
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item">Choose your favourite drink.</li>
+                        <li class="list-group-item">Pick the size you want.</li>
+                        <li class="list-group-item">Add a flavour if you like.</li>
+                        <li class="list-group-item">Sit back and enjoy your coffee.</li>
+                    </ol>
+                </div>
+            </article>
         </div>
-    </article>
-    <!-- Special drinks -->
-    <div class="flavor-grid">
-        <article>
-            <h3>Frappe</h3>
-            <p class="highlight">
-                350 ml &mdash; 1290&nbsp;₸
-            </p>
-            <p>
-                A sweet and refreshing cold coffee drink.
-            </p>
-            <ul>
-                <li>Chocolate</li>
-                <li>Peanut Urbech</li>
-                <li>Salted Caramel</li>
-            </ul>
-        </article>
-        <article>
-            <h3>Ice Latte / Ice Cappuccino</h3>
-            <p class="highlight">
-                450 ml &mdash; 1290&nbsp;₸
-            </p>
-            <p>
-                Cool, creamy and easy to customize.
-                Choose your favourite flavour:
-            </p>
-            <p>
-                Mango, Mint, Pistachio, Raspberry, Amaretto,
-                Melon, Hazelnut, Cherry, Coconut, Blackcurrant,
-                Pear or Peach.
-            </p>
-        </article>
-        <article>
-            <h3>Coffee Terms</h3>
-            <dl>
-                <dt><strong>Espresso</strong></dt>
-                <dd>
-                    A small and concentrated coffee drink.
-                </dd>
-
-                <dt><strong>Latte</strong></dt>
-                <dd>
-                    Espresso combined with smooth steamed milk.
-                </dd>
-
-                <dt><strong>Matcha</strong></dt>
-                <dd>
-                    Finely ground green tea powder with a rich flavour.
-                </dd>
-            </dl>
-        </article>
+        <div class="col-12 col-lg-5">
+            <article class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <h3 class="h5">Quick Jump</h3>
+                    <p class="text-muted small">Skip straight to what you're craving.</p>
+                    <div class="d-flex flex-column gap-2 mt-auto">
+                        <a href="#coffee-card" class="btn btn-dark btn-sm">Jump to Coffee Card</a>
+                        <a href="#signature-drinks" class="btn btn-outline-dark btn-sm">Jump to Signature Drinks</a>
+                    </div>
+                </div>
+            </article>
+        </div>
     </div>
+
+    <!-- About Our Menu -->
+    <article class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h3 class="card-title">About Our Menu</h3>
+            <p>At Zebra Coffee, we believe that a good coffee can make an ordinary day a little better.</p>
+            <p>Our menu combines familiar classics with creative drinks for different tastes and moods. You can choose from espresso-based favourites such as latte, cappuccino, americano, raf, mocaccino and flat white.</p>
+            <p>If you prefer something cold, we also have frappes, iced coffee, lemonades, iced tea and refreshing fruit drinks. Matcha lovers can choose between Green Matcha, Sakura Matcha and Blue Matcha.</p>
+            <p>Looking for something different? Try one of our signature drinks with unique flavour combinations created especially for Zebra Coffee.</p>
+            <p class="mb-3">Whether you are here for a quick morning coffee, a meeting with friends or simply a quiet break, we hope you find something you love.</p>
+            <div class="alert alert-dark mb-0" role="alert">
+                Prices may change without prior notice.
+            </div>
+        </div>
+    </article>
+
+    <!-- Coffee Card: row with nested row of stat badges inside the left column -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-8">
+            <article>
+                <h3 id="coffee-card">Coffee Card</h3>
+                <p class="fst-italic text-muted">Classic coffee favourites, prepared fresh by our baristas.</p>
+
+                <!-- nested row inside a col: quick stat badges -->
+                <div class="row row-cols-3 g-2 mb-3">
+                    <div class="col"><span class="badge bg-dark w-100 py-2">7 drinks</span></div>
+                    <div class="col"><span class="badge bg-dark w-100 py-2">3 sizes</span></div>
+                    <div class="col"><span class="badge bg-dark w-100 py-2">from 600 ₸</span></div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <caption>Choose your size</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Drink</th>
+                                <th scope="col">250 ml</th>
+                                <th scope="col">360 ml</th>
+                                <th scope="col">480 ml</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><th scope="row">Latte</th><td>990&nbsp;₸</td><td>1040&nbsp;₸</td><td>1090&nbsp;₸</td></tr>
+                            <tr><th scope="row">Cappuccino</th><td>990&nbsp;₸</td><td>1040&nbsp;₸</td><td>1090&nbsp;₸</td></tr>
+                            <tr><th scope="row">Americano</th><td>790&nbsp;₸</td><td>890&nbsp;₸</td><td>990&nbsp;₸</td></tr>
+                            <tr><th scope="row">Raf</th><td>1190&nbsp;₸</td><td>1290&nbsp;₸</td><td>1390&nbsp;₸</td></tr>
+                            <tr><th scope="row">Mocaccino</th><td>1090&nbsp;₸</td><td>1190&nbsp;₸</td><td>1290&nbsp;₸</td></tr>
+                            <tr><th scope="row">Flat White</th><td>1090&nbsp;₸</td><td>&mdash;</td><td>&mdash;</td></tr>
+                            <tr><th scope="row">Espresso</th><td>600&nbsp;₸ (30 ml)</td><td>700&nbsp;₸ (60 ml)</td><td>&mdash;</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+        <div class="col-12 col-lg-4">
+            <article class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <h3 class="h5">Barista's Tip</h3>
+                    <p class="mb-0">Not sure what to pick? The Raf is our most-loved drink for a slower afternoon.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <!-- Frappe / Ice Latte / Coffee Terms — Bootstrap grid cards instead of
+         the old manual CSS Grid (.flavor-grid) -->
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <div class="col">
+            <article class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5">Frappe</h3>
+                    <p class="fw-semibold font-display">350 ml &mdash; 1290&nbsp;₸</p>                    <p>A sweet and refreshing cold coffee drink.</p>
+                    <ul class="mb-0">
+                        <li>Chocolate</li>
+                        <li>Peanut Urbech</li>
+                        <li>Salted Caramel</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+        <div class="col">
+            <article class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5">Ice Latte / Ice Cappuccino</h3>
+                    <p class="fw-semibold font-display">450 ml &mdash; 1290&nbsp;₸</p>                    <p>Cool, creamy and easy to customize. Choose your favourite flavour:</p>
+                    <p class="mb-0">Mango, Mint, Pistachio, Raspberry, Amaretto, Melon, Hazelnut, Cherry, Coconut, Blackcurrant, Pear or Peach.</p>
+                </div>
+            </article>
+        </div>
+        <div class="col">
+            <article class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5">Coffee Terms</h3>
+                    <dl class="mb-0">
+                        <dt>Espresso</dt><dd>A small and concentrated coffee drink.</dd>
+                        <dt>Latte</dt><dd>Espresso combined with smooth steamed milk.</dd>
+                        <dt>Matcha</dt><dd>Finely ground green tea powder with a rich flavour.</dd>
+                    </dl>
+                </div>
+            </article>
+        </div>
+    </div>
+
     <!-- Cold drinks -->
-    <article>
+    <article class="mb-4">
         <h3>Cold &amp; Refreshing</h3>
-        <p class="drink-description">
-            Perfect for a warm day or whenever you want something refreshing.
-        </p>
-        <div class="table-wrapper">
-            <table class="drink-table">
+        <p class="fst-italic text-muted">Perfect for a warm day or whenever you want something refreshing.</p>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
                 <caption>Iced coffee, tea and refreshing drinks</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Drink</th>
-                        <th scope="col">Volume</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
+                <thead><tr><th scope="col">Drink</th><th scope="col">Volume</th><th scope="col">Price</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">Bumble Coffee</th>
-                        <td>350 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Espresso Tonic</th>
-                        <td>350 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Nitro Tea</th>
-                        <td>350 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ice Spanish Peach</th>
-                        <td>450 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ice Cherry</th>
-                        <td>450 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ice Tea Peach</th>
-                        <td>450 ml</td>
-                        <td>1090&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ice Latte Pomegranate</th>
-                        <td>450 ml</td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
+                    <tr><th scope="row">Bumble Coffee</th><td>350 ml</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Espresso Tonic</th><td>350 ml</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Nitro Tea</th><td>350 ml</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Ice Spanish Peach</th><td>450 ml</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Ice Cherry</th><td>450 ml</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Ice Tea Peach</th><td>450 ml</td><td>1090&nbsp;₸</td></tr>
+                    <tr><th scope="row">Ice Latte Pomegranate</th><td>450 ml</td><td>1290&nbsp;₸</td></tr>
                 </tbody>
             </table>
         </div>
     </article>
+
     <!-- Matcha -->
-    <article>
+    <article class="mb-4">
         <h3>Matcha Tea</h3>
-        <p class="drink-description">
-            Creamy matcha drinks with a choice of flavour.
-        </p>
-        <div class="table-wrapper">
-            <table class="drink-table">
-                <caption>
-                    360 ml &mdash; 1090&nbsp;₸ / 450 ml &mdash; 1290&nbsp;₸
-                </caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Drink</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
+        <p class="fst-italic text-muted">Creamy matcha drinks with a choice of flavour.</p>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <caption>360 ml &mdash; 1090&nbsp;₸ / 450 ml &mdash; 1290&nbsp;₸</caption>
+                <thead><tr><th scope="col">Drink</th><th scope="col">Price</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">Latte Green Matcha</th>
-                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Latte Sakura Matcha</th>
-                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Latte Blue Matcha</th>
-                        <td>1090&nbsp;₸ / 1290&nbsp;₸</td>
-                    </tr>
+                    <tr><th scope="row">Latte Green Matcha</th><td>1090&nbsp;₸ / 1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Latte Sakura Matcha</th><td>1090&nbsp;₸ / 1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Latte Blue Matcha</th><td>1090&nbsp;₸ / 1290&nbsp;₸</td></tr>
                 </tbody>
             </table>
         </div>
     </article>
+
     <!-- Lemonades -->
-    <article>
+    <article class="mb-4">
         <h3>Lemonades</h3>
-        <p class="drink-description">
-            Fresh and fruity drinks made for a sunny day.
-        </p>
-        <div class="table-wrapper">
-            <table class="drink-table">
+        <p class="fst-italic text-muted">Fresh and fruity drinks made for a sunny day.</p>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
                 <caption>450 ml</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Drink</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
+                <thead><tr><th scope="col">Drink</th><th scope="col">Price</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">Watermelon &amp; Strawberry</th>
-                        <td>990&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Tropical</th>
-                        <td>990&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">5 Forest Berries</th>
-                        <td>1090&nbsp;₸</td>
-                    </tr>
+                    <tr><th scope="row">Watermelon &amp; Strawberry</th><td>990&nbsp;₸</td></tr>
+                    <tr><th scope="row">Tropical</th><td>990&nbsp;₸</td></tr>
+                    <tr><th scope="row">5 Forest Berries</th><td>1090&nbsp;₸</td></tr>
                 </tbody>
             </table>
         </div>
     </article>
+
     <!-- Signature drinks -->
-    <article>
+    <article class="mb-4">
         <h3 id="signature-drinks">Zebra Signatures</h3>
-        <p class="drink-description">
-            Our special coffee creations for those who want to try something different.
-        </p>
-        <div class="table-wrapper">
-            <table class="drink-table">
+        <p class="fst-italic text-muted">Our special coffee creations for those who want to try something different.</p>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
                 <caption>Signature Drinks &mdash; 360 ml</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Drink</th>
-                        <th scope="col">Flavours</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
+                <thead><tr><th scope="col">Drink</th><th scope="col">Flavours</th><th scope="col">Price</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">Latte</th>
-                        <td>
-                            Pomegranate, Blueberry, Spanish Peach
-                        </td>
-                        <td>1290&nbsp;₸</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Raf</th>
-                        <td>
-                            Lavender, Citrus, Peanut Urbech, Turan Coffee
-                        </td>
-                        <td>1390&nbsp;₸</td>
-                    </tr>
+                    <tr><th scope="row">Latte</th><td>Pomegranate, Blueberry, Spanish Peach</td><td>1290&nbsp;₸</td></tr>
+                    <tr><th scope="row">Raf</th><td>Lavender, Citrus, Peanut Urbech, Turan Coffee</td><td>1390&nbsp;₸</td></tr>
                 </tbody>
             </table>
         </div>
     </article>
+
     <!-- Photo -->
-    <figure>
-        <img
-            src="images/coffee.jpg"
-            alt="Holding a cup of coffee from Zebra Coffee"
-            width="500"
-            height="450"
-            style="border: 3px solid #a08360; border-radius: 8px;"
-        >
-        <figcaption>
-            A little coffee break
-        </figcaption>
+    <figure class="text-center my-5">
+        <img src="images/coffee.jpg" alt="Holding a cup of coffee from Zebra Coffee" width="500" height="450" class="img-fluid rounded shadow">
+        <figcaption class="fst-italic text-muted mt-2">A little coffee break</figcaption>
     </figure>
+
 </section>
+</div>
 </main>
-<a href="booking.html" class="book-cta">
+
+<!-- Fixed CTA using Bootstrap position + spacing utilities instead of
+     custom position:fixed CSS -->
+<a href="booking.html" class="btn btn-dark rounded-pill position-fixed bottom-0 end-0 m-4 shadow">
     Book a table
 </a>
-<footer>
-    <p>&copy; 2026 Zebra Coffee</p>
+
+<footer class="text-center py-3">
+    <p class="mb-0">&copy; 2026 Zebra Coffee</p>
 </footer>
+
+<!-- Bootstrap 5.3.3 JS bundle (includes Popper) via CDN — needed for navbar toggler -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,44 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Zebra Coffee | Home</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Information about Zebra Coffee in Astana">
-        <meta name="author" content="Nurzhan">
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/nurzhan.css">
-    </head>
-    <body>
-        <header>
-            <h1>Zebra Coffee</h1>
-        </header>
-        <nav>
-    <ul>
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="menu.html" class="nav-link">Menu</a></li>
-        <li><a href="booking.html" class="nav-link">Booking</a></li>
-        <li><a href="feedback.html" class="nav-link">Feedback</a></li>
-        <li><a href="FAQ.html" class="nav-link">Faq</a></li>
-        <li><a href="register.html" class="nav-link">Register</a></li>
-    </ul>
-        </nav>
-        <main>
-            <section>
-                <h2>About Zebra Coffee</h2>
-                <div class="about-content">
-                <figure>
-                    <img src="images/cafe.jpg" alt="Exterior of Zebra Coffee in Astana" width="500" height="350">
-                    <span class="badge">☕ Est. 2026</span>
-                    <figcaption>Exterior of Zebra Coffee</figcaption>
-                </figure>
- 
-                <!-- I placed the photo before the article text so visitors immediately
-                     recognize the cafe by sight before reading about it — most people
-                     decide whether a place looks appealing based on the image first. -->
- 
-                <article>
-                <h3>About the Coffee shop</h3>
+<head>
+    <meta charset="utf-8">
+    <title>Zebra Coffee | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Information about Zebra Coffee in Astana">
+    <meta name="author" content="Nurzhan">
+    <!-- Bootstrap 5.3.3 CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/nurzhan.css">
+</head>
+<body>
+
+<header class="bg-header text-center py-4">
+    <h1 class="mb-0">Zebra Coffee</h1>
+</header>
+
+<nav class="navbar navbar-expand-md bg-header">
+    <div class="container">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav mx-auto gap-2">
+                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+                <li class="nav-item"><a href="booking.html" class="nav-link">Booking</a></li>
+                <li class="nav-item"><a href="feedback.html" class="nav-link">Feedback</a></li>
+                <li class="nav-item"><a href="FAQ.html" class="nav-link">FAQ</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main>
+<!-- container = fixed, readable max-width for body content -->
+<div class="container py-5">
+<section>
+    <h2 class="display-5 mb-4">About Zebra Coffee</h2>
+
+    <!-- Photo + text side by side: responsive columns instead of the old
+         flexbox .about-content wrapper -->
+    <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-5">
+            <!-- position: relative stays on <figure> (from nurzhan.css) so the
+                 absolutely-positioned .badge still anchors correctly -->
+            <figure class="mb-0">
+                <img src="images/cafe.jpg" alt="Exterior of Zebra Coffee in Astana" class="img-fluid rounded shadow">
+                <span class="badge-est">☕ Est. 2026</span>
+                <figcaption class="fst-italic text-muted mt-2">Exterior of Zebra Coffee</figcaption>
+            </figure>
+        </div>
+
+        <!-- I placed the photo before the article text so visitors immediately
+             recognize the cafe by sight before reading about it — most people
+             decide whether a place looks appealing based on the image first. -->
+
+        <div class="col-12 col-lg-7">
+            <article class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title">About the Coffee shop</h3>
                     <p>
                         Zebra Coffee is a cozy little coffee shop tucked away on Turkestan
                         district, block 39, right off Dr. Park Avenue in Astana, Kazakhstan.
@@ -60,7 +83,7 @@
                         quality is consistently good, and the baristas clearly care about
                         what they're making.
                     </p>
-                    <p>
+                    <p class="mb-3">
                         What I liked most about my visit was the friendly service and the
                         overall coziness of the place. The coffee was well-made and
                         flavorful, the staff were welcoming, and the whole experience felt
@@ -68,33 +91,41 @@
                         especially on days when I just want a quiet spot to relax with a
                         good cup of coffee.
                     </p>
- 
-                    <blockquote>
+
+                    <blockquote class="blockquote mb-0">
                         <p>Coffee is what gives people vigor and energy.</p>
-                        <footer>&mdash; Arystan, barista Zebra Coffee, 9 september 2026</footer>
+                        <footer class="blockquote-footer">Arystan, barista Zebra Coffee, 9 september 2026</footer>
                     </blockquote>
-                </article>
                 </div>
-                <hr>
- 
-                <!-- I moved the contact details into an aside instead of the main article
-                     because this information isn't part of the narrative — visitors who
-                     just want the address or hours can find it quickly without having
-                     to read through the whole story about the cafe. -->
- 
-                    <aside id="contact-info">
-                        <h3>Contact Info</h3>
-                        <address>
-                            <p><strong>Address:</strong> Dr. Park Avenue – 1,<br>block 39, Astana, Kazakhstan</p>
-                            <p><strong>Opening hours:</strong> 08:00–21:00, daily</p>
-                            <p><strong>Phone:</strong> <a href="tel:+77470290093">+7 747 029 0093</a></p>
-                            <p><strong>TikTok:</strong> <a href="https://www.tiktok.com/@zebracoffee.kz?_r=1&amp;_t=ZS-99cQzxEdeGC">@zebra.coffee.kz</a></p>
-                        </address>
-                    </aside>
-            </section>
-        </main>
-        <footer>
-            <p>&copy; 2026 Zebra Coffee</p>
-        </footer>  
-    </body>
+            </article>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- I moved the contact details into an aside instead of the main article
+         because this information isn't part of the narrative — visitors who
+         just want the address or hours can find it quickly without having
+         to read through the whole story about the cafe. -->
+
+    <aside id="contact-info" class="rounded-3 p-4">
+        <h3>Contact Info</h3>
+        <address class="mb-0">
+            <p><strong>Address:</strong> Dr. Park Avenue – 1,<br>block 39, Astana, Kazakhstan</p>
+            <p><strong>Opening hours:</strong> 08:00–21:00, daily</p>
+            <p><strong>Phone:</strong> <a href="tel:+77470290093">+7 747 029 0093</a></p>
+            <p class="mb-0"><strong>TikTok:</strong> <a href="https://www.tiktok.com/@zebracoffee.kz?_r=1&amp;_t=ZS-99cQzxEdeGC">@zebra.coffee.kz</a></p>
+        </address>
+    </aside>
+</section>
+</div>
+</main>
+
+<footer class="text-center py-3">
+    <p class="mb-0">&copy; 2026 Zebra Coffee</p>
+</footer>
+
+<!-- Bootstrap 5.3.3 JS bundle (includes Popper) via CDN — needed for navbar toggler -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 </html>

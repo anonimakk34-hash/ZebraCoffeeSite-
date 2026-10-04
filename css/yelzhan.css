@@ -5,7 +5,6 @@
     padding: 20px 0;
 }
 
-/* Renamed to prevent collision with Bootstrap's .badge class */
 .home-badge {
     position: absolute;
     top: 50%;
@@ -22,40 +21,10 @@
 }
 
 /* =========================================
-   AUTH PAGES (Login / Register)
+   FORM RESULT / ERROR CONTAINERS
+   Hidden by default; JavaScript removes the
+   "hidden" class to show them.
    ========================================= */
-#auth-section {
-    padding: 60px 16px;
-}
-
-.auth-card {
-    width: 100%;
-    max-width: 440px;
-    background-color: #e8e0d5;
-    padding: 45px 40px;
-    border: 1px solid #e8e0d5;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
-}
-
-.auth-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #5D4037;
-    text-align: center;
-    margin: 0 0 8px;
-}
-
-.auth-subtitle {
-    text-align: center;
-    color: #4a4a4a;
-    font-size: 0.95rem;
-    margin: 0 0 30px;
-}
-
-@media (max-width: 500px) {
-    .auth-card {
-        padding: 35px 24px;
-    }
+.hidden {
+    display: none;
 }

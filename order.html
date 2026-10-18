@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zebra Coffee | Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Place an order at Zebra Coffee">
+    <meta name="author" content="Nurzhan Bakyt">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/nurzhan.css">
+</head>
+
+<body>
+
+<header class="bg-header text-center py-4">
+    <h1 class="mb-0">Zebra Coffee</h1>
+</header>
+
+<nav class="navbar navbar-expand-md bg-header">
+    <div class="container">
+
+        <button class="navbar-toggler ms-auto"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navMenu"
+                aria-controls="navMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav mx-auto gap-2">
+
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">Menu</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="order.html" class="nav-link active" aria-current="page">Order</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="booking.html" class="nav-link">Booking</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="feedback.html" class="nav-link">Feedback</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="faq.html" class="nav-link">FAQ</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">Log In</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="register.html" class="nav-link">Register</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <section>
+        <div class="text-center mb-5">
+            <h2 class="display-5">Place Your Order</h2>
+            <p class="lead text-muted">
+                Choose your favourite coffee and tell us how you would like it.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-12 col-lg-8">
+                <article class="card shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+
+                        <form method="post" action="#">
+
+                            <fieldset>
+                                <legend class="h4 mb-4">Your Order</legend>
+
+                                <div class="mb-4">
+                                    <label for="drink" class="form-label fw-semibold">
+                                        Choose a drink
+                                    </label>
+
+                                    <select id="drink" name="drink" class="form-select" required>
+                                        <option value="">Select a drink</option>
+                                        <option value="latte">Latte</option>
+                                        <option value="cappuccino">Cappuccino</option>
+                                        <option value="americano">Americano</option>
+                                        <option value="raf">Raf</option>
+                                        <option value="mocaccino">Mocaccino</option>
+                                        <option value="flat-white">Flat White</option>
+                                        <option value="espresso">Espresso</option>
+                                        <option value="frappe">Frappe</option>
+                                        <option value="ice-latte">Ice Latte</option>
+                                        <option value="ice-cappuccino">Ice Cappuccino</option>
+                                        <option value="bumble">Bumble Coffee</option>
+                                        <option value="espresso-tonic">Espresso Tonic</option>
+                                        <option value="nitro-tea">Nitro Tea</option>
+                                        <option value="green-matcha">Green Matcha</option>
+                                        <option value="sakura-matcha">Sakura Matcha</option>
+                                        <option value="blue-matcha">Blue Matcha</option>
+                                    </select>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12 col-md-6">
+                                        <label for="size" class="form-label fw-semibold">
+                                            Size
+                                        </label>
+
+                                        <select id="size" name="size" class="form-select" required>
+                                            <option value="">Select size</option>
+                                            <option value="250">250 ml</option>
+                                            <option value="360">360 ml</option>
+                                            <option value="450">450 ml</option>
+                                            <option value="480">480 ml</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <label for="quantity" class="form-label fw-semibold">
+                                            Quantity
+                                        </label>
+
+                                        <input type="number"
+                                               id="quantity"
+                                               name="quantity"
+                                               class="form-control"
+                                               min="1"
+                                               max="20"
+                                               value="1"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="flavour" class="form-label fw-semibold">
+                                        Flavour
+                                    </label>
+
+                                    <select id="flavour" name="flavour" class="form-select">
+                                        <option value="none">No additional flavour</option>
+                                        <option value="vanilla">Vanilla</option>
+                                        <option value="hazelnut">Hazelnut</option>
+                                        <option value="caramel">Caramel</option>
+                                        <option value="chocolate">Chocolate</option>
+                                        <option value="mint">Mint</option>
+                                        <option value="pistachio">Pistachio</option>
+                                        <option value="raspberry">Raspberry</option>
+                                        <option value="peach">Peach</option>
+                                        <option value="mango">Mango</option>
+                                        <option value="cherry">Cherry</option>
+                                        <option value="coconut">Coconut</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <p class="fw-semibold mb-2">Milk option</p>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                               name="milk" id="regular-milk"
+                                               value="regular" checked>
+                                        <label class="form-check-label" for="regular-milk">
+                                            Regular milk
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                               name="milk" id="oat-milk"
+                                               value="oat">
+                                        <label class="form-check-label" for="oat-milk">
+                                            Oat milk
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                               name="milk" id="almond-milk"
+                                               value="almond">
+                                        <label class="form-check-label" for="almond-milk">
+                                            Almond milk
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                               name="milk" id="no-milk"
+                                               value="none">
+                                        <label class="form-check-label" for="no-milk">
+                                            No milk
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 order-type">
+
+                                    <p class="fw-semibold mb-2">Order type</p>
+
+                                    <input class="order-radio"
+                                           type="radio"
+                                           name="order-type"
+                                           id="takeaway"
+                                           value="takeaway"
+                                           checked>
+
+                                    <label for="takeaway" class="order-label">
+                                        Takeaway
+                                    </label>
+
+
+                                    <input class="order-radio"
+                                           type="radio"
+                                           name="order-type"
+                                           id="pickup"
+                                           value="pickup">
+
+                                    <label for="pickup" class="order-label">
+                                        Pick up at cafe
+                                    </label>
+
+
+                                    <!-- Information for Takeaway -->
+                                    <div class="customer-takeaway">
+
+                                        <fieldset class="border rounded-3 p-3 p-md-4 mt-4">
+
+                                            <legend class="float-none w-auto px-2 h5">
+                                                Customer Information
+                                            </legend>
+
+                                            <div class="mb-3">
+                                                <label for="takeaway-name" class="form-label">
+                                                    Full Name
+                                                </label>
+
+                                                <input type="text"
+                                                       id="takeaway-name"
+                                                       name="takeaway-name"
+                                                       class="form-control"
+                                                       placeholder="Your full name">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="takeaway-phone" class="form-label">
+                                                    Phone Number
+                                                </label>
+
+                                                <input type="tel"
+                                                       id="takeaway-phone"
+                                                       name="takeaway-phone"
+                                                       class="form-control"
+                                                       placeholder="+7 747 029 0093">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="takeaway-email" class="form-label">
+                                                    Email
+                                                </label>
+
+                                                <input type="email"
+                                                       id="takeaway-email"
+                                                       name="takeaway-email"
+                                                       class="form-control"
+                                                       placeholder="you@example.com">
+                                            </div>
+                                            <div>
+                                                <select id="city" class="form-select mb-3">
+                                                    <option value="">Choose a city</option>
+                                                </select>
+
+                                                <select id="district" class="form-select mb-3">
+                                                    <option value="">Choose a district</option>
+                                                </select>
+
+                                                <select id="street" class="form-select mb-3">
+                                                    <option value="">Choose a street</option>
+                                                </select>
+
+                                                <select id="building" class="form-select mb-3">
+                                                    <option value="">Choose a building</option>
+                                                </select>
+
+                                                <select id="apartment" class="form-select mb-3">
+                                                    <option value="">Choose an apartment</option>
+                                                </select>
+                                            </div>
+
+                                        </fieldset>
+
+                                    </div>
+
+
+                                    <!-- Information for Pickup -->
+                                    <div class="customer-pickup">
+
+                                        <fieldset class="border rounded-3 p-3 p-md-4 mt-4">
+
+                                            <legend class="float-none w-auto px-2 h5">
+                                                Customer Information
+                                            </legend>
+
+                                            <div class="mb-3">
+                                                <label for="pickup-name" class="form-label">
+                                                    Full Name
+                                                </label>
+
+                                                <input type="text"
+                                                       id="pickup-name"
+                                                       name="pickup-name"
+                                                       class="form-control"
+                                                       placeholder="Your full name">
+                                            </div>
+
+                                        </fieldset>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="time" class="form-label fw-semibold">
+                                        Preferred pickup time
+                                    </label>
+
+                                    <select id="time" name="time" class="form-select">
+                                        <option value="asap">As soon as possible</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="18:30">18:30</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="19:30">19:30</option>
+                                        <option value="20:00">20:00</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="notes" class="form-label fw-semibold">
+                                        Special Requests
+                                    </label>
+
+                                    <textarea id="notes"
+                                              name="notes"
+                                              class="form-control"
+                                              rows="4"
+                                              placeholder="Less sweet, extra hot, no ice..."></textarea>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="confirmation"
+                                           name="confirmation"
+                                           required>
+
+                                    <label class="form-check-label" for="confirmation">
+                                        I confirm that my order information is correct.
+                                    </label>
+                                </div>
+
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="submit" class="btn btn-dark btn-lg">
+                                        Place Order
+                                    </button>
+
+                                    <button type="reset"
+                                            class="btn btn-outline-secondary btn-lg">
+                                        Clear Form
+                                    </button>
+                                </div>
+                            </fieldset>
+
+                        </form>
+
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-12 col-lg-4">
+
+                <article class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3 class="h4">How It Works</h3>
+
+                        <ol class="list-group list-group-numbered">
+                            <li class="list-group-item">Choose your drink</li>
+                            <li class="list-group-item">Select the size and quantity</li>
+                            <li class="list-group-item">Customize your drink</li>
+                            <li class="list-group-item">Enter your contact information</li>
+                            <li class="list-group-item">Submit your order</li>
+                        </ol>
+                    </div>
+                </article>
+
+                <article class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h4">Popular Choices</h3>
+
+                        <div class="list-group">
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Latte</span>
+                                <strong>from 990 ₸</strong>
+                            </div>
+
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Cappuccino</span>
+                                <strong>from 990 ₸</strong>
+                            </div>
+
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Americano</span>
+                                <strong>from 790 ₸</strong>
+                            </div>
+
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Raf</span>
+                                <strong>from 1190 ₸</strong>
+                            </div>
+
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Frappe</span>
+                                <strong>1290 ₸</strong>
+                            </div>
+                        </div>
+
+                        <a href="menu.html"
+                           class="btn btn-outline-dark w-100 mt-3">
+                            View Full Menu
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="text-center py-3">
+    <p class="mb-0">&copy; 2026 Zebra Coffee</p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/order.js" defer></script>
+</body>
+</html>

@@ -56,9 +56,8 @@ a[href^="tel:"] {
     font-weight: 600;
     text-decoration: underline dotted;
 }
-/* ============================================
-   Child selector
-   ============================================ */
+
+
 nav ul > li {
     list-style: none;
 }
@@ -98,4 +97,63 @@ section {
 .gallery-img {
     height: 300px;
     object-fit: cover;
+}
+
+/* JavaScript state classes */
+
+.hidden {
+    display: none !important;
+}
+.selected {
+    border: 2px solid #212529;
+}
+
+.error {
+    border-color: #dc3545;
+}
+
+.success {
+    border-color: #198754;
+}
+
+.order-type {
+    position: relative;
+}
+
+.order-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.order-label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    border: 1px solid #212529;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.order-radio:checked + .order-label {
+    background: #212529;
+    color: #fff;
+}
+
+.order-radio:focus-visible + .order-label {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+.customer-takeaway,
+.customer-pickup {
+    display: none;
+}
+
+#takeaway:checked ~ .customer-takeaway {
+    display: block;
+}
+
+#pickup:checked ~ .customer-pickup {
+    display: block;
 }

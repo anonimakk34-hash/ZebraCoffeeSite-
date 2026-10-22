@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (window.hideMessage) window.hideMessage();
+        hideMessage();
 
         const password = passwordInput?.value ?? '';
         const confirmPassword = confirmInput?.value ?? '';
@@ -94,22 +94,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const isValid = Object.values(requirements).every(regex => regex.test(password));
 
         if (!isValid) {
-            if (window.showMessage) {
-                window.showMessage('Please ensure your password meets all checklist requirements.', 'danger');
-            }
+            showMessage('Please ensure your password meets all checklist requirements.', 'danger');
             return;
         }
 
         if (password !== confirmPassword) {
-            if (window.showMessage) {
-                window.showMessage('Passwords do not match. Please try again.', 'danger');
-            }
+            showMessage('Passwords do not match. Please try again.', 'danger');
             return;
         }
 
-        if (window.showMessage) {
-            window.showMessage('Front-end demonstration only. No real account was created, and no data was saved or sent to any server.', 'success');
-        }
+        showMessage('Front-end demonstration only. No real account was created, and no data was saved or sent to any server.', 'success');
         
         registerForm.reset();
         if (passwordInput) passwordInput.dispatchEvent(new Event('input'));

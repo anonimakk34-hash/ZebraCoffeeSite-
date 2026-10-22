@@ -1,28 +1,47 @@
-const loginForm = document.getElementById("login-form");
-if (loginForm) {
-    const errorBox = document.getElementById("login-error");
-    const resultBox = document.getElementById("login-result");
- 
-    loginForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        hideMessage(errorBox);
-        hideMessage(resultBox);
- 
-        const email = document.getElementById("login-email").value.trim();
-        const password = document.getElementById("login-password").value;
-        const saved = localStorage.getItem("zebraUser");
- 
-        if (!saved) {
-            showMessage(errorBox, "No account found. Please register first.");
-            return;
-        }
- 
-        const user = JSON.parse(saved);
-        if (user.email === email && user.password === password) {
-            showMessage(resultBox, "Welcome back, " + user.name + "!");
-            loginForm.reset();
-        } else {
-            showMessage(errorBox, "Incorrect email or password.");
-        }
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.querySelector('#login-form') || document.querySelector('form');
+  if (!loginForm) return;
+
+  const passwordInput = loginForm.querySelector('#password');
+
+  // Create Accessible Show/Hide Button
+  if (passwordInput) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = 'Show';
+    btn.className = 'btn btn-sm btn-outline-secondary mt-1 mb-3';
+    btn.setAttribute('aria-label', 'Toggle password visibility');
+    
+    btn.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      btn.textContent = type === 'password' ? 'Show' : 'Hide';
     });
-}
+    
+    passwordInput.insertAdjacentElement('afterend', btn);
+  }
+
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (typeof window.hideMessage === 'function') window.hideMessage();
+
+    const email = loginForm.querySelector('#email')?.value.trim() ?? '';
+    const password = passwordInput?.value ?? '';
+
+    if (!email || !password) {
+      if (typeof window.showMessage === 'function') {
+        window.showMessage('Please enter both email and password.', 'danger');
+      }
+      return;
+    }
+
+    // Explicit Front-end Demonstration Message
+    if (typeof window.showMessage === 'function') {
+      window.showMessage('Front-end demonstration only. You are not authenticated, and no login data was verified or sent.', 'success');
+    }
+    
+    loginForm.reset();
+  });
+});

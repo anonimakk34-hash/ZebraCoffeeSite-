@@ -15,43 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let reviewsContainer = document.querySelector('#reviews-list');
     if (!reviewsContainer) {
-        reviewsContainer = document.createElement('div');
+        reviewsContainer = createEl('div', 'row g-4 mt-5');
         reviewsContainer.id = 'reviews-list';
-        reviewsContainer.className = 'row g-4 mt-5';
 
-        const reviewsTitle = document.createElement('h3');
-        reviewsTitle.className = 'mt-5 mb-3';
-        reviewsTitle.textContent = 'Recent Customer Reviews';
+        const reviewsTitle = createEl('h3', 'mt-5 mb-3', 'Recent Customer Reviews');
 
         feedbackForm.insertAdjacentElement('afterend', reviewsContainer);
         feedbackForm.insertAdjacentElement('afterend', reviewsTitle);
     }
 
     const renderReviewCard = (review) => {
-        const col = document.createElement('div');
-        col.className = 'col-md-6 col-lg-4';
+        const col = createEl('div', 'col-md-6 col-lg-4');
+        const card = createEl('div', 'card h-100 shadow-sm');
+        const body = createEl('div', 'card-body');
         
-        const card = document.createElement('div');
-        card.className = 'card h-100 shadow-sm';
+        const title = createEl('h5', 'card-title', review.name);
+        const sub = createEl('h6', 'card-subtitle mb-2 text-muted', `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)} | ${review.date}`);
+        const p = createEl('p', 'card-text', `"${review.comment}"`);
         
-        const body = document.createElement('div');
-        body.className = 'card-body';
-        
-        const title = document.createElement('h5');
-        title.className = 'card-title';
-        title.textContent = review.name;
-        
-        const sub = document.createElement('h6');
-        sub.className = 'card-subtitle mb-2 text-muted';
-        sub.textContent = `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)} | ${review.date}`;
-        
-        const p = document.createElement('p');
-        p.className = 'card-text';
-        p.textContent = `"${review.comment}"`;
-        
-        body.appendChild(title);
-        body.appendChild(sub);
-        body.appendChild(p);
+        body.append(title, sub, p);
         card.appendChild(body);
         col.appendChild(card);
         
@@ -67,15 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitBtn = feedbackForm.querySelector('button[type="submit"]') || feedbackForm.querySelector('.btn');
 
-    const dateWrapper = document.createElement('div');
-    dateWrapper.className = 'mb-3';
-    
-    const dateLabel = document.createElement('label');
-    dateLabel.className = 'form-label';
-    dateLabel.textContent = 'Date of Visit ';
-    const dateAsterisk = document.createElement('span');
-    dateAsterisk.className = 'text-danger';
-    dateAsterisk.textContent = '*';
+    // 1. Visit Date Field
+    const dateWrapper = createEl('div', 'mb-3');
+    const dateLabel = createEl('label', 'form-label', 'Date of Visit ');
+    const dateAsterisk = createEl('span', 'text-danger', '*');
     dateLabel.appendChild(dateAsterisk);
     
     const dateInput = document.createElement('input');
@@ -83,24 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     dateInput.id = 'visit-date';
     dateInput.className = 'form-control';
     
-    const dateFeedback = document.createElement('div');
-    dateFeedback.className = 'invalid-feedback';
-    
-    dateWrapper.appendChild(dateLabel);
-    dateWrapper.appendChild(dateInput);
-    dateWrapper.appendChild(dateFeedback);
+    const dateFeedback = createEl('div', 'invalid-feedback');
+    dateWrapper.append(dateLabel, dateInput, dateFeedback);
     
     feedbackForm.insertBefore(dateWrapper, submitBtn.closest('.mb-3') || submitBtn);
 
-    const confirmEmailWrapper = document.createElement('div');
-    confirmEmailWrapper.className = 'mb-3';
-    
-    const cEmailLabel = document.createElement('label');
-    cEmailLabel.className = 'form-label';
-    cEmailLabel.textContent = 'Confirm Email ';
-    const cEmailAsterisk = document.createElement('span');
-    cEmailAsterisk.className = 'text-danger';
-    cEmailAsterisk.textContent = '*';
+    // 2. Confirm Email Field
+    const confirmEmailWrapper = createEl('div', 'mb-3');
+    const cEmailLabel = createEl('label', 'form-label', 'Confirm Email ');
+    const cEmailAsterisk = createEl('span', 'text-danger', '*');
     cEmailLabel.appendChild(cEmailAsterisk);
     
     const cEmailInput = document.createElement('input');
@@ -108,12 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cEmailInput.id = 'confirm-email';
     cEmailInput.className = 'form-control';
     
-    const cEmailFeedback = document.createElement('div');
-    cEmailFeedback.className = 'invalid-feedback';
-    
-    confirmEmailWrapper.appendChild(cEmailLabel);
-    confirmEmailWrapper.appendChild(cEmailInput);
-    confirmEmailWrapper.appendChild(cEmailFeedback);
+    const cEmailFeedback = createEl('div', 'invalid-feedback');
+    confirmEmailWrapper.append(cEmailLabel, cEmailInput, cEmailFeedback);
 
     const emailInput = feedbackForm.querySelector('input[type="email"]') || feedbackForm.querySelector('#email');
     if (emailInput) {
@@ -122,11 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackForm.insertBefore(confirmEmailWrapper, dateWrapper);
     }
 
+    // 3. Character Counter
     const messageInput = feedbackForm.querySelector('textarea');
     if (messageInput) {
-        const charCounter = document.createElement('small');
-        charCounter.className = 'text-muted d-block mt-1';
-        charCounter.textContent = '0 / 500 characters (Min 10)';
+        const charCounter = createEl('small', 'text-muted d-block mt-1', '0 / 500 characters (Min 10)');
         messageInput.insertAdjacentElement('afterend', charCounter);
 
         messageInput.addEventListener('input', () => {
@@ -144,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (feedback && feedback.classList.contains('invalid-feedback')) {
             feedback.textContent = message;
         } else {
-            feedback = document.createElement('div');
-            feedback.className = 'invalid-feedback';
-            feedback.textContent = message;
+            feedback = createEl('div', 'invalid-feedback', message);
             input.insertAdjacentElement('afterend', feedback);
         }
     };
@@ -159,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     feedbackForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (window.hideMessage) window.hideMessage();
+        hideMessage();
 
         const inputs = feedbackForm.querySelectorAll('.form-control, .form-select');
         inputs.forEach(input => input.classList.remove('is-invalid', 'is-valid'));
@@ -179,13 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const nameEl = feedbackForm.querySelector('#name') || feedbackForm.querySelector('input[type="text"]');
-        const emailEl = feedbackForm.querySelector('#email') || feedbackForm.querySelector('input[type="email"]');
         const confirmEmailEl = document.querySelector('#confirm-email');
         const dateEl = document.querySelector('#visit-date');
         const ratingEl = feedbackForm.querySelector('#rating') || feedbackForm.querySelector('select');
 
         const name = nameEl?.value.trim() ?? '';
-        const email = emailEl?.value.trim() ?? '';
+        const email = emailInput?.value.trim() ?? '';
         const confirmEmail = confirmEmailEl?.value.trim() ?? '';
         const visitDate = dateEl?.value ?? '';
         const rating = ratingEl?.value ?? '5';
@@ -194,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkField(name.length >= 2, nameEl, 'Name must be at least 2 characters.');
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        checkField(emailRegex.test(email), emailEl, 'Please enter a valid email address.');
+        checkField(emailRegex.test(email), emailInput, 'Please enter a valid email address.');
         checkField(confirmEmail === email && confirmEmail !== '', confirmEmailEl, 'Emails must match exactly.');
 
         const today = new Date().toISOString().split('T')[0];
@@ -217,59 +177,38 @@ document.addEventListener('DOMContentLoaded', () => {
         reviewsData.unshift(newReview);
         displayReviews();
 
-        const summaryDiv = document.createElement('div');
-        summaryDiv.className = 'alert alert-success';
-        
-        const summaryHeading = document.createElement('h4');
-        summaryHeading.className = 'alert-heading';
-        summaryHeading.textContent = 'Feedback Submitted!';
-        
-        const summaryMsg = document.createElement('p');
-        summaryMsg.textContent = 'This is a front-end demonstration only. No data was sent to a server.';
-        
+        // Build Success Summary Safely without innerHTML
+        feedbackForm.innerHTML = ''; // Safely clear form DOM
+
+        const summaryDiv = createEl('div', 'alert alert-success');
+        const summaryHeading = createEl('h4', 'alert-heading', 'Feedback Submitted!');
+        const summaryMsg = createEl('p', '', 'This is a front-end demonstration only. No data was sent to a server.');
         const hr = document.createElement('hr');
+
+        summaryDiv.append(summaryHeading, summaryMsg, hr);
+
+        const appendDetail = (labelTxt, valTxt) => {
+            const p = createEl('p', 'mb-1');
+            const strong = createEl('strong', '', labelTxt);
+            p.appendChild(strong);
+            p.appendChild(document.createTextNode(' ' + valTxt));
+            summaryDiv.appendChild(p);
+        };
+
+        appendDetail('Name:', name);
+        appendDetail('Email:', email);
+        appendDetail('Visit Date:', visitDate);
+        appendDetail('Rating:', rating + ' Stars');
         
-        const nameP = document.createElement('p');
-        nameP.className = 'mb-1';
-        nameP.innerHTML = '<strong>Name:</strong> ';
-        nameP.appendChild(document.createTextNode(name));
-
-        const emailP = document.createElement('p');
-        emailP.className = 'mb-1';
-        emailP.innerHTML = '<strong>Email:</strong> ';
-        emailP.appendChild(document.createTextNode(email));
-
-        const dateP = document.createElement('p');
-        dateP.className = 'mb-1';
-        dateP.innerHTML = '<strong>Visit Date:</strong> ';
-        dateP.appendChild(document.createTextNode(visitDate));
-
-        const ratingP = document.createElement('p');
-        ratingP.className = 'mb-1';
-        ratingP.innerHTML = '<strong>Rating:</strong> ';
-        ratingP.appendChild(document.createTextNode(rating + ' Stars'));
-
-        const msgP = document.createElement('p');
-        msgP.className = 'mb-0';
-        msgP.innerHTML = '<strong>Message:</strong> ';
-        msgP.appendChild(document.createTextNode(message));
-
-        summaryDiv.appendChild(summaryHeading);
-        summaryDiv.appendChild(summaryMsg);
-        summaryDiv.appendChild(hr);
-        summaryDiv.appendChild(nameP);
-        summaryDiv.appendChild(emailP);
-        summaryDiv.appendChild(dateP);
-        summaryDiv.appendChild(ratingP);
+        const msgP = createEl('p', 'mb-0');
+        const strongMsg = createEl('strong', '', 'Message:');
+        msgP.appendChild(strongMsg);
+        msgP.appendChild(document.createTextNode(' ' + message));
         summaryDiv.appendChild(msgP);
 
-        const reloadBtn = document.createElement('button');
-        reloadBtn.className = 'btn btn-primary mt-3';
-        reloadBtn.textContent = 'Submit Another';
+        const reloadBtn = createEl('button', 'btn btn-primary mt-3', 'Submit Another');
         reloadBtn.addEventListener('click', () => location.reload());
 
-        feedbackForm.innerHTML = '';
-        feedbackForm.appendChild(summaryDiv);
-        feedbackForm.appendChild(reloadBtn);
+        feedbackForm.append(summaryDiv, reloadBtn);
     });
 });

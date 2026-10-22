@@ -1,62 +1,42 @@
-# 🦓 Zebra Coffee
+# Zebra Coffee Site
 
-A responsive multi-page coffee shop website built for the **Web Technologies** course. The project started as a pure HTML/CSS site and was rebuilt with **Bootstrap 5.3.3** while keeping the original Zebra Coffee theme and page structure.
+This repository contains the front-end code for the Zebra Coffee website.
 
-## ☕ Project Overview
+## Functionality Plan
+| Page | Visitor Goal | Planned Function | Expected Result | Responsible Student |
+|---|---|---|---|---|
+| FAQ | Search for answers easily | Live search filter on accordion items | Filtered list showing matched items with count | Student A |
+| Feedback | Leave a review and see recent ones | Form validation with 4 fields, comparison, character count, live array rendering | Correct review submission, success summary, updated review list | Student B |
+| Login | Access account | Secure front-end validation of email and password | Explicit demonstration message on success | Student A |
+| Register | Create account | Live password checklist, confirmation match, toggle visibility | Explicit demonstration message on success without storing data | Student B |
+| Menu | Browse coffee selection | Render menu items from array | Dynamic list of available items | Student A |
+| Order | Build an order | Cart logic, subtotal, quantity updates | Working cart UI inside modal | Student B |
 
-**Zebra Coffee** is a cozy coffee shop website concept for a cafe in Astana, Kazakhstan.
+## JavaScript Checklist
+- `js/main.js`: 
+  - Array of objects (`DRINKS`) - line 12
+  - Functions with parameters/returns (`createEl`, `findDrink`, `formatPrice`) - lines 40, 44, 48, 52
+  - DOM manipulation (`showMessage`, `hideMessage`) - lines 89, 98
+- `js/faq.js`:
+  - Loops/traversal (`forEach`) - line 46, 64
+  - Search/filter functionality - line 43
+  - Event Listeners (`input`, `click`) - line 60, 61, 67
+- `js/feedback.js`:
+  - DOM Creation (`document.createElement`) - line 21, 33, 62, 85, 114
+  - Array Rendering (`displayReviews`) - line 56
+  - Form Validation (4 fields + comparison) - line 140
+  - No `innerHTML` for user data - line 215
+- `js/login.js`:
+  - DOM Modification (`setAttribute`, `textContent`) - line 17
+  - Event listeners (`submit`, `click`) - line 15, 25
+- `js/register.js`:
+  - Regex validation (`requirements`) - line 61
+  - Logic operators (`every`, `!==`) - line 84, 94
 
-The website includes:
-
-* Home page with information about the coffee shop
-* Menu with coffee, cold drinks, matcha, and pricing
-* Table booking form
-* Customer feedback form
-* FAQ page
-* User registration page
-* User login page
-
-The current version focuses on **responsive design, Bootstrap grid/layout utilities, responsive navigation, forms, buttons, tables, cards, and reusable styling**.
-
-## Three user journeys
-
-Each journey follows one visitor from the first page to the end of the task. They cover the account, feedback and information pages of the site.
-
-### Journey 1: Find the opening hours and the quietest time to visit
-
-**Start:** the visitor opens `index.html` and wants to know when Zebra Coffee is open and when it is least busy.
-
-**Steps**
-1. In the navbar, click **FAQ** (`faq.html`).
-2. The first question, "What are your opening hours?", is already open. The visitor reads the answer: every day, 08:00 to 21:00.
-3. The visitor clicks "How long will I wait for my order?" and reads that the wait depends on the time of day.
-4. The visitor looks at the **Expected Wait Times** table next to the questions.
-
-**End:** the visitor knows the shop is open 08:00 to 21:00 and that 08:00 to 11:00 is the quietest time, with an expected wait of 5 minutes.
-
-### Journey 2: Leave feedback after a visit
-
-**Start:** the visitor has just visited the shop and opens `index.html`.
-
-**Steps**
-1. In the navbar, click **Feedback** (`feedback.html`).
-2. Fill in the required fields: full name, email address, date of visit, rating (1 to 5), order type (dine-in or takeaway) and additional comments.
-3. Optionally choose a favorite drink, enter a phone number, and tick "I would recommend Zebra Coffee to a friend".
-4. Click **Submit Feedback**.
-5. If a required field is missing or invalid, a message appears in the red box under the form (`feedback-error`) and the visitor corrects it.
-
-**End:** a confirmation appears in the green box under the form (`feedback-result`): "Thank you for your feedback!"
-
-### Journey 3: Create an account and log in
-
-**Start:** a new visitor opens `index.html` and wants an account.
-
-**Steps**
-1. In the navbar, click **Register** (`register.html`).
-2. Fill in full name, email address, password and password confirmation, and tick "I agree to the Terms & Conditions". The phone number is optional.
-3. Click **Register**.
-4. If the passwords do not match or a field is missing, the red box (`register-error`) explains the problem and the visitor fixes it.
-5. After a successful registration the green box (`register-result`) says the account was created. The visitor clicks **Log in here** under the form, which opens `login.html`.
-6. Enter the same email and password, optionally tick "Remember me", and click **Log In**.
-
-**End:** a welcome message appears in the green box (`login-result`) on the login page.
+## AI Log
+- **Q:** How do I correctly build a live password checklist using regex?
+- **AI Response:** Provided regex patterns (`/[A-Z]/`, `/.{8,}/`) and an `input` event listener method to test the string dynamically and swap Bootstrap text-danger/text-success classes.
+- **Q:** What is the best way to avoid innerHTML for a summary block?
+- **AI Response:** Explained how to use `document.createElement`, `className`, and `textContent` or `document.createTextNode` sequentially to safely construct the DOM tree and append strings.
+- **Q:** How do I swap CSS classes instead of using style.display?
+- **AI Response:** Advised using `element.classList.add('d-none')` and `element.classList.remove('d-none')` for Bootstrap-friendly visibility toggling.

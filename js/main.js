@@ -8,6 +8,80 @@
  * the navbar and writing the current year in the footer.
  */
 
+
+ // Universal Form Feedback Helpers
+ 
+ 
+const getMessageTarget = (target) => {
+  if (target instanceof HTMLElement) return target;
+  if (typeof target === 'string') return document.querySelector(target);
+  return (
+    document.querySelector('#form-message') ||
+    document.querySelector('#message') ||
+    document.querySelector('.alert-message') ||
+    document.querySelector('form .alert')
+  );
+};
+
+const showMessage = (text, type = 'danger', target = null) => {
+  // Gracefully handle inverted argument patterns: showMessage(element, text, type)
+  if (typeof text !== 'string' && (target === null || typeof target === 'string')) {
+    const el = text;
+    text = type;
+    type = target || 'danger';
+    target = el;
+  }
+
+  const container = getMessageTarget(target);
+  if (!container) return;
+
+  const alertClass = type === 'error' ? 'danger' : type;
+
+  container.textContent = text;
+  container.className = `alert alert-${alertClass} mt-3 d-block`;
+  container.setAttribute('aria-hidden', 'false');
+};
+
+const hideMessage = (target = null) => {
+  const container = getMessageTarget(target);
+  if (!container) return;
+
+  container.textContent = '';
+  container.className = 'alert d-none';
+  container.setAttribute('aria-hidden', 'true');
+};
+
+window.showMessage = showMessage;
+window.hideMessage = hideMessage;
+
+/**
+ * Site-Wide Features (Navbar Active Link & Footer Year)
+ */
+const initSiteWideFeatures = () => {
+  // Footer copyright dynamic year
+  const yearEl = document.querySelector('#current-year') || document.querySelector('.footer-year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+
+  // Active navigation highlight
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('.nav-link, .navbar-nav a');
+  
+  navLinks.forEach((link) => {
+    const href = link.getAttribute('href');
+    if (href && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
+    }
+  });
+};
+
+document.addEventListener('DOMContentLoaded', initSiteWideFeatures);
+
 // Prices come from menu.html. sizes: [{ value: millilitres, price: tenge }]
 const DRINKS = [
     { id: 'latte', name: 'Latte', category: 'Coffee', available: true,

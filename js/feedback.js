@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const displayReviews = () => {
-        reviewsContainer.innerHTML = '';
+        reviewsContainer.replaceChildren();
         reviewsData.forEach(review => reviewsContainer.appendChild(renderReviewCard(review)));
     };
 
@@ -178,8 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayReviews();
 
         // Build Success Summary Safely without innerHTML
-        feedbackForm.innerHTML = ''; // Safely clear form DOM
-
+        feedbackForm.replaceChildren(); // Safely clear form DOM
         const summaryDiv = createEl('div', 'alert alert-success');
         const summaryHeading = createEl('h4', 'alert-heading', 'Feedback Submitted!');
         const summaryMsg = createEl('p', '', 'This is a front-end demonstration only. No data was sent to a server.');

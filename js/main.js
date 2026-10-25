@@ -11,7 +11,6 @@
 
  // Universal Form Feedback Helpers
  
- 
 const getMessageTarget = (target) => {
   if (target instanceof HTMLElement) return target;
   if (typeof target === 'string') return document.querySelector(target);
@@ -24,14 +23,6 @@ const getMessageTarget = (target) => {
 };
 
 const showMessage = (text, type = 'danger', target = null) => {
-  // Gracefully handle inverted argument patterns: showMessage(element, text, type)
-  if (typeof text !== 'string' && (target === null || typeof target === 'string')) {
-    const el = text;
-    text = type;
-    type = target || 'danger';
-    target = el;
-  }
-
   const container = getMessageTarget(target);
   if (!container) return;
 
@@ -195,6 +186,3 @@ function updateFooterYear() {
         footerText.textContent = `© ${new Date().getFullYear()} Zebra Coffee`;
     }
 }
-
-highlightCurrentPage();
-updateFooterYear();

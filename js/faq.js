@@ -46,10 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
         faqItems.forEach(item => {
             const text = item.textContent.toLowerCase();
             if (text.includes(term)) {
-                item.style.display = '';
+                item.classList.remove('d-none');
                 visibleCount++;
             } else {
-                item.style.display = 'none';
+                item.classList.add('d-none');
             }
         });
 

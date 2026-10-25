@@ -5,33 +5,33 @@ This repository contains the front-end code for the Zebra Coffee website.
 ## Functionality Plan
 | Page | Visitor Goal | Planned Function | Expected Result | Responsible Student |
 |---|---|---|---|---|
-| FAQ | Search for answers easily | Live search filter on accordion items | Filtered list showing matched items with count | Student A |
-| Feedback | Leave a review and see recent ones | Form validation with 4 fields, comparison, character count, live array rendering | Correct review submission, success summary, updated review list | Student B |
-| Login | Access account | Secure front-end validation of email and password | Explicit demonstration message on success | Student A |
-| Register | Create account | Live password checklist, confirmation match, toggle visibility | Explicit demonstration message on success without storing data | Student B |
-| Menu | Browse coffee selection | Render menu items from array | Dynamic list of available items | Student A |
-| Order | Build an order | Cart logic, subtotal, quantity updates | Working cart UI inside modal | Student B |
+| FAQ | Search for answers easily | Live search filter on accordion items | Filtered list showing matched items with count | Yelzhan Baurzhanov |
+| Feedback | Leave a review and see recent ones | Form validation with 4 fields, comparison, character count, live array rendering | Correct review submission, success summary, updated review list | Yelzhan Baurzhanov |
+| Login | Access account | Secure front-end validation of email and password | Explicit demonstration message on success | Yelzhan Baurzhanov |
+| Register | Create account | Live password checklist, confirmation match, toggle visibility | Explicit demonstration message on success without storing data | Yelzhan Baurzhanov |
+| Menu | Browse coffee selection | Render menu items from array | Dynamic list of available items | Nurzhan |
+| Order | Build an order | Cart logic, subtotal, quantity updates | Working cart UI inside modal | Nurzhan |
 
 ## JavaScript Checklist
 - `js/main.js`: 
-  - Array of objects (`DRINKS`) - line 12
-  - Functions with parameters/returns (`createEl`, `findDrink`, `formatPrice`) - lines 40, 44, 48, 52
-  - DOM manipulation (`showMessage`, `hideMessage`) - lines 89, 98
+  - Array of objects (`DRINKS`) - line 79
+  - Functions with parameters/returns (`findDrink`, `formatPrice`, `createEl`) - lines 130, 140, 146
+  - DOM manipulation (`showMessage`, `hideMessage`) - lines 26, 38
 - `js/faq.js`:
-  - Loops/traversal (`forEach`) - line 46, 64
-  - Search/filter functionality - line 43
-  - Event Listeners (`input`, `click`) - line 60, 61, 67
+  - Loops/traversal (`forEach`) - lines 46, 74
+  - Search/filter functionality - line 67
+  - Event Listeners (`input`, `click`) - lines 67, 68, 75
 - `js/feedback.js`:
-  - DOM Creation (`document.createElement`) - line 21, 33, 62, 85, 114
-  - Array Rendering (`displayReviews`) - line 56
-  - Form Validation (4 fields + comparison) - line 140
-  - No `innerHTML` for user data - line 215
+  - DOM Creation (`document.createElement`) - lines 58, 74, 186
+  - Array Rendering (`displayReviews`) - line 43
+  - Form Validation (4 fields + comparison) - lines 154-163
+  - No `innerHTML` for user data (`replaceChildren()`) - lines 44, 181
 - `js/login.js`:
-  - DOM Modification (`setAttribute`, `textContent`) - line 17
-  - Event listeners (`submit`, `click`) - line 15, 25
+  - DOM Modification (`setAttribute`, `textContent`) - lines 14, 12, 18, 19
+  - Event listeners (`submit`, `click`) - lines 25, 16
 - `js/register.js`:
-  - Regex validation (`requirements`) - line 61
-  - Logic operators (`every`, `!==`) - line 84, 94
+  - Regex validation (`requirements`) - lines 63-69
+  - Logic operators (`every`, `!==`) - lines 94, 101
 
 ## AI Log
 - **Q:** How do I correctly build a live password checklist using regex?

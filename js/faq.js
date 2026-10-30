@@ -1,87 +1,127 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const accordionContainer = document.querySelector('.accordion') || document.querySelector('#faqAccordion');
-    if (!accordionContainer) return;
+/*
+ * Using jQuery 3.7.1.
+ * $(function () { ... }) is the short form of $(document).ready(). It is needed so
+ * the code runs only after the DOM is fully loaded and ready to be manipulated.
+ */
+$(function () {
+    const $accordionContainer = $('#faq-list');
+    if ($accordionContainer.length === 0) return;
 
-    const faqItems = accordionContainer.querySelectorAll('.accordion-item, .faq-item');
-    if (faqItems.length === 0) return;
+    const $faqItems = $accordionContainer.find('.faq-item');
+    if ($faqItems.length === 0) return;
 
-    const toolbar = document.createElement('div');
-    toolbar.className = 'faq-toolbar mb-4 p-3 bg-light border rounded d-flex flex-wrap gap-3 align-items-center';
+    // Build the search & filter toolbar in code using jQuery
+    const $toolbar = $('<div>')
+        .addClass('faq-toolbar mb-4 p-3 bg-light border rounded d-flex flex-wrap gap-3 align-items-center');
 
-    const searchWrapper = document.createElement('div');
-    searchWrapper.className = 'flex-grow-1';
-    
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.className = 'form-control';
-    searchInput.placeholder = 'Search FAQ...';
-    searchWrapper.appendChild(searchInput);
+    const $searchWrapper = $('<div>').addClass('flex-grow-1');
+    const $searchInput = $('<input>')
+        .attr({
+            type: 'text',
+            id: 'faq-search-input',
+            placeholder: 'Search FAQ (press Esc to reset)...'
+        })
+        .addClass('form-control');
+    $searchWrapper.append($searchInput);
 
-    const countDisplay = document.createElement('span');
-    countDisplay.className = 'fw-bold text-muted';
-    countDisplay.textContent = `Showing ${faqItems.length} of ${faqItems.length} FAQs`;
+    const $countDisplay = $('<span>')
+        .attr('id', 'faq-count')
+        .addClass('fw-bold text-muted')
+        .text(`Showing ${$faqItems.length} of ${$faqItems.length} FAQs`);
 
-    const resetBtn = document.createElement('button');
-    resetBtn.type = 'button';
-    resetBtn.className = 'btn btn-outline-secondary';
-    resetBtn.textContent = 'Reset';
+    const $resetBtn = $('<button>')
+        .attr({ type: 'button', id: 'faq-reset-btn' })
+        .addClass('btn btn-outline-secondary')
+        .text('Reset');
 
-    toolbar.appendChild(searchWrapper);
-    toolbar.appendChild(countDisplay);
-    toolbar.appendChild(resetBtn);
+    const $toggleTableBtn = $('<button>')
+        .attr({ type: 'button', id: 'faq-toggle-table-btn' })
+        .addClass('btn btn-dark')
+        .text('Hide Wait Times');
 
-    accordionContainer.parentNode.insertBefore(toolbar, accordionContainer);
+    $toolbar.append($searchWrapper, $countDisplay, $resetBtn, $toggleTableBtn);
 
-    const noResults = document.createElement('div');
-    noResults.className = 'alert alert-warning d-none';
-    noResults.textContent = 'No FAQs match your search criteria.';
-    accordionContainer.parentNode.insertBefore(noResults, accordionContainer);
+    // Traversal: use .parent() to insert the toolbar and no-results box before #faq-list
+    $accordionContainer.parent().prepend($toolbar);
 
+    const $noResults = $('<div>')
+        .attr('id', 'faq-no-results')
+        .addClass('alert alert-warning')
+        .text('No FAQs match your search criteria.')
+        .hide();
+    $toolbar.after($noResults);
+
+    /*
+     * Rewritten Feature 2: Live FAQ Search Filter & Show/Hide Block.
+     * Replaced plain-JS querySelectorAll, forEach(), textContent.toLowerCase(), and classList.add/remove('d-none')
+     * with jQuery .each(), $(this).text(), .addClass()/.removeClass(), .fadeIn(), and .fadeOut().
+     * The jQuery version is shorter and clearer, and lets us smoothly animate the "No FAQs match" alert with .fadeIn(250).
+     */
     const filterFAQs = () => {
-        const term = searchInput.value.toLowerCase().trim();
+        const term = ($searchInput.val() || '').toLowerCase().trim();
         let visibleCount = 0;
 
-        faqItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
+        $faqItems.each(function () {
+            const $item = $(this);
+            const text = $item.text().toLowerCase();
+
             if (text.includes(term)) {
-                item.classList.remove('d-none');
+                $item.removeClass('d-none');
                 visibleCount++;
             } else {
-                item.classList.add('d-none');
+                $item.addClass('d-none');
             }
         });
 
-        countDisplay.textContent = `Showing ${visibleCount} of ${faqItems.length} FAQs`;
+        // Chain of 3 methods updating the counter badge
+        $countDisplay
+            .text(`Showing ${visibleCount} of ${$faqItems.length} FAQs`)
+            .toggleClass('text-danger', visibleCount === 0)
+            .toggleClass('text-muted', visibleCount > 0);
 
+        // Effects: .fadeIn() and .fadeOut() with duration and callback
         if (visibleCount === 0) {
-            noResults.classList.replace('d-none', 'd-block');
-            accordionContainer.classList.add('d-none');
+            $accordionContainer.addClass('d-none');
+            $noResults.fadeIn(250);
         } else {
-            noResults.classList.replace('d-block', 'd-none');
-            accordionContainer.classList.remove('d-none');
+            $noResults.fadeOut(200, function () {
+                $accordionContainer.removeClass('d-none');
+            });
         }
     };
 
-    searchInput.addEventListener('input', filterFAQs);
-    resetBtn.addEventListener('click', () => {
-        searchInput.value = '';
+    // Event types attached with .on(): input, keyup, click
+    $searchInput.on('input', filterFAQs);
+
+    $searchInput.on('keyup', function (event) {
+        if (event.key === 'Escape') {
+            $(this).val('');
+            filterFAQs();
+        }
+    });
+
+    $resetBtn.on('click', function () {
+        $searchInput.val('').trigger('focus');
         filterFAQs();
     });
 
-    const accordionButtons = document.querySelectorAll('.accordion-button, .faq-question');
-    accordionButtons.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-            const targetId = btn.getAttribute('data-bs-target') || btn.getAttribute('aria-controls');
-            const targetContent = targetId ? document.querySelector(targetId) : btn.nextElementSibling;
-            if (!targetContent) return;
-            if (!btn.classList.contains('accordion-button')) {
-                e.preventDefault();
-                targetContent.classList.toggle('show');
-                btn.setAttribute('aria-expanded', String(!isExpanded));
-            }
+    // Effect: .slideToggle() on the Expected Wait Times table card with a completion callback
+    $toggleTableBtn.on('click', function () {
+        const $btn = $(this);
+        const $waitTableArticle = $('#faq-wait-table').closest('article');
+
+        $waitTableArticle.slideToggle(300, function () {
+            const isHidden = $(this).is(':hidden');
+            $btn.text(isHidden ? 'Show Wait Times' : 'Hide Wait Times');
         });
+    });
+
+    // Highlight first and last FAQ items subtly using :first and :last filters on hover
+    $faqItems.filter(':first, :last').on('mouseenter', function () {
+        $(this).addClass('border-dark');
+    }).on('mouseleave', function () {
+        $(this).removeClass('border-dark');
     });
 });

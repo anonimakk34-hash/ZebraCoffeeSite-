@@ -1,79 +1,63 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('#login-form')
-        || document.querySelector('form');
+/*
+ * Using jQuery 3.7.1.
+ * $(function () { ... }) is the short form of $(document).ready(). It ensures the DOM
+ * is ready before selecting the login form or attaching event listeners.
+ */
+$(function () {
+    const $loginForm = $('#login-form');
+    if ($loginForm.length === 0) return;
 
-    if (!loginForm) {
-        console.error('Login form not found.');
-        return;
-    }
+    const $emailInput = $loginForm.find('#login-email');
+    const $passwordInput = $loginForm.find('#login-password');
+    const $rememberCheckbox = $loginForm.find('#login-remember');
 
-    // Select the correct fields from login.html
-    const emailInput = loginForm.querySelector('#login-email');
-    const passwordInput = loginForm.querySelector('#login-password');
+    if ($emailInput.length === 0 || $passwordInput.length === 0) return;
 
-    if (!emailInput || !passwordInput) {
-        console.error('Email or password field not found.');
-        return;
-    }
+    // Create Show/Hide password button with jQuery
+    const $toggleButton = $('<button>')
+        .attr({
+            type: 'button',
+            'aria-label': 'Toggle password visibility'
+        })
+        .addClass('btn btn-sm btn-outline-secondary mt-1 mb-3')
+        .text('Show');
 
-    // Show or hide the password
-    const toggleButton = document.createElement('button');
+    $passwordInput.after($toggleButton);
 
-    toggleButton.type = 'button';
-    toggleButton.textContent = 'Show';
-    toggleButton.className =
-        'btn btn-sm btn-outline-secondary mt-1 mb-3';
-    toggleButton.setAttribute(
-        'aria-label',
-        'Toggle password visibility'
-    );
+    $toggleButton.on('click', function () {
+        const $btn = $(this);
+        const isHidden = $passwordInput.attr('type') === 'password';
 
-    toggleButton.addEventListener('click', () => {
-        const isHidden = passwordInput.type === 'password';
-
-        passwordInput.type = isHidden ? 'text' : 'password';
-        toggleButton.textContent = isHidden ? 'Hide' : 'Show';
+        $passwordInput.attr('type', isHidden ? 'text' : 'password');
+        $btn.text(isHidden ? 'Hide' : 'Show');
     });
 
-    passwordInput.insertAdjacentElement(
-        'afterend',
-        toggleButton
-    );
-
     // Handle login form submission
-    loginForm.addEventListener('submit', (event) => {
+    $loginForm.on('submit', function (event) {
+        // Without event.preventDefault(), the browser would submit the form and reload the page.
         event.preventDefault();
-
         hideMessage();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+        const email = ($emailInput.val() || '').trim();
+        const password = $passwordInput.val() || '';
+        const rememberMe = $rememberCheckbox.prop('checked');
 
-        // Check that both fields are filled
         if (!email || !password) {
-            showMessage(
-                'Please enter both email and password.',
-                'danger'
-            );
+            showMessage('Please enter both email and password.', 'danger');
             return;
         }
 
-        // Check the email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(email)) {
-            showMessage(
-                'Please enter a valid email address.',
-                'danger'
-            );
+            showMessage('Please enter a valid email address.', 'danger');
             return;
         }
 
-        // Demonstration only, no real authentication
+        const rememberNote = rememberMe ? ' (Remember me checked)' : '';
         showMessage(
-            'Login form submitted successfully! This is a front-end demonstration only. You are not actually authenticated.',
+            `Login form submitted successfully${rememberNote}! This is a front-end demonstration only. You are not actually authenticated.`,
             'success'
         );
     });

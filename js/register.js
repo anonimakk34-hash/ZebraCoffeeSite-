@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.querySelector('#register-form') || document.querySelector('form');
     if (!registerForm) return;
 
-    const passwordInput = registerForm.querySelector('#password');
-    const confirmInput = registerForm.querySelector('#confirm-password') || registerForm.querySelector('#confirmPassword');
+    const passwordInput = registerForm.querySelector('#register-password');
+    const confirmInput = registerForm.querySelector('#register-password-confirm');
 
     const createToggleBtn = (inputEl) => {
         if (!inputEl) return;

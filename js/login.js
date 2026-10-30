@@ -1,41 +1,80 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('#login-form') || document.querySelector('form');
-    if (!loginForm) return;
+    const loginForm = document.querySelector('#login-form')
+        || document.querySelector('form');
 
-    const passwordInput = loginForm.querySelector('#password');
-
-    if (passwordInput) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = 'Show';
-        btn.className = 'btn btn-sm btn-outline-secondary mt-1 mb-3';
-        btn.setAttribute('aria-label', 'Toggle password visibility');
-        
-        btn.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            btn.textContent = type === 'password' ? 'Show' : 'Hide';
-        });
-        
-        passwordInput.insertAdjacentElement('afterend', btn);
+    if (!loginForm) {
+        console.error('Login form not found.');
+        return;
     }
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    // Select the correct fields from login.html
+    const emailInput = loginForm.querySelector('#login-email');
+    const passwordInput = loginForm.querySelector('#login-password');
+
+    if (!emailInput || !passwordInput) {
+        console.error('Email or password field not found.');
+        return;
+    }
+
+    // Show or hide the password
+    const toggleButton = document.createElement('button');
+
+    toggleButton.type = 'button';
+    toggleButton.textContent = 'Show';
+    toggleButton.className =
+        'btn btn-sm btn-outline-secondary mt-1 mb-3';
+    toggleButton.setAttribute(
+        'aria-label',
+        'Toggle password visibility'
+    );
+
+    toggleButton.addEventListener('click', () => {
+        const isHidden = passwordInput.type === 'password';
+
+        passwordInput.type = isHidden ? 'text' : 'password';
+        toggleButton.textContent = isHidden ? 'Hide' : 'Show';
+    });
+
+    passwordInput.insertAdjacentElement(
+        'afterend',
+        toggleButton
+    );
+
+    // Handle login form submission
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
         hideMessage();
 
-        const email = loginForm.querySelector('#email')?.value.trim() ?? '';
-        const password = passwordInput?.value ?? '';
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
+        // Check that both fields are filled
         if (!email || !password) {
-            showMessage('Please enter both email and password.', 'danger');
+            showMessage(
+                'Please enter both email and password.',
+                'danger'
+            );
             return;
         }
 
-        showMessage('Front-end demonstration only. You are not authenticated, and no login data was verified or sent.', 'success');
-        
-        loginForm.reset();
+        // Check the email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            showMessage(
+                'Please enter a valid email address.',
+                'danger'
+            );
+            return;
+        }
+
+        // Demonstration only, no real authentication
+        showMessage(
+            'Login form submitted successfully! This is a front-end demonstration only. You are not actually authenticated.',
+            'success'
+        );
     });
 });

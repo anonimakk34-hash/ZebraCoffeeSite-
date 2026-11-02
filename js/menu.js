@@ -1,19 +1,21 @@
 'use strict';
 
 /*
- * menu.js: "Find your drink" tool for menu.html.
- * The HTML is frozen, so every element of the tool is created here with the
- * DOM and inserted under the lead paragraph.
- * Flow: search / category / sort changes -> updateResults()
- *       -> filterDrinks() -> sortDrinks() -> renderDrinkCards()
- *       -> counter text + empty state.
+ * menu.js: "Find your drink" block on menu.html, written with jQuery.
+ * The old plain-JavaScript version is saved in js/old-js-version.js.
+ * Needs jQuery and main.js (DRINKS, getLowestPrice, formatPrice, findDrink,
+ * showBlock, hideBlock) to be loaded first.
+ *
+ * Flow: input / change -> updateResults() -> cards are built from the DRINKS
+ *       array and added with appendTo(). The cards are created by the script,
+ *       so their events use delegation: one .on() on the container.
  */
 
-(() => {
-    const section = document.querySelector('main section');
+$(function () {
+    const $section = $('main section').first();
 
     // Stop on pages that are not the menu.
-    if (section === null || document.querySelector('#coffee-card') === null) {
+    if ($section.length === 0 || $('#coffee-card').length === 0) {
         return;
     }
 
@@ -24,7 +26,9 @@
         { value: 'name', label: 'Name: A to Z' }
     ];
 
-    const finder = {}; // references to the elements created below
+    const finder = {}; // jQuery objects of the elements created below
+
+    // ---------- data (plain JavaScript, no DOM) ----------
 
     // Unique categories, taken from the data so the list never gets out of date.
     function getCategories() {
@@ -70,141 +74,185 @@
             .join(' · ');
     }
 
-    // The single function that draws one card.
+    // ---------- building the page with jQuery ----------
+
+    // One drink card. The details (sizes) start hidden and slide open on click.
     function createDrinkCard(drink) {
-        const column = createEl('div', 'col');
-        const card = createEl('div', 'card h-100 shadow-sm');
-        const body = createEl('div', 'card-body d-flex flex-column');
+        const $column = $('<div>', { 'class': 'col' });
+        const $card = $('<div>', { 'class': 'card h-100 shadow-sm drink-card' })
+            .attr('data-id', drink.id)
+            .appendTo($column);
+        const $body = $('<div>', { 'class': 'card-body d-flex flex-column' }).appendTo($card);
 
-        body.appendChild(createEl('span', 'badge bg-dark align-self-start mb-2', drink.category));
-        body.appendChild(createEl('h4', 'h5 card-title', drink.name));
-        body.appendChild(createEl('p', 'mb-1 fw-semibold', `from ${formatPrice(getLowestPrice(drink))}`));
-        body.appendChild(createEl('p', 'text-muted small', describeSizes(drink)));
+        $body.append(
+            $('<span>', { 'class': 'badge bg-dark align-self-start mb-2', text: drink.category }),
+            $('<h4>', { 'class': 'h5 card-title', text: drink.name }),
+            $('<p>', { 'class': 'mb-1 fw-semibold', text: `from ${formatPrice(getLowestPrice(drink))}` }),
+            $('<button>', { type: 'button', 'class': 'btn btn-link btn-sm p-0 mb-2 align-self-start toggle-sizes', text: 'Show sizes' }),
+            $('<p>', { 'class': 'text-muted small drink-sizes', text: describeSizes(drink) }).hide()
+        );
 
-        const link = createEl('a', 'btn btn-outline-dark btn-sm mt-auto', 'Order this');
-        link.href = `order.html?drink=${encodeURIComponent(drink.id)}`;
-        body.appendChild(link);
+        $('<a>', { 'class': 'btn btn-outline-dark btn-sm mt-auto', text: 'Order this' })
+            .attr('href', `order.html?drink=${encodeURIComponent(drink.id)}`)
+            .appendTo($body);
 
-        card.appendChild(body);
-        column.appendChild(card);
-        return column;
+        return $column;
     }
 
-    // Clears the container and draws a card for every drink in the list.
-    function renderDrinkCards(drinks, container) {
-        container.textContent = '';
+    // Clears the container and adds a card for every drink in the array.
+    function renderDrinkCards(drinks) {
+        finder.$results.empty();
 
-        for (const drink of drinks) {
-            container.appendChild(createDrinkCard(drink));
-        }
+        $.each(drinks, function (index, drink) {
+            createDrinkCard(drink).appendTo(finder.$results);
+        });
     }
 
     // A label + a form control inside a Bootstrap column.
-    function createControlColumn(columnClass, labelText, controlId, control) {
-        const column = createEl('div', columnClass);
-        const label = createEl('label', 'form-label', labelText);
+    function createControlColumn(columnClass, labelText, controlId, $control) {
+        const $label = $('<label>', { 'class': 'form-label', 'for': controlId, text: labelText });
 
-        label.htmlFor = controlId;
-        control.id = controlId;
-        column.append(label, control);
-        return column;
+        $control.attr('id', controlId);
+        return $('<div>', { 'class': columnClass }).append($label, $control);
     }
 
     function createOption(value, text) {
-        const option = createEl('option', '', text);
-        option.value = value;
-        return option;
+        return $('<option>', { value: value, text: text });
     }
 
     function buildFinder() {
-        const card = createEl('div', 'card shadow-sm mb-4');
-        const body = createEl('div', 'card-body');
-        body.appendChild(createEl('h3', 'h5 mb-3', 'Find your drink'));
+        const $card = $('<div>', { 'class': 'card shadow-sm mb-4' });
+        const $body = $('<div>', { 'class': 'card-body' }).appendTo($card);
+        const $controls = $('<div>', { 'class': 'row g-3 align-items-end mb-3' });
 
-        const controls = createEl('div', 'row g-3 align-items-end mb-3');
+        $('<h3>', { 'class': 'h5 mb-3', text: 'Find your drink' }).appendTo($body);
 
-        finder.search = createEl('input', 'form-control');
-        finder.search.type = 'search';
-        finder.search.placeholder = 'e.g. latte';
+        finder.$search = $('<input>', { type: 'search', 'class': 'form-control', placeholder: 'e.g. latte' });
 
-        finder.category = createEl('select', 'form-select');
-        finder.category.appendChild(createOption('all', 'All drinks'));
-        getCategories().forEach((category) => {
-            finder.category.appendChild(createOption(category, category));
+        finder.$category = $('<select>', { 'class': 'form-select' }).append(createOption('all', 'All drinks'));
+        $.each(getCategories(), function (index, category) {
+            finder.$category.append(createOption(category, category));
         });
 
-        finder.sort = createEl('select', 'form-select');
-        SORT_OPTIONS.forEach((option) => {
-            finder.sort.appendChild(createOption(option.value, option.label));
+        finder.$sort = $('<select>', { 'class': 'form-select' });
+        $.each(SORT_OPTIONS, function (index, option) {
+            finder.$sort.append(createOption(option.value, option.label));
         });
 
-        finder.reset = createEl('button', 'btn btn-outline-dark w-100', 'Reset');
-        finder.reset.type = 'button';
-        finder.reset.id = 'menu-reset';
+        finder.$reset = $('<button>', { type: 'button', id: 'menu-reset', 'class': 'btn btn-outline-dark w-100', text: 'Reset' });
 
-        const resetColumn = createEl('div', 'col-12 col-md-2');
-        resetColumn.appendChild(finder.reset);
-
-        controls.append(
-            createControlColumn('col-12 col-md-4', 'Search by name', 'menu-search', finder.search),
-            createControlColumn('col-6 col-md-3', 'Category', 'menu-category', finder.category),
-            createControlColumn('col-6 col-md-3', 'Sort by', 'menu-sort', finder.sort),
-            resetColumn
+        $controls.append(
+            createControlColumn('col-12 col-md-4', 'Search by name', 'menu-search', finder.$search),
+            createControlColumn('col-6 col-md-3', 'Category', 'menu-category', finder.$category),
+            createControlColumn('col-6 col-md-3', 'Sort by', 'menu-sort', finder.$sort),
+            $('<div>', { 'class': 'col-12 col-md-2' }).append(finder.$reset)
         );
 
-        finder.count = createEl('p', 'text-muted small mb-3');
-        finder.count.id = 'menu-count';
-        finder.count.setAttribute('aria-live', 'polite');
+        finder.$count = $('<p>', { id: 'menu-count', 'class': 'text-muted small mb-3', 'aria-live': 'polite' });
 
-        // Empty state, shown and hidden with the ready-made "hidden" class.
-        finder.empty = createEl('div', 'alert alert-secondary hidden', 'Nothing found. Try a different word or press Reset.');
-        finder.empty.id = 'menu-empty';
+        // Empty state: hidden with the ready-made "hidden" class, faded in by showBlock().
+        finder.$empty = $('<div>', {
+            id: 'menu-empty',
+            'class': 'alert alert-secondary hidden',
+            text: 'Nothing found. Try a different word or press Reset.'
+        });
 
-        finder.results = createEl('div', 'row row-cols-1 row-cols-md-3 g-3');
-        finder.results.id = 'menu-results';
+        finder.$results = $('<div>', { id: 'menu-results', 'class': 'row row-cols-1 row-cols-md-3 g-3' });
 
-        body.append(controls, finder.count, finder.empty, finder.results);
-        card.appendChild(body);
-        return card;
+        $body.append($controls, finder.$count, finder.$empty, finder.$results);
+        return $card;
+    }
+
+    // ---------- updating the page ----------
+
+    function filtersAreDefault() {
+        return finder.$search.val().trim() === '' &&
+            finder.$category.val() === 'all' &&
+            finder.$sort.val() === 'default';
     }
 
     // Re-reads all three controls and redraws everything that depends on them.
     function updateResults() {
-        const filtered = filterDrinks(DRINKS, finder.search.value, finder.category.value);
-        const sorted = sortDrinks(filtered, finder.sort.value);
+        const filtered = filterDrinks(DRINKS, finder.$search.val(), finder.$category.val());
+        const sorted = sortDrinks(filtered, finder.$sort.val());
 
-        renderDrinkCards(sorted, finder.results);
-        finder.count.textContent = `Showing ${sorted.length} of ${DRINKS.length} drinks`;
-        finder.empty.classList.toggle('hidden', sorted.length > 0);
+        renderDrinkCards(sorted);
+        finder.$count.html(`Showing <strong>${sorted.length}</strong> of ${DRINKS.length} drinks`);
+        finder.$reset.prop('disabled', filtersAreDefault());
+
+        if (sorted.length === 0) {
+            showBlock(finder.$empty, 200);
+        } else {
+            hideBlock(finder.$empty, 200);
+        }
     }
 
     function resetFilters() {
-        finder.search.value = '';
-        finder.category.value = 'all';
-        finder.sort.value = 'default';
+        finder.$search.val('');
+        finder.$category.val('all');
+        finder.$sort.val('default');
         updateResults();
-        finder.search.focus();
+        finder.$search.trigger('focus');
     }
 
-    const finderCard = buildFinder();
-    const lead = section.querySelector('p.lead');
+    // ---------- start ----------
 
-    if (lead !== null) {
-        lead.after(finderCard);
+    const $finderCard = buildFinder();
+    const $lead = $section.find('p.lead').first();
+
+    if ($lead.length > 0) {
+        $lead.after($finderCard);
     } else {
-        section.prepend(finderCard);
+        $section.prepend($finderCard);
     }
 
-    // Event types used here: input, change, click, keydown.
-    finder.search.addEventListener('input', updateResults);
-    finder.category.addEventListener('change', updateResults);
-    finder.sort.addEventListener('change', updateResults);
-    finder.reset.addEventListener('click', resetFilters);
-    finder.search.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            resetFilters();
-        }
-    });
+    // Event types used here: input, change, click, keydown, mouseenter, mouseleave.
+    finder.$search
+        .on('input', updateResults)
+        .on('keydown', function (event) {
+            if (event.key === 'Escape') {
+                resetFilters();
+            }
+        });
+    finder.$category.on('change', updateResults);
+    finder.$sort.on('change', updateResults);
+    finder.$reset.on('click', resetFilters);
+
+    // EVENT DELEGATION: the cards are created and thrown away by the script,
+    // so the handlers are attached once to the container that always exists.
+    finder.$results
+        .on('click', '.toggle-sizes', function () {
+            const $button = $(this);
+
+            // slideToggle with a duration (250 ms) and a callback.
+            $button.siblings('.drink-sizes').slideToggle(250, function () {
+                $button.text($(this).css('display') === 'none' ? 'Show sizes' : 'Hide sizes');
+            });
+        })
+        .on('click', '.drink-card', function (event) {
+            // Clicks on the button or the "Order this" link have their own job.
+            if ($(event.target).closest('a, button').length > 0) {
+                return;
+            }
+
+            const $card = $(this);
+
+            // Only one card can be selected: clear the cards in the other columns.
+            $card.closest('.col').siblings().find('.drink-card.selected').each(function () {
+                $(this).removeClass('selected').find('.card-title').text(findDrink($(this).attr('data-id')).name);
+            });
+
+            $card.toggleClass('selected');
+
+            const name = findDrink($card.attr('data-id')).name;
+            $card.find('.card-title').text($card.hasClass('selected') ? `${name} ✓` : name);
+        })
+        .on('mouseenter', '.drink-card', function () {
+            $(this).addClass('shadow-lg');
+        })
+        .on('mouseleave', '.drink-card', function () {
+            $(this).removeClass('shadow-lg');
+        });
 
     updateResults();
-})();
+});

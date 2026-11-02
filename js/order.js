@@ -2,7 +2,8 @@
 
 /*
  * order.js: order form on order.html.
- * Flow: input/change -> updateTotal() (live price)
+ * Flow: input/change -> updateTotal() (live price + cart)
+ *       "Add this drink to order" -> cart (several drinks in one order)
  *       submit -> validateOrder() -> errors next to the fields + focus on the
  *       first wrong field, or a demo summary (nothing is sent anywhere).
  * DRINKS, findDrink() and formatPrice() come from main.js.
@@ -130,6 +131,9 @@
     form.noValidate = true;
     let orderSubmitted = false;
 
+    // The order can contain several drinks: each one is stored here.
+    const cart = [];
+
     // ---------- elements that do not exist in the frozen HTML ----------
 
     const totalPanel = document.createElement('section');
@@ -171,6 +175,20 @@
     resultPanel.setAttribute('aria-live', 'polite');
     resultPanel.setAttribute('aria-atomic', 'true');
     form.after(resultPanel);
+
+    // Button that moves the current drink from the form into the cart.
+    const addItemButton = document.createElement('button');
+    addItemButton.type = 'button';
+    addItemButton.className = 'btn btn-outline-dark mb-4';
+    addItemButton.textContent = '+ Add this drink to order';
+
+    const orderTypeBlock = document.querySelector('.order-type');
+
+    if (orderTypeBlock === null) {
+        form.prepend(addItemButton);
+    } else {
+        orderTypeBlock.before(addItemButton);
+    }
 
     // ---------- helpers ----------
 
@@ -365,40 +383,169 @@
         return selectedMilk === null ? 'regular' : selectedMilk.value;
     }
 
-    function updateTotal() {
+    // ---------- cart ----------
+
+    // Current drink fields as an object, or null if the choice is incomplete.
+    function readCurrentItem() {
         const drink = findDrink(drinkSelect.value);
         const quantity = Number(quantityInput.value);
-        const milk = getSelectedMilk();
-        const unitPrice = calculateUnitPrice(drink, sizeSelect.value, flavourSelect.value, milk);
 
-        if (drink === undefined || sizeSelect.value === '' || quantity < 1 || quantity > 20 || Number.isInteger(quantity) === false) {
-            totalText.textContent = 'Choose a drink and size, then enter a quantity from 1 to 20.';
-            return 0;
+        if (
+            drink === undefined ||
+            sizeSelect.value === '' ||
+            Number.isInteger(quantity) === false ||
+            quantity < 1 ||
+            quantity > 20
+        ) {
+            return null;
         }
 
-        const total = calculateTotal(unitPrice, quantity);
-        const flavourName = flavourSelect.options[flavourSelect.selectedIndex]?.textContent || 'No flavour';
+        const milk = getSelectedMilk();
 
-        const lines = [
-            `Drink: ${drink.name}`,
-            `Size: ${sizeSelect.value} ml`,
-            `Flavour: ${flavourName}`,
-            `Milk: ${MILK_NAMES[milk]}`,
-            `Quantity: ${quantity}`,
-            `Price per cup: ${formatPrice(unitPrice)}`,
-            `Total: ${formatPrice(total)}`
-        ];
-
-        const list = document.createElement('ul');
-        list.className = 'mb-0';
-        lines.forEach((line) => {
-            list.append(createTextElement('li', line, ''));
-        });
-        list.lastElementChild.classList.add('fw-bold');
-
-        totalText.replaceChildren(list);
-        return total;
+        return {
+            drinkName: drink.name,
+            size: sizeSelect.value,
+            flavourName: flavourSelect.options[flavourSelect.selectedIndex].textContent,
+            milkName: MILK_NAMES[milk],
+            quantity,
+            unitPrice: calculateUnitPrice(drink, sizeSelect.value, flavourSelect.value, milk)
+        };
     }
+
+    // Clears only the drink part of the form, so the next drink can be chosen.
+    function resetItemFields() {
+        drinkSelect.value = '';
+        updateSizeOptions();
+        quantityInput.value = '1';
+        flavourSelect.value = 'none';
+        form.querySelector('#regular-milk').checked = true;
+    }
+
+    // Checks drink, size and quantity. Returns the first wrong field or null.
+    function validateItemFields() {
+        let firstInvalid = null;
+        const quantity = Number(quantityInput.value);
+
+        if (findDrink(drinkSelect.value) === undefined) {
+            showFieldError(drinkSelect, 'Please choose a drink.');
+            firstInvalid = drinkSelect;
+        } else {
+            clearFieldError(drinkSelect);
+        }
+
+        if (sizeSelect.value === '') {
+            showFieldError(sizeSelect, 'Please choose a size.');
+
+            if (firstInvalid === null) {
+                firstInvalid = sizeSelect;
+            }
+        } else {
+            clearFieldError(sizeSelect);
+        }
+
+        if (Number.isInteger(quantity) === false || quantity < 1 || quantity > 20) {
+            showFieldError(quantityInput, 'Quantity must be a whole number from 1 to 20.');
+
+            if (firstInvalid === null) {
+                firstInvalid = quantityInput;
+            }
+        } else {
+            clearFieldError(quantityInput);
+        }
+
+        return firstInvalid;
+    }
+
+    function getCartTotal(items) {
+        return items.reduce((sum, item) => sum + calculateTotal(item.unitPrice, item.quantity), 0);
+    }
+
+    function updateTotal() {
+        const grandTotal = getCartTotal(cart);
+        const parts = [];
+
+        if (cart.length > 0) {
+            const list = document.createElement('ul');
+            list.className = 'list-group mb-2';
+
+            cart.forEach((item, index) => {
+                const row = document.createElement('li');
+                row.className = 'list-group-item d-flex justify-content-between align-items-start gap-2';
+
+                const info = document.createElement('div');
+                info.append(
+                    createTextElement('div', `${item.quantity} × ${item.drinkName}, ${item.size} ml`, 'fw-semibold'),
+                    createTextElement(
+                        'small',
+                        `${item.flavourName}; ${item.milkName}; ${formatPrice(item.unitPrice)} per cup`,
+                        'text-muted'
+                    )
+                );
+
+                const right = document.createElement('div');
+                right.className = 'text-end';
+
+                const removeButton = createTextElement('button', 'Remove', 'btn btn-sm btn-outline-danger mt-1');
+                removeButton.type = 'button';
+                removeButton.dataset.removeIndex = String(index);
+
+                right.append(
+                    createTextElement('strong', formatPrice(calculateTotal(item.unitPrice, item.quantity)), 'd-block'),
+                    removeButton
+                );
+
+                row.append(info, right);
+                list.append(row);
+            });
+
+            parts.push(list, createTextElement('div', `Total: ${formatPrice(grandTotal)}`, 'fw-bold'));
+        } else {
+            parts.push(
+                createTextElement('div', 'Your order is empty. Choose a drink and press "Add this drink to order".', '')
+            );
+        }
+
+        // Drink that is chosen in the form but not added yet.
+        const draft = readCurrentItem();
+
+        if (draft !== null) {
+            parts.push(
+                createTextElement(
+                    'small',
+                    `Not added yet: ${draft.quantity} × ${draft.drinkName} (${formatPrice(calculateTotal(draft.unitPrice, draft.quantity))})`,
+                    'text-muted d-block mt-2'
+                )
+            );
+        }
+
+        totalText.replaceChildren(...parts);
+        return grandTotal;
+    }
+
+    addItemButton.addEventListener('click', () => {
+        clearAllErrors();
+        const firstInvalid = validateItemFields();
+
+        if (firstInvalid !== null) {
+            firstInvalid.focus();
+            return;
+        }
+
+        cart.push(readCurrentItem());
+        resetItemFields();
+        updateTotal();
+    });
+
+    totalText.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-remove-index]');
+
+        if (button === null) {
+            return;
+        }
+
+        cart.splice(Number(button.dataset.removeIndex), 1);
+        updateTotal();
+    });
 
     // ---------- errors ----------
 
@@ -538,34 +685,17 @@
         let isValid = true;
         let firstInvalidField = null;
 
-        if (findDrink(drinkSelect.value) === undefined) {
-            showFieldError(drinkSelect, 'Please choose a drink.');
-            isValid = false;
-            firstInvalidField = drinkSelect;
-        }
+        // A drink that is chosen in the form but not added yet is added automatically.
+        // If the cart is empty, the drink fields are required.
+        const hasDraft = drinkSelect.value !== '';
 
-        if (sizeSelect.value === '') {
-            showFieldError(sizeSelect, 'Please choose a size.');
-            isValid = false;
+        if (hasDraft === true || cart.length === 0) {
+            const invalidItemField = validateItemFields();
 
-            if (firstInvalidField === null) {
-                firstInvalidField = sizeSelect;
+            if (invalidItemField !== null) {
+                isValid = false;
+                firstInvalidField = invalidItemField;
             }
-        } else {
-            clearFieldError(sizeSelect);
-        }
-
-        const quantity = Number(quantityInput.value);
-
-        if (Number.isInteger(quantity) === false || quantity < 1 || quantity > 20) {
-            showFieldError(quantityInput, 'Quantity must be a whole number from 1 to 20.');
-            isValid = false;
-
-            if (firstInvalidField === null) {
-                firstInvalidField = quantityInput;
-            }
-        } else {
-            clearFieldError(quantityInput);
         }
 
         const customerValidation = validateCustomer();
@@ -602,30 +732,26 @@
             return;
         }
 
-        const drink = findDrink(drinkSelect.value);
         const customer = getCustomerFields();
-        const milk = getSelectedMilk();
-        const quantityValue = Number(quantityInput.value);
-        const unitPrice = calculateUnitPrice(drink, sizeSelect.value, flavourSelect.value, milk);
+        const items = hasDraft === true ? [...cart, readCurrentItem()] : [...cart];
         const orderNumber = `ZB-${Math.floor(Math.random() * 9000) + 1000}`;
 
         const order = {
             orderNumber,
-            drinkName: drink.name,
-            size: sizeSelect.value,
-            quantity: quantityValue,
-            flavourName: flavourSelect.options[flavourSelect.selectedIndex].textContent,
-            milkName: form.querySelector('input[name="milk"]:checked').labels[0].textContent.trim(),
-            unitPrice,
+            items,
             orderType: takeawayRadio.checked === true ? 'Takeaway' : 'Pick up at cafe',
             customerName: customer.name.value.trim(),
             address: takeawayRadio.checked === true ? getDeliveryAddress() : 'Pickup at cafe',
-            total: calculateTotal(unitPrice, quantityValue),
+            total: getCartTotal(items),
             time: document.querySelector('#time').value,
             notes: document.querySelector('#notes').value.trim()
         };
 
         renderOrderSummary(order);
+
+        cart.length = 0;
+        resetItemFields();
+        updateTotal();
         orderSubmitted = true;
     }
 
@@ -640,14 +766,12 @@
 
         const summaryItems = [
             `Demo order number: ${order.orderNumber}`,
-            `Drink: ${order.drinkName}, ${order.size} ml`,
-            `Quantity: ${order.quantity}`,
-            `Flavour: ${order.flavourName}`,
-            `Milk: ${order.milkName}`,
-            `Price per cup: ${formatPrice(order.unitPrice)}`,
             `Order type: ${order.orderType}`,
             `Customer: ${order.customerName}`,
             `Address: ${order.address}`,
+            ...order.items.map((item) =>
+                `${item.quantity} × ${item.drinkName}, ${item.size} ml, ${item.flavourName}, ${item.milkName} — ${formatPrice(calculateTotal(item.unitPrice, item.quantity))}`
+            ),
             `Estimated total: ${formatPrice(order.total)}`
         ];
 
@@ -737,6 +861,7 @@
 
         // The browser clears the fields after the reset event, so wait one tick.
         window.setTimeout(() => {
+            cart.length = 0;
             clearAllErrors();
             resultPanel.classList.add('hidden');
             resultPanel.replaceChildren();
@@ -752,6 +877,7 @@
     // Warn before leaving only when there is something unsent in the form.
     function hasUnsavedChanges() {
         return orderSubmitted === false && (
+            cart.length > 0 ||
             drinkSelect.value !== '' ||
             sizeSelect.value !== '' ||
             quantityInput.value !== quantityInput.defaultValue ||

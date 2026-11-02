@@ -4,10 +4,12 @@
  * main.js: shared data and helpers. It is loaded (defer) BEFORE every page
  * script, so everything declared here at the top level is visible to
  * menu.js, order.js and booking.js.
- * It also runs the two site-wide features: highlighting the current page in
- * the navbar and writing the current year in the footer.
+ * jQuery (Assignment 4) must be loaded BEFORE this file: see the <script>
+ * tags at the bottom of every page.
+ * It also runs the site-wide features: highlighting the current page in the
+ * navbar, writing the current year in the footer, and the shared
+ * showBlock() / hideBlock() helpers that fade a block in and out.
  */
-
 
  // Universal Form Feedback Helpers
  
@@ -139,21 +141,47 @@ function formatPrice(amount) {
     return `${amount} ₸`;
 }
 
-// Creates an element with optional classes and text.
-// Text always goes through textContent, never innerHTML.
-function createEl(tagName, className, text) {
-    const element = document.createElement(tagName);
+// ---------- show / hide helper (jQuery effects) ----------
 
-    if (className) {
-        element.className = className;
-    }
+// The project hides blocks with the ready-made "hidden" class
+// (display: none !important), so an effect cannot animate it directly.
+// showBlock/hideBlock add and remove that class around the animation.
+// $block.data('open') remembers the state, so a fast double call is safe.
+function isBlockOpen($block) {
+    const stored = $block.data('open');
 
-    if (text !== undefined) {
-        element.textContent = text;
-    }
-
-    return element;
+    return stored === undefined ? !$block.hasClass('hidden') : stored;
 }
+
+// Fades a hidden block in. duration is in milliseconds.
+function showBlock($block, duration = 300, callback) {
+    if (isBlockOpen($block)) {
+        return;
+    }
+
+    $block.data('open', true);
+    $block.stop(true, true).hide().removeClass('hidden').fadeIn(duration, callback);
+}
+
+// Fades a visible block out, then puts the "hidden" class back (callback).
+function hideBlock($block, duration = 300, callback) {
+    if (!isBlockOpen($block)) {
+        return;
+    }
+
+    $block.data('open', false);
+    $block.stop(true, true).fadeOut(duration, function () {
+        if ($block.data('open') === false) {
+            $(this).addClass('hidden');
+        }
+
+        if (typeof callback === 'function') {
+            callback.call(this);
+        }
+    });
+}
+
+// ---------- navbar and footer ----------
 
 // "/site/Order.html" -> "order.html"; "/site/" -> "index.html"
 function getCurrentPage() {
@@ -166,23 +194,34 @@ function getCurrentPage() {
 function highlightCurrentPage() {
     const currentPage = getCurrentPage();
 
-    document.querySelectorAll('.navbar-nav .nav-link').forEach((link) => {
-        const isCurrent = link.getAttribute('href').toLowerCase() === currentPage;
+    $('.navbar-nav .nav-link').each(function () {
+        const $link = $(this);
+        const isCurrent = $link.attr('href').toLowerCase() === currentPage;
 
-        link.classList.toggle('active', isCurrent);
+        $link.toggleClass('active', isCurrent);
 
         if (isCurrent) {
-            link.setAttribute('aria-current', 'page');
+            $link.attr('aria-current', 'page');
         } else {
-            link.removeAttribute('aria-current');
+            $link.removeAttr('aria-current');
         }
     });
 }
 
 function updateFooterYear() {
-    const footerText = document.querySelector('footer p');
+    $('footer p:first').text(`© ${new Date().getFullYear()} Zebra Coffee`);
+}
 
-    if (footerText !== null) {
-        footerText.textContent = `© ${new Date().getFullYear()} Zebra Coffee`;
-    }
+// A disabled button (for example "20:00 - Fully booked") explains itself.
+function explainDisabledButtons() {
+    $('button:disabled').attr('title', 'Not available right now');
+}
+
+// Pages without jQuery (it is loaded only on some pages) skip this part.
+if (window.jQuery) {
+    $(function () {
+        highlightCurrentPage();
+        updateFooterYear();
+        explainDisabledButtons();
+    });
 }

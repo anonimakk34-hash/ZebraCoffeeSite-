@@ -15,14 +15,18 @@ $(function () {
     const $passwordInput = $registerForm.find('#register-password');
     const $confirmInput = $registerForm.find('#register-password-confirm');
     const $termsCheckbox = $registerForm.find('#register-terms');
+    const $errorBox = $('#register-error');
+    const $resultBox = $('#register-result');
 
-    /*
-     * Rewritten Feature 3: Password Visibility Toggle & Live Regex Checklist.
-     * Replaced plain-JS document.createElement, setAttribute, insertAdjacentElement, and classList.replace
-     * with jQuery $('<button>'), .attr(), .after(), .on(), and chained .removeClass()/.addClass().
-     * The jQuery code is much more compact because we can build and insert the toggle buttons and
-     * checklist items with method chaining instead of 6-7 separate statements per element.
-     */
+    const showAuthBox = ($box, message) => {
+        $box.text(message).removeClass('hidden').hide().fadeIn(250);
+    };
+
+    const hideAuthBoxes = () => {
+        $errorBox.addClass('hidden').text('');
+        $resultBox.addClass('hidden').text('');
+    };
+
     const createToggleBtn = ($inputEl) => {
         if ($inputEl.length === 0) return;
 
@@ -43,7 +47,6 @@ $(function () {
     // Delegated click handler on the form for both password visibility toggle buttons
     $registerForm.on('click', '.toggle-pw-btn', function () {
         const $btn = $(this);
-        // Traversal: reach the preceding password input using .prevAll('input:first')
         const $input = $btn.prevAll('input:first');
         const isPassword = $input.attr('type') === 'password';
 
@@ -106,10 +109,14 @@ $(function () {
         });
     });
 
+    $registerForm.on('input change', 'input', function () {
+        $(this).removeClass('error is-invalid');
+        hideAuthBoxes();
+    });
+
     $registerForm.on('submit', function (event) {
-        // Without event.preventDefault(), the form would reload the page on submit.
         event.preventDefault();
-        hideMessage();
+        hideAuthBoxes();
 
         const name = ($nameInput.val() || '').trim();
         const email = ($emailInput.val() || '').trim();
@@ -119,41 +126,55 @@ $(function () {
         const agreedTerms = $termsCheckbox.prop('checked');
 
         if (name.length < 2) {
-            showMessage('Please enter your full name (at least 2 characters).', 'danger');
+            $nameInput.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'Please enter your full name (at least 2 characters).');
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            showMessage('Please enter a valid email address.', 'danger');
+            $emailInput.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'Please enter a valid email address.');
             return;
         }
 
         const phoneDigits = phone.replace(/\D/g, '');
         if (phoneDigits.length < 10 || phoneDigits.length > 15) {
-            showMessage('Please enter a valid phone number (10 to 15 digits).', 'danger');
+            $phoneInput.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'Please enter a valid phone number (10 to 15 digits).');
             return;
         }
 
         const isPasswordValid = Object.values(requirements).every((regex) => regex.test(password));
         if (!isPasswordValid) {
-            showMessage('Please ensure your password meets all checklist requirements.', 'danger');
+            $passwordInput.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'Please ensure your password meets all checklist requirements.');
             return;
         }
 
         if (password !== confirmPassword) {
-            showMessage('Passwords do not match. Please try again.', 'danger');
+            $confirmInput.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'Passwords do not match. Please try again.');
             return;
         }
 
         if (!agreedTerms) {
-            showMessage('You must agree to the Terms & Conditions.', 'danger');
+            $termsCheckbox.addClass('error is-invalid').trigger('focus');
+            showAuthBox($errorBox, 'You must agree to the Terms & Conditions.');
             return;
         }
 
-        showMessage(
-            'Front-end demonstration only. No real account was created, and no data was saved or sent to any server.',
-            'success'
+        // Endterm extension: save demo profile in localStorage so login.html can verify against it
+        localStorage.setItem('zebraRegisteredUser', JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+            password: password
+        }));
+
+        showAuthBox(
+            $resultBox,
+            `Account created for ${name} (${email})! You can now test logging in on the Log In page (saved in browser localStorage for this demo).`
         );
 
         $registerForm[0].reset();

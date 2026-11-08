@@ -3,12 +3,8 @@
 /*
  * main.js: shared data and helpers. It is loaded (defer) BEFORE every page
  * script, so everything declared here at the top level is visible to
- * menu.js, order.js and booking.js.
- * jQuery (Assignment 4) must be loaded BEFORE this file: see the <script>
- * tags at the bottom of every page.
- * It also runs the site-wide features: highlighting the current page in the
- * navbar, writing the current year in the footer, and the shared
- * showBlock() / hideBlock() helpers that fade a block in and out.
+ * the page scripts. jQuery helpers live in jquery-common.js.
+ * This file contains data, pure JavaScript helpers and site-wide navigation.
  */
 
  // Universal Form Feedback Helpers
@@ -52,18 +48,22 @@ window.hideMessage = hideMessage;
  */
 const initSiteWideFeatures = () => {
   // Footer copyright dynamic year
-  const yearEl = document.querySelector('#current-year') || document.querySelector('.footer-year');
+  const yearEl = document.querySelector('#current-year') || document.querySelector('.footer-year') || document.querySelector('footer p:first-child');
   if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
+    if (yearEl.id === 'current-year' || yearEl.classList.contains('footer-year')) {
+      yearEl.textContent = new Date().getFullYear();
+    } else {
+      yearEl.textContent = `© ${new Date().getFullYear()} Zebra Coffee`;
+    }
   }
 
   // Active navigation highlight
-  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  const currentPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
   const navLinks = document.querySelectorAll('.nav-link, .navbar-nav a');
   
   navLinks.forEach((link) => {
     const href = link.getAttribute('href');
-    if (href && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
+    if (href && href.split(/[?#]/)[0].toLowerCase() === currentPath) {
       link.classList.add('active');
       link.setAttribute('aria-current', 'page');
     } else {
@@ -141,87 +141,3 @@ function formatPrice(amount) {
     return `${amount} ₸`;
 }
 
-// ---------- show / hide helper (jQuery effects) ----------
-
-// The project hides blocks with the ready-made "hidden" class
-// (display: none !important), so an effect cannot animate it directly.
-// showBlock/hideBlock add and remove that class around the animation.
-// $block.data('open') remembers the state, so a fast double call is safe.
-function isBlockOpen($block) {
-    const stored = $block.data('open');
-
-    return stored === undefined ? !$block.hasClass('hidden') : stored;
-}
-
-// Fades a hidden block in. duration is in milliseconds.
-function showBlock($block, duration = 300, callback) {
-    if (isBlockOpen($block)) {
-        return;
-    }
-
-    $block.data('open', true);
-    $block.stop(true, true).hide().removeClass('hidden').fadeIn(duration, callback);
-}
-
-// Fades a visible block out, then puts the "hidden" class back (callback).
-function hideBlock($block, duration = 300, callback) {
-    if (!isBlockOpen($block)) {
-        return;
-    }
-
-    $block.data('open', false);
-    $block.stop(true, true).fadeOut(duration, function () {
-        if ($block.data('open') === false) {
-            $(this).addClass('hidden');
-        }
-
-        if (typeof callback === 'function') {
-            callback.call(this);
-        }
-    });
-}
-
-// ---------- navbar and footer ----------
-
-// "/site/Order.html" -> "order.html"; "/site/" -> "index.html"
-function getCurrentPage() {
-    const lastPart = window.location.pathname.split('/').pop().toLowerCase();
-    return lastPart === '' ? 'index.html' : lastPart;
-}
-
-// The HTML marks several links as "active", so the script fixes it:
-// only the link that points to the current page keeps the class.
-function highlightCurrentPage() {
-    const currentPage = getCurrentPage();
-
-    $('.navbar-nav .nav-link').each(function () {
-        const $link = $(this);
-        const isCurrent = $link.attr('href').toLowerCase() === currentPage;
-
-        $link.toggleClass('active', isCurrent);
-
-        if (isCurrent) {
-            $link.attr('aria-current', 'page');
-        } else {
-            $link.removeAttr('aria-current');
-        }
-    });
-}
-
-function updateFooterYear() {
-    $('footer p:first').text(`© ${new Date().getFullYear()} Zebra Coffee`);
-}
-
-// A disabled button (for example "20:00 - Fully booked") explains itself.
-function explainDisabledButtons() {
-    $('button:disabled').attr('title', 'Not available right now');
-}
-
-// Pages without jQuery (it is loaded only on some pages) skip this part.
-if (window.jQuery) {
-    $(function () {
-        highlightCurrentPage();
-        updateFooterYear();
-        explainDisabledButtons();
-    });
-}

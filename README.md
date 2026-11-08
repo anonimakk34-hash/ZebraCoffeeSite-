@@ -44,13 +44,11 @@ This repository contains the complete front-end code for the **Zebra Coffee** we
 ---
 
 ## 3. AI Log
-- **Q:** How do I correctly build a live password checklist using regex?
-- **AI Response:** Provided regex patterns (`/[A-Z]/`, `/.{8,}/`) and an `input` event listener method to test the string dynamically and swap Bootstrap `text-danger`/`text-success` classes.
-- **Q:** What is the best way to avoid `innerHTML` for a summary block?
-- **AI Response:** Explained how to use `document.createElement`, `className`, and `textContent` or `document.createTextNode` sequentially to safely construct the DOM tree and append strings.
-- **Q:** How do I swap CSS classes instead of using `style.display`?
-- **AI Response:** Advised using `element.classList.add('d-none')` and `element.classList.remove('d-none')` for Bootstrap-friendly visibility toggling.
-- **Q:** In jQuery, what is the difference between `.text()` and `.html()`, and between `.attr()` and `.prop()` on a checkbox?
-- **AI Response:** Explained that `.text()` escapes HTML entities and treats input as pure string text (preventing XSS), whereas `.html()` parses and renders HTML tags. For checkboxes, `.attr('checked')` reads the initial HTML attribute from the markup, whereas `.prop('checked')` reads or sets the live boolean state (`true`/`false`) of the DOM element as the user clicks it.
-- **Q:** Why does event delegation (`$('#parent').on('click', '.child', fn)`) work for dynamically created elements while `$('.child').on('click', fn)` does not?
-- **AI Response:** Explained that direct binding only attaches listeners to DOM nodes that exist at the moment the script runs. Delegated binding attaches one listener to a stable ancestor element and relies on event bubbling, checking `event.target` against the `.child` selector when a click bubbles up.
+Q: Does our project meet the Assignment 4–5 requirements? (I shared the repo and the brief.)
+AI Response: Compared the project against the brief and listed what was missing, such as the js folder, the README plan and the commit history. No code was written.
+Q: Can you give me copy-paste code to fix the showMessage / hideMessage bugs?
+AI Response: Declined because of the AI policy. Explained the concepts instead: why defer runs scripts after the page loads and in order, why main.js must load before the page script, and what 'use strict' does.
+Q: Can you explain our code simply for the defense?
+AI Response: Explained how the existing code works in plain words: DOMContentLoaded, preventDefault(), regex .test(), textContent vs innerHTML, === vs ==, arrow functions and ?. / ??.
+Q: Is our endterm project good? (I shared the zip and the endterm brief.)
+AI Response: Reviewed the project against the brief and flagged risks: duplicate unused files, a password saved in localStorage, plain JavaScript mixed into a jQuery feature, an unbalanced split of plain-JS and jQuery work, and wrong README line numbers. No code was written.

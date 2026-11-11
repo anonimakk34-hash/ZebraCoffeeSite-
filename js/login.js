@@ -1,31 +1,36 @@
+
 'use strict';
 
 /*
- * Using jQuery 3.7.1.
- * $(function () { ... }) is the short form of $(document).ready(). It ensures the DOM
- * is ready before selecting the login form or attaching event listeners.
+ * jQuery 3.7.1
+ * Wait until the HTML document is ready.
  */
 $(function () {
+
     const $loginForm = $('#login-form');
+
     if ($loginForm.length === 0) return;
 
-    const $emailInput = $loginForm.find('#login-email');
-    const $passwordInput = $loginForm.find('#login-password');
-    const $rememberCheckbox = $loginForm.find('#login-remember');
+    // Select form fields
+    const $emailInput = $('#login-email');
+    const $passwordInput = $('#login-password');
+    const $rememberCheckbox = $('#login-remember');
+
+    // Result containers
     const $errorBox = $('#login-error');
     const $resultBox = $('#login-result');
 
-    if ($emailInput.length === 0 || $passwordInput.length === 0) return;
-
-    // Pre-fill remembered email if saved in localStorage
-    const rememberedEmail = localStorage.getItem('zebraRememberedEmail');
-    if (rememberedEmail) {
-        $emailInput.val(rememberedEmail);
-        $rememberCheckbox.prop('checked', true);
+    if ($emailInput.length === 0 || $passwordInput.length === 0) {
+        return;
     }
 
+    // Display general messages
     const showLoginBox = ($box, message) => {
-        $box.text(message).removeClass('hidden').hide().fadeIn(250);
+        $box
+            .text(message)
+            .removeClass('hidden')
+            .hide()
+            .fadeIn(300);
     };
 
     const hideLoginBoxes = () => {
@@ -33,86 +38,256 @@ $(function () {
         $resultBox.addClass('hidden').text('');
     };
 
-    // Create Show/Hide password button with jQuery
+    // Find the correct position for an error message
+    const getErrorAnchor = ($input) => {
+        return $input.closest('.position-relative').length
+            ? $input.closest('.position-relative')
+            : $input;
+    };
+
+    // Show validation error directly below the field
+    const showFieldError = ($input, message) => {
+
+        if ($input.length === 0) return;
+
+        clearFieldError($input);
+
+        $input
+            .addClass('error')
+            .attr('aria-invalid', 'true');
+
+        // Avoid Bootstrap's warning icon overlapping the eye icon
+        if ($input.is('#login-password')) {
+            $input.addClass('border-danger');
+        } else {
+            $input.addClass('is-invalid');
+        }
+
+        $('<div>')
+            .addClass('invalid-feedback d-block field-error mt-1')
+            .text(message)
+            .insertAfter(getErrorAnchor($input));
+    };
+
+    // Remove validation error from a field
+    const clearFieldError = ($input) => {
+
+        if ($input.length === 0) return;
+
+        $input
+            .removeClass('error is-invalid border-danger')
+            .removeAttr('aria-invalid');
+
+        getErrorAnchor($input)
+            .next('.field-error')
+            .remove();
+    };
+
+    // Restore remembered email
+    const rememberedEmail =
+        localStorage.getItem('zebraRememberedEmail');
+
+    if (rememberedEmail) {
+        $emailInput.val(rememberedEmail);
+        $rememberCheckbox.prop('checked', true);
+    }
+
+    // Create password wrapper
+    const $passwordWrapper = $('<div>')
+        .addClass('position-relative');
+
+    $passwordInput.wrap($passwordWrapper);
+
+    // Add space for the eye icon
+    $passwordInput.addClass('pe-5');
+
+    // Create eye button inside password input
     const $toggleButton = $('<button>')
         .attr({
             type: 'button',
-            'aria-label': 'Toggle password visibility'
+            'aria-label': 'Show password',
+            title: 'Show password',
+            'aria-pressed': 'false'
         })
-        .addClass('btn btn-sm btn-outline-secondary mt-1 mb-3')
-        .text('Show');
+        .addClass(
+            'btn position-absolute top-50 end-0 translate-middle-y me-2 p-1 text-secondary border-0 bg-transparent'
+        )
+        .append(
+            $('<i>').addClass('fa-solid fa-eye')
+        );
 
-    $passwordInput.after($toggleButton);
+    $passwordInput.parent().append($toggleButton);
 
+    // Toggle password visibility
     $toggleButton.on('click', function () {
-        const $btn = $(this);
-        const isHidden = $passwordInput.attr('type') === 'password';
 
-        $passwordInput.attr('type', isHidden ? 'text' : 'password');
-        $btn.text(isHidden ? 'Hide' : 'Show');
+        const $button = $(this);
+
+        const isHidden =
+            $passwordInput.attr('type') === 'password';
+
+        $passwordInput.attr(
+            'type',
+            isHidden ? 'text' : 'password'
+        );
+
+        $button.find('i')
+            .toggleClass('fa-eye', !isHidden)
+            .toggleClass('fa-eye-slash', isHidden);
+
+        $button.attr({
+            'aria-label': isHidden ? 'Hide password' : 'Show password',
+            title: isHidden ? 'Hide password' : 'Show password',
+            'aria-pressed': String(isHidden)
+        });
     });
 
+    // Clear errors as soon as the visitor edits the field
     $loginForm.on('input change', 'input', function () {
-        $(this).removeClass('error is-invalid');
+
+        clearFieldError($(this));
         hideLoginBoxes();
     });
 
     // Handle login form submission
     $loginForm.on('submit', function (event) {
+
         event.preventDefault();
+
         hideLoginBoxes();
+
+        // Clear previous field errors
+        $loginForm.find('.field-error').remove();
+
+        $emailInput
+            .add($passwordInput)
+            .removeClass('error is-invalid border-danger')
+            .removeAttr('aria-invalid');
 
         const email = ($emailInput.val() || '').trim();
         const password = $passwordInput.val() || '';
         const rememberMe = $rememberCheckbox.prop('checked');
 
+        // Validate email
         if (!email) {
-            $emailInput.addClass('error is-invalid').trigger('focus');
-            showLoginBox($errorBox, 'Please enter your email address.');
+
+            showFieldError(
+                $emailInput,
+                'Please enter your email address.'
+            );
+
+            $emailInput.trigger('focus');
             return;
         }
 
+        // Check email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         if (!emailRegex.test(email)) {
-            $emailInput.addClass('error is-invalid').trigger('focus');
-            showLoginBox($errorBox, 'Please enter a valid email address.');
+
+            showFieldError(
+                $emailInput,
+                'Please enter a valid email address.'
+            );
+
+            $emailInput.trigger('focus');
             return;
         }
 
+        // Validate password
         if (!password) {
-            $passwordInput.addClass('error is-invalid').trigger('focus');
-            showLoginBox($errorBox, 'Please enter your password.');
+
+            showFieldError(
+                $passwordInput,
+                'Please enter your password.'
+            );
+
+            $passwordInput.trigger('focus');
             return;
         }
 
+        // Get registered demo account
+        const savedUserRaw =
+            localStorage.getItem('zebraRegisteredUser');
+
+        if (!savedUserRaw) {
+
+            showLoginBox(
+                $errorBox,
+                'No registered account found. Please register first.'
+            );
+
+            return;
+        }
+
+        // Read stored account safely
+        let savedUser;
+
+        try {
+            savedUser = JSON.parse(savedUserRaw);
+        } catch (error) {
+
+            showLoginBox(
+                $errorBox,
+                'Could not read your account. Please register again.'
+            );
+
+            return;
+        }
+
+        // Verify email and password
+        if (
+            !savedUser ||
+            !savedUser.email ||
+            !savedUser.password ||
+            savedUser.email.toLowerCase() !== email.toLowerCase() ||
+            savedUser.password !== password
+        ) {
+
+            showFieldError(
+                $passwordInput,
+                'Incorrect email or password. Please try again.'
+            );
+
+            $passwordInput.trigger('focus');
+            return;
+        }
+
+        // Remember email if requested
         if (rememberMe) {
-            localStorage.setItem('zebraRememberedEmail', email);
+
+            localStorage.setItem(
+                'zebraRememberedEmail',
+                email
+            );
+
         } else {
+
             localStorage.removeItem('zebraRememberedEmail');
         }
 
-        // Endterm extension: compare against the user registered on register.html if one exists
-        const savedUserRaw = localStorage.getItem('zebraRegisteredUser');
-        if (savedUserRaw) {
-            const savedUser = JSON.parse(savedUserRaw);
-            if (savedUser.email.toLowerCase() !== email.toLowerCase() || savedUser.password !== password) {
-                $passwordInput.addClass('error is-invalid').trigger('focus');
-                showLoginBox($errorBox, 'Incorrect email or password for the registered demo account.');
-                return;
-            }
-            showLoginBox(
-                $resultBox,
-                `Welcome back, ${savedUser.name}! Login verified against your browser demo account.`
-            );
-            $passwordInput.val('');
-            return;
-        }
-
-        const rememberNote = rememberMe ? ' (Email remembered for next visit)' : '';
+        // Display successful login
         showLoginBox(
             $resultBox,
-            `Login form validated${rememberNote}! Tip: register an account on the Register page first to test credential matching.`
+            `Welcome back, ${savedUser.name}! You have successfully logged in to Zebra Coffee.`
         );
+
+        // Clear password after successful login
         $passwordInput.val('');
+
+        // Restore hidden password state
+        $passwordInput.attr('type', 'password');
+
+        $toggleButton.find('i')
+            .removeClass('fa-eye-slash')
+            .addClass('fa-eye');
+
+        $toggleButton.attr({
+            'aria-label': 'Show password',
+            title: 'Show password',
+            'aria-pressed': 'false'
+        });
+
     });
+
 });

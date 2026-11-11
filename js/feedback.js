@@ -1,78 +1,109 @@
+
 'use strict';
 
 /*
- * Using jQuery 3.7.1.
- * $(function () { ... }) is the short form of $(document).ready(). It is needed so
- * our code waits until the browser has finished parsing the HTML and building the DOM tree
- * before trying to select or manipulate elements.
+ * Zebra Coffee Feedback
+ * jQuery 3.7.1
  */
 $(function () {
+
     const $feedbackForm = $('#feedback-form');
+
     if ($feedbackForm.length === 0) return;
 
-    // Sample reviews array
+    // Use custom jQuery validation instead of browser-native validation
+    $feedbackForm.attr('novalidate', 'novalidate');
+
+    // ======================================
+    // SAMPLE REVIEWS
+    // ======================================
+
     const reviewsData = [
         {
             name: 'Alice Smith',
             rating: 5,
             date: '2026-10-15',
+            favoriteDrink: 'Latte',
             comment: 'Amazing coffee and cozy atmosphere! Will definitely return.'
         },
         {
             name: 'Bob Jones',
             rating: 4,
             date: '2026-10-18',
+            favoriteDrink: 'Cappuccino',
             comment: 'Great service, but the music was a bit too loud for me.'
         },
         {
             name: 'Charlie Davis',
             rating: 5,
             date: '2026-10-20',
+            favoriteDrink: 'Americano',
             comment: 'The best espresso in Astana. Highly recommended.'
         },
         {
             name: 'Diana Prince',
             rating: 3,
             date: '2026-10-21',
+            favoriteDrink: 'Raf',
             comment: 'Decent coffee, but the wait time was too long during rush hour.'
         },
         {
             name: 'Evan Wright',
             rating: 4,
             date: '2026-10-22',
+            favoriteDrink: 'Latte',
             comment: 'Loved the pastries! The barista was very friendly.'
         },
         {
             name: 'Fiona Gallagher',
             rating: 5,
             date: '2026-10-22',
+            favoriteDrink: 'Cappuccino',
             comment: 'Perfect spot for remote work. Free WiFi and great lattes.'
         }
     ];
 
-    // Select form fields using ID, attribute, and element selectors
+    // ======================================
+    // SELECT FORM FIELDS
+    // ======================================
+
     const $nameInput = $feedbackForm.find('#fb-name');
-    const $emailInput = $feedbackForm.find('input[name="fb-email"]');
-    const $phoneInput = $feedbackForm.find('input[type="tel"]');
+    const $emailInput = $feedbackForm.find('#fb-email');
+    const $phoneInput = $feedbackForm.find('#fb-phone');
     const $dateInput = $feedbackForm.find('#fb-date');
     const $ratingInput = $feedbackForm.find('#fb-rating');
-    const $messageInput = $feedbackForm.find('textarea');
+    const $drinkInput = $feedbackForm.find('#fb-drink');
+    const $messageInput = $feedbackForm.find('#fb-comments');
 
-    // Set max date attribute on the date picker to today
+    const $recommendCheckbox = $('#fb-recommend');
+
+    // Set maximum visit date to today
     const now = new Date();
-    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+    const todayStr =
+        `${now.getFullYear()}-` +
+        `${String(now.getMonth() + 1).padStart(2, '0')}-` +
+        `${String(now.getDate()).padStart(2, '0')}`;
+
     $dateInput.attr('max', todayStr);
 
-    // Pre-check the recommendation checkbox using .prop() (boolean state property)
-    $('#fb-recommend').prop('checked', true);
+    // Default recommendation checkbox
+    $recommendCheckbox.prop('checked', true);
 
-    // Dynamically insert Confirm Email field if not present
+    // ======================================
+    // CREATE CONFIRM EMAIL FIELD
+    // ======================================
+
     let $confirmEmailInput = $feedbackForm.find('#confirm-email');
+
     if ($confirmEmailInput.length === 0 && $emailInput.length > 0) {
-        const $wrapper = $('<div>').addClass('col-md-6');
+
+        const $wrapper = $('<div>')
+            .addClass('col-md-6');
+
         const $label = $('<label>')
-            .addClass('form-label fw-bold')
             .attr('for', 'confirm-email')
+            .addClass('form-label fw-bold')
             .text('Confirm Email');
 
         $confirmEmailInput = $('<input>')
@@ -80,342 +111,601 @@ $(function () {
                 type: 'email',
                 id: 'confirm-email',
                 name: 'confirm-email',
-                placeholder: 'Enter your email again',
-                required: 'required'
+                placeholder: 'Enter your email again'
             })
             .addClass('form-control bg-light');
 
         $wrapper.append($label, $confirmEmailInput);
 
-        // Traversal: use .closest() to find the parent column of the email input
-        const $emailCol = $emailInput.closest('.col-md-6');
-        if ($emailCol.length > 0) {
-            $emailCol.after($wrapper);
+        // Insert after the original email field
+        const $emailColumn = $emailInput.closest('.col-md-6');
+
+        if ($emailColumn.length > 0) {
+            $emailColumn.after($wrapper);
         } else {
             $feedbackForm.find('fieldset .row').append($wrapper);
         }
     }
 
-    // Add live comment character counter
-    if ($messageInput.length > 0) {
-        const $counter = $('<small>')
-            .attr('id', 'comment-counter')
-            .addClass('text-muted d-block mt-1')
-            .text('0 / 500 characters (Min 10)');
+    // ======================================
+    // COMMENT CHARACTER COUNTER
+    // ======================================
 
-        $messageInput.after($counter);
+    const $counter = $('<small>')
+        .attr('id', 'comment-counter')
+        .addClass('text-muted d-block mt-1')
+        .text('0 / 500 characters (Min 10)');
 
-        // Event type 1: input (using $(this) inside the handler)
-        $messageInput.on('input', function () {
-            const len = $(this).val().length;
-            const isOut = len < 10 || len > 500;
+    $messageInput.after($counter);
 
-            /*
-             * Method Chain Explanation (4 links):
-             * 1. .text(...) updates the counter's text content safely.
-             * 2. .removeClass(...) strips previous muted/danger/success color classes.
-             * 3. .addClass(...) applies red (text-danger) or green (text-success) based on length.
-             * 4. .attr(...) sets aria-live="polite" so screen readers announce updates.
-             */
-            $counter
-                .text(`${len} / 500 characters (Min 10)`)
-                .removeClass('text-muted text-danger text-success')
-                .addClass(isOut ? 'text-danger' : 'text-success')
-                .attr('aria-live', 'polite');
-        });
-    }
+    $messageInput.on('input', function () {
 
-    // Create the reviews container and filter button bar in code
+        const length = $(this).val().length;
+
+        const invalid = length < 10 || length > 500;
+
+        $counter
+            .text(`${length} / 500 characters (Min 10)`)
+            .removeClass('text-muted text-danger text-success')
+            .addClass(invalid ? 'text-danger' : 'text-success')
+            .attr('aria-live', 'polite');
+    });
+
+    // ======================================
+    // CREATE REVIEWS SECTION
+    // ======================================
+
     let $reviewsContainer = $('#reviews-list');
+
     if ($reviewsContainer.length === 0) {
+
         const $headerBar = $('<div>')
-            .addClass('d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3');
-        const $title = $('<h3>').addClass('mb-0').text('Recent Customer Reviews');
+            .addClass(
+                'd-flex flex-wrap justify-content-between align-items-center mt-5 mb-3'
+            );
+
+        const $title = $('<h3>')
+            .addClass('mb-0')
+            .text('Recent Customer Reviews');
+
         const $toggleReviewsBtn = $('<button>')
-            .attr({ type: 'button', id: 'toggle-reviews-btn' })
+            .attr({
+                type: 'button',
+                id: 'toggle-reviews-btn'
+            })
             .addClass('btn btn-sm btn-outline-dark')
             .text('Hide Reviews');
 
         $headerBar.append($title, $toggleReviewsBtn);
-        $reviewsContainer = $('<div>').attr('id', 'reviews-list').addClass('row g-4 mt-2');
+
+        $reviewsContainer = $('<div>')
+            .attr('id', 'reviews-list')
+            .addClass('row g-4 mt-2');
 
         $feedbackForm.after($headerBar);
         $headerBar.after($reviewsContainer);
 
-        // Effect 1: .slideToggle() with duration (300ms) and a completion callback
+        // Show or hide reviews
         $toggleReviewsBtn.on('click', function () {
-            const $btn = $(this);
+
+            const $button = $(this);
+
             $reviewsContainer.slideToggle(300, function () {
-                const isVisible = $(this).is(':visible');
-                $btn.text(isVisible ? 'Hide Reviews' : 'Show Reviews');
+
+                const visible = $(this).is(':visible');
+
+                $button.text(
+                    visible ? 'Hide Reviews' : 'Show Reviews'
+                );
+
             });
+
         });
     }
 
-    // Rewritten Feature 1: Building review cards from an array in code.
-    // jQuery's $('<tag>'), .addClass(), .text(), .appendTo(), and $.each() replaced document.createElement,
-    // createEl(), replaceChildren(), and Array.forEach(). The result is shorter and clearer because chained
-    // creation and .appendTo() eliminate temporary DOM variables and verbose appendChild() calls.
-    const renderReviewCard = (review, index) => {
-        const $col = $('<div>').addClass('col-md-6 col-lg-4 review-col').attr('data-index', index);
-        const $card = $('<div>').addClass('card h-100 shadow-sm review-card');
-        const $body = $('<div>').addClass('card-body d-flex flex-column');
+    // ======================================
+    // CREATE REVIEW CARD
+    // ======================================
 
-        const $headerRow = $('<div>').addClass('d-flex justify-content-between align-items-start');
-        const $title = $('<h5>').addClass('card-title mb-1').text(review.name);
-        const $helpfulBtn = $('<button>')
-            .attr('type', 'button')
-            .addClass('btn btn-sm btn-outline-secondary helpful-btn')
-            .attr('data-likes', 0)
+    const renderReviewCard = (review, index) => {
+
+        const $column = $('<div>')
+            .addClass('col-md-6 col-lg-4 review-col')
+            .attr('data-index', index);
+
+        const $card = $('<div>')
+            .addClass('card h-100 shadow-sm review-card');
+
+        const $body = $('<div>')
+            .addClass('card-body d-flex flex-column');
+
+        const $header = $('<div>')
+            .addClass(
+                'd-flex justify-content-between align-items-start'
+            );
+
+        const $name = $('<h5>')
+            .addClass('card-title mb-1')
+            .text(review.name);
+
+        const $helpfulButton = $('<button>')
+            .attr({
+                type: 'button',
+                'data-likes': 0
+            })
+            .addClass(
+                'btn btn-sm btn-outline-secondary helpful-btn'
+            )
             .text('👍 0');
 
-        $headerRow.append($title, $helpfulBtn);
+        $header.append($name, $helpfulButton);
 
-        const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-        const $subtitle = $('<h6>')
+        const stars =
+            '★'.repeat(review.rating) +
+            '☆'.repeat(5 - review.rating);
+
+        const $rating = $('<h6>')
             .addClass('card-subtitle mb-2 text-muted')
             .text(`${stars} | ${review.date}`);
 
-        const $comment = $('<p>').addClass('card-text mt-2 mb-0').text(`"${review.comment}"`);
+        $body.append($header, $rating);
 
-        $body.append($headerRow, $subtitle, $comment);
+        // Display favorite drink if available
+        if (review.favoriteDrink) {
+
+            const $drink = $('<small>')
+                .addClass('text-muted mb-2')
+                .text(`Favorite drink: ${review.favoriteDrink}`);
+
+            $body.append($drink);
+        }
+
+        const $comment = $('<p>')
+            .addClass('card-text mt-2 mb-0')
+            .text(`"${review.comment}"`);
+
+        $body.append($comment);
+
         $card.append($body);
-        $col.append($card);
+        $column.append($card);
 
-        return $col;
+        return $column;
     };
 
+    // Render all reviews
     const displayReviews = () => {
+
         $reviewsContainer.empty();
-        $.each(reviewsData, function (idx, review) {
-            renderReviewCard(review, idx).appendTo($reviewsContainer);
+
+        $.each(reviewsData, function (index, review) {
+
+            renderReviewCard(review, index)
+                .appendTo($reviewsContainer);
+
         });
-        // Filter (:first) to highlight the newest review card
-        $reviewsContainer.find('.review-card:first').addClass('selected');
+
+        // Highlight newest review
+        $reviewsContainer
+            .find('.review-card:first')
+            .addClass('selected');
     };
 
+    // Initial rendering
     displayReviews();
 
-    /*
-     * Delegated Event Handler: bound to #reviews-list (which already exists) and reacting to .helpful-btn.
-     * Why direct binding ($('.helpful-btn').on('click', ...)) would NOT work:
-     * Review cards are created dynamically in code and rebuilt whenever a visitor submits a new review.
-     * Directly bound handlers only attach to elements that exist at the exact moment .on() is called;
-     * delegated events bubble up to the persistent #reviews-list parent, catching future buttons too.
-     */
-    $reviewsContainer.on('click', '.helpful-btn', function () {
-        const $btn = $(this);
-        const nextLikes = Number($btn.attr('data-likes') || 0) + 1;
+    // ======================================
+    // DELEGATED HELPFUL BUTTON EVENT
+    // ======================================
 
-        // Chain of 4 methods on the clicked button + traversal (.closest() and .siblings())
-        $btn.attr('data-likes', nextLikes)
-            .text(`👍 ${nextLikes}`)
+    $reviewsContainer.on('click', '.helpful-btn', function () {
+
+        const $button = $(this);
+
+        const likes =
+            Number($button.attr('data-likes') || 0) + 1;
+
+        // Update button using method chaining
+        $button
+            .attr('data-likes', likes)
+            .text(`👍 ${likes}`)
             .removeClass('btn-outline-secondary')
             .addClass('btn-dark');
 
-        const $card = $btn.closest('.review-card');
+        // Highlight clicked review
+        const $card = $button.closest('.review-card');
+
         $card.addClass('selected');
-        $card.closest('.review-col').siblings().find('.review-card').removeClass('selected');
+
+        $card
+            .closest('.review-col')
+            .siblings()
+            .find('.review-card')
+            .removeClass('selected');
+
     });
 
-    // Event type 2: mouseenter / mouseleave delegated on review cards
-    $reviewsContainer.on('mouseenter', '.review-card', function () {
-        $(this).addClass('shadow');
-    }).on('mouseleave', '.review-card', function () {
-        $(this).removeClass('shadow');
-    });
+    // ======================================
+    // REVIEW HOVER EVENTS
+    // ======================================
 
-    // Helper functions for field-level validation messages
+    $reviewsContainer
+        .on('mouseenter', '.review-card', function () {
+
+            $(this).addClass('shadow');
+
+        })
+        .on('mouseleave', '.review-card', function () {
+
+            $(this).removeClass('shadow');
+
+        });
+
+    // ======================================
+    // FIELD VALIDATION HELPERS
+    // ======================================
+
     const showError = ($input, message) => {
+
         if ($input.length === 0) return;
 
-        $input.addClass('is-invalid error').removeClass('is-valid');
+        clearError($input);
 
-        // Traversal: use .siblings() to find an existing invalid-feedback div in the same wrapper
-        let $feedback = $input.siblings('.invalid-feedback');
-        if ($feedback.length > 0) {
-            $feedback.text(message);
-        } else {
-            $feedback = $('<div>').addClass('invalid-feedback d-block').text(message);
-            $input.after($feedback);
-        }
+        $input
+            .addClass('is-invalid error')
+            .attr('aria-invalid', 'true');
+
+        $('<div>')
+            .addClass('invalid-feedback d-block field-error')
+            .text(message)
+            .insertAfter($input);
     };
 
     const clearError = ($input) => {
+
         if ($input.length === 0) return;
-        $input.removeClass('is-invalid error').addClass('is-valid');
-        $input.siblings('.invalid-feedback').remove();
+
+        $input
+            .removeClass('is-invalid is-valid error')
+            .removeAttr('aria-invalid');
+
+        $input.next('.field-error').remove();
     };
 
-    // Clear the error on a field as soon as the visitor edits or changes it
-    $feedbackForm.on('input change', '.form-control, .form-select, .form-check-input', function () {
-        const $field = $(this);
-        if ($field.attr('type') === 'radio') {
-            const $group = $feedbackForm.find('input[name="order-type"]');
-            $group.removeClass('is-invalid error');
-            $field.closest('.col-12').find('.invalid-feedback').remove();
-        } else if ($field.hasClass('is-invalid')) {
+    // ======================================
+    // CLEAR ERRORS WHEN FIELDS CHANGE
+    // ======================================
+
+    $feedbackForm.on(
+        'input change',
+        '.form-control, .form-select',
+        function () {
+
+            const $field = $(this);
+
             clearError($field);
+
+            $('#feedback-error')
+                .addClass('hidden')
+                .text('');
+
         }
-    });
+    );
 
-    /*
-     * Rewritten Feature 3 (Main Form Validation in jQuery):
-     * Replaced plain-JS querySelectorAll, classList.add/remove, nextElementSibling, and manual DOM summary building
-     * with jQuery .val().trim(), .addClass()/.removeClass(), .siblings(), .html(), and .fadeIn().
-     * The jQuery version is noticeably shorter and clearer, especially when traversing siblings for error messages
-     * and clearing errors across all inputs in one line.
-     *
-     * Security Note (Browser vs. Server Validation):
-     * A check in the browser never replaces a check on the server because client-side JavaScript and HTML attributes
-     * (like required) run entirely on the user's device — a visitor can inspect the page, disable JavaScript, modify
-     * rules in DevTools, or send raw HTTP POST requests directly to the server, bypassing browser checks completely.
-     */
+    // Handle radio button errors
+    $feedbackForm.on(
+        'change',
+        'input[name="order-type"]',
+        function () {
+
+            const $radioGroup =
+                $feedbackForm.find('input[name="order-type"]');
+
+            $radioGroup.removeClass('is-invalid error');
+
+            $feedbackForm
+                .find('.radio-error')
+                .remove();
+
+        }
+    );
+
+    // ======================================
+    // FEEDBACK FORM VALIDATION
+    // ======================================
+
     $feedbackForm.on('submit', function (event) {
-        // Without event.preventDefault(), the browser would perform a native HTTP form submission,
-        // reloading the page and losing all our dynamic review cards and client-side state.
-        event.preventDefault();
-        hideMessage();
 
-        // Reset validation classes on all fields using :not() filter to skip buttons
-        $feedbackForm.find('input:not([type="submit"]):not([type="reset"]), select, textarea')
-            .removeClass('is-invalid is-valid error');
-        $feedbackForm.find('.invalid-feedback').remove();
+        event.preventDefault();
+
+        $('#feedback-error')
+            .addClass('hidden')
+            .text('');
+
+        $('#feedback-result')
+            .addClass('hidden')
+            .empty();
+
+        // Remove old field errors
+        $feedbackForm.find('.field-error, .radio-error').remove();
+
+        $feedbackForm
+            .find('.is-invalid, .is-valid, .error')
+            .removeClass('is-invalid is-valid error')
+            .removeAttr('aria-invalid');
 
         let isValid = true;
         let $firstInvalid = null;
 
-        const recordInvalid = ($el, msg) => {
-            showError($el, msg);
-            isValid = false;
-            if ($firstInvalid === null) {
-                $firstInvalid = $el;
-            }
-        };
-
-        // Trim all values before checking them
+        // Read all entered values
         const name = ($nameInput.val() || '').trim();
         const email = ($emailInput.val() || '').trim();
         const confirmEmail = ($confirmEmailInput.val() || '').trim();
         const phone = ($phoneInput.val() || '').trim();
         const visitDate = ($dateInput.val() || '').trim();
         const rating = Number(($ratingInput.val() || '').trim());
+        const favoriteDrink = ($drinkInput.val() || '');
         const comment = ($messageInput.val() || '').trim();
-        const $checkedOrderType = $feedbackForm.find('input[name="order-type"]:checked');
-        const isRecommended = $('#fb-recommend').prop('checked');
 
-        // 1. Name check
-        if (name.length < 2) {
-            recordInvalid($nameInput, 'Name must be at least 2 characters.');
-        } else {
-            clearError($nameInput);
-        }
+        const $checkedOrderType =
+            $feedbackForm.find('input[name="order-type"]:checked');
 
-        // 2. Email format check
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            recordInvalid($emailInput, 'Please enter a valid email address.');
-        } else {
-            clearError($emailInput);
-        }
+        const orderType = $checkedOrderType.val() || '';
 
-        // 3. Confirm Email match check
-        if (confirmEmail === '' || confirmEmail !== email) {
-            recordInvalid($confirmEmailInput, 'Emails must match exactly.');
-        } else {
-            clearError($confirmEmailInput);
-        }
+        const isRecommended =
+            $recommendCheckbox.prop('checked');
 
-        // 4. Phone format check (optional field, but if filled must have 10-15 digits and valid characters)
-        const phoneFormatRegex = /^[+\d][\d\s\-()]{8,19}$/;
-        const phoneDigits = phone.replace(/\D/g, '');
-        if (phone !== '' && (!phoneFormatRegex.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15)) {
-            recordInvalid($phoneInput, 'Please enter a valid phone number (10 to 15 digits).');
-        } else if (phone !== '') {
-            clearError($phoneInput);
-        }
+        // Helper to register invalid fields
+        const recordInvalid = ($field, message) => {
 
-        // 5. Visit Date check
-        if (visitDate === '' || visitDate > todayStr) {
-            recordInvalid($dateInput, 'Visit date cannot be blank or in the future.');
-        } else {
-            clearError($dateInput);
-        }
+            showError($field, message);
 
-        // 6. Rating check
-        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-            recordInvalid($ratingInput, 'Rating must be a whole number from 1 to 5.');
-        } else {
-            clearError($ratingInput);
-        }
-
-        // 7. Order Type radio check (using :checked filter)
-        if ($checkedOrderType.length === 0) {
-            const $radios = $feedbackForm.find('input[name="order-type"]');
-            $radios.addClass('is-invalid error');
-            const $radioWrapper = $radios.first().closest('.col-12');
-            $radioWrapper.append($('<div>').addClass('invalid-feedback d-block').text('Please select an order type (Dine-in or Takeaway).'));
             isValid = false;
-            if ($firstInvalid === null) $firstInvalid = $radios.first();
+
+            if ($firstInvalid === null) {
+                $firstInvalid = $field;
+            }
+        };
+
+        // 1. Name
+        if (name.length < 2) {
+
+            recordInvalid(
+                $nameInput,
+                'Name must be at least 2 characters.'
+            );
         }
 
-        // 8. Comment length check
+        // 2. Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+
+            recordInvalid(
+                $emailInput,
+                'Please enter a valid email address.'
+            );
+        }
+
+        // 3. Confirm Email
+        if (confirmEmail === '' || confirmEmail !== email) {
+
+            recordInvalid(
+                $confirmEmailInput,
+                'Emails must match exactly.'
+            );
+        }
+
+        // 4. Phone (optional)
+        if (phone !== '') {
+
+            const phoneRegex = /^[+\d][\d\s\-()]{8,19}$/;
+            const phoneDigits = phone.replace(/\D/g, '');
+
+            if (
+                !phoneRegex.test(phone) ||
+                phoneDigits.length < 10 ||
+                phoneDigits.length > 15
+            ) {
+
+                recordInvalid(
+                    $phoneInput,
+                    'Please enter a valid phone number (10 to 15 digits).'
+                );
+            }
+        }
+
+        // 5. Visit date
+        if (visitDate === '' || visitDate > todayStr) {
+
+            recordInvalid(
+                $dateInput,
+                'Visit date cannot be blank or in the future.'
+            );
+        }
+
+        // 6. Rating
+        if (
+            !Number.isInteger(rating) ||
+            rating < 1 ||
+            rating > 5
+        ) {
+
+            recordInvalid(
+                $ratingInput,
+                'Rating must be a whole number from 1 to 5.'
+            );
+        }
+
+        // 7. Order type
+        if ($checkedOrderType.length === 0) {
+
+            const $radios =
+                $feedbackForm.find('input[name="order-type"]');
+
+            $radios.addClass('is-invalid error');
+
+            const $radioWrapper =
+                $radios.first().closest('.col-12');
+
+            $('<div>')
+                .addClass('invalid-feedback d-block radio-error')
+                .text('Please select an order type.')
+                .appendTo($radioWrapper);
+
+            isValid = false;
+
+            if ($firstInvalid === null) {
+                $firstInvalid = $radios.first();
+            }
+        }
+
+        // 8. Comment
         if (comment.length < 10 || comment.length > 500) {
-            recordInvalid($messageInput, 'Comment must be between 10 and 500 characters.');
-        } else {
-            clearError($messageInput);
+
+            recordInvalid(
+                $messageInput,
+                'Comment must contain between 10 and 500 characters.'
+            );
         }
 
+        // Stop if validation fails
         if (!isValid) {
+
             if ($firstInvalid !== null) {
                 $firstInvalid.trigger('focus');
             }
+
             return;
         }
 
-        // Prepend the new review to our array and re-render the list
-        reviewsData.unshift({
+        // ======================================
+        // SUCCESSFUL SUBMISSION
+        // ======================================
+
+        const drinkName = favoriteDrink
+            ? $drinkInput.find('option:selected').text()
+            : 'Not specified';
+
+        const phoneDisplay = phone || 'Not provided';
+
+        const recommendation = isRecommended
+            ? 'Yes'
+            : 'No';
+
+        // Create new review object
+        const newReview = {
             name: name,
             rating: rating,
             date: visitDate,
+            favoriteDrink: drinkName,
             comment: comment
-        });
+        };
+
+        // Add newest review to the beginning
+        reviewsData.unshift(newReview);
+
+        // Refresh review cards
         displayReviews();
 
-        // Build confirmation message in #feedback-result using .html() for static template structure
-        // and .text() for user-supplied values so no XSS is possible.
+        // ======================================
+        // DISPLAY SUBMISSION RESULT
+        // ======================================
+
         const $resultBox = $('#feedback-result');
+
+        // Static HTML structure only
         $resultBox
             .removeClass('hidden')
             .hide()
             .html(
-                '<h4 class="alert-heading">Feedback Submitted!</h4>' +
-                '<p class="mb-2">Thank you! Your review has been added to Recent Customer Reviews below. (Front-end demo only)</p>' +
+                '<h4 class="alert-heading">Feedback Submitted Successfully!</h4>' +
+                '<p class="mb-2">Thank you for sharing your experience with Zebra Coffee. Your review has been added below.</p>' +
                 '<hr>' +
-                '<p class="mb-0 small review-summary-line"></p>'
+                '<div class="review-summary"></div>' +
+                '<p class="small text-muted mb-0 mt-3">Front-end demonstration: this submission is not stored on a server.</p>'
             );
 
-        const recText = isRecommended ? 'Yes, would recommend' : 'No recommendation checked';
-        $resultBox.find('.review-summary-line').text(
-            `Submitted by ${name} (${email}) for visit on ${visitDate} — Rating: ${rating}/5 (${$checkedOrderType.val()}, ${recText}).`
-        );
+        // Display user information safely using .text()
+        const $summary = $resultBox.find('.review-summary');
 
-        // Effect 2: .fadeIn() with duration and callback after form reset
+        const addDetail = (label, value) => {
+
+            const $paragraph = $('<p>')
+                .addClass('mb-1');
+
+            $('<strong>')
+                .text(label + ':')
+                .appendTo($paragraph);
+
+            $paragraph.append(
+                document.createTextNode(' ' + value)
+            );
+
+            $summary.append($paragraph);
+        };
+
+        addDetail('Name', name);
+        addDetail('Email', email);
+        addDetail('Phone', phoneDisplay);
+        addDetail('Visit Date', visitDate);
+        addDetail('Rating', `${rating}/5 stars`);
+        addDetail('Favorite Drink', drinkName);
+        addDetail('Order Type', orderType);
+        addDetail('Would Recommend', recommendation);
+        addDetail('Comment', comment);
+
+        // Effect: fade in result
         $resultBox.fadeIn(400, function () {
-            $ReviewsScrollIfNeeded();
+
+            // Briefly highlight the newest review card
+            $reviewsContainer
+                .find('.review-card:first')
+                .fadeOut(150)
+                .fadeIn(300);
+
         });
 
-        // Reset the form and restore character counter
+        // ======================================
+        // RESET FORM
+        // ======================================
+
         $feedbackForm[0].reset();
-        $('#fb-recommend').prop('checked', true);
-        $feedbackForm.find('.is-valid, .is-invalid, .error').removeClass('is-valid is-invalid error');
-        $('#comment-counter')
+
+        // Restore default recommendation checkbox
+        $recommendCheckbox.prop('checked', true);
+
+        // Reset character counter
+        $counter
             .text('0 / 500 characters (Min 10)')
             .removeClass('text-danger text-success')
             .addClass('text-muted');
+
     });
 
-    function $ReviewsScrollIfNeeded() {
-        $('#reviews-list').find('.review-card:first').fadeOut(150).fadeIn(300);
-    }
+    // ======================================
+    // CLEAR FORM HANDLING
+    // ======================================
+
+    $feedbackForm.on('reset', function () {
+
+        $feedbackForm.find('.field-error, .radio-error').remove();
+
+        $feedbackForm
+            .find('.is-invalid, .is-valid, .error')
+            .removeClass('is-invalid is-valid error')
+            .removeAttr('aria-invalid');
+
+        setTimeout(function () {
+
+            $counter
+                .text('0 / 500 characters (Min 10)')
+                .removeClass('text-danger text-success')
+                .addClass('text-muted');
+
+            $recommendCheckbox.prop('checked', true);
+
+        }, 0);
+
+    });
+
 });

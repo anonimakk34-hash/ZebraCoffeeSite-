@@ -23,6 +23,7 @@
     const streetSelect = document.querySelector('#street');
     const buildingSelect = document.querySelector('#building');
     const apartmentSelect = document.querySelector('#apartment');
+    const timeSelect = document.querySelector('#time');
 
     // Stop on pages that do not have the order form.
     if (
@@ -38,10 +39,20 @@
         districtSelect === null ||
         streetSelect === null ||
         buildingSelect === null ||
-        apartmentSelect === null
+        apartmentSelect === null ||
+        timeSelect === null
     ) {
         return;
     }
+
+    // Require an explicit pickup-time choice, including if the user prefers ASAP.
+    // The existing first option used to select ASAP automatically.
+    if (!timeSelect.querySelector('option[value=""]')) {
+        const placeholder = new Option('Choose a pickup time', '', true, true);
+        placeholder.disabled = true;
+        timeSelect.insertBefore(placeholder, timeSelect.firstChild);
+    }
+    timeSelect.required = true;
 
     // Demo addresses for the delivery form, not real delivery zones.
     const locations = {
@@ -144,7 +155,7 @@
 
     const totalHeading = document.createElement('h3');
     totalHeading.className = 'h5';
-    totalHeading.textContent = 'Order total';
+    totalHeading.textContent = 'Your Cart';
 
     const totalText = document.createElement('div');
     totalText.className = 'mb-1';
@@ -161,13 +172,13 @@
     if (sidebar === null) {
         form.before(totalPanel);
     } else {
-        const sidebarCards = sidebar.querySelectorAll('.card');
-
-        if (sidebarCards.length > 1) {
-            sidebarCards[1].before(totalPanel);
-        } else {
-            sidebar.prepend(totalPanel);
-        }
+        // Preserve the sidebar for the interactive cart, remove only static tips.
+        // Remove only the two informational cards, never the live cart.
+        sidebar.querySelectorAll(':scope > article.card').forEach(card => {
+            const title = card.querySelector('h3')?.textContent.trim();
+            if (title === 'How It Works' || title === 'Popular Choices') card.remove();
+        });
+        sidebar.prepend(totalPanel);
     }
 
     const resultPanel = document.createElement('section');
@@ -631,10 +642,20 @@
         }
 
         if (takeawayRadio.checked === true) {
-            const phoneDigits = customer.phone.value.replace(/\D/g, '');
+            const rawPhone = customer.phone.value.trim();
+            const phoneDigits = rawPhone.replace(/\D/g, '');
+            // Kazakhstan mobile: +7 7XX XXX XX XX, 8 7XX XXX XX XX, or 7XX XXX XX XX.
+            // Spaces, hyphens and parentheses are allowed for readability.
+            const allowedCharacters = /^\+?[0-9\s()-]+$/.test(rawPhone);
+            const mobileDigits = phoneDigits.length === 11 && /^[78]/.test(phoneDigits)
+                ? phoneDigits.slice(1)
+                : phoneDigits;
+            const validPhone = allowedCharacters && /^7\d{9}$/.test(mobileDigits) &&
+                (phoneDigits.length === 10 ||
+                 (phoneDigits.length === 11 && (rawPhone.startsWith('+7') || rawPhone.startsWith('8') || rawPhone.startsWith('7'))));
 
-            if (phoneDigits.length < 10 || phoneDigits.length > 15) {
-                showFieldError(customer.phone, 'Enter a phone number with 10–15 digits.');
+            if (!validPhone) {
+                showFieldError(customer.phone, 'Enter a valid Kazakhstan mobile number, e.g. +7 777 123 45 67.');
                 invalidFields.push(customer.phone);
             } else {
                 clearFieldError(customer.phone);
@@ -706,6 +727,14 @@
             if (firstInvalidField === null) {
                 firstInvalidField = customerValidation.firstField;
             }
+        }
+
+        if (timeSelect.value === '') {
+            showFieldError(timeSelect, 'Please choose a preferred pickup time.');
+            isValid = false;
+            if (firstInvalidField === null) firstInvalidField = timeSelect;
+        } else {
+            clearFieldError(timeSelect);
         }
 
         if (confirmationInput.checked !== true) {
@@ -909,3 +938,61 @@
     updateTotal();
     applyDrinkFromUrl();
 })();
+
+// Visual polish only; ordering and cart logic above remain unchanged.
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('main form');
+    if (!form || document.querySelector('#zc-order-polish')) return;
+    const section = form.closest('section');
+    if (!section) return;
+    section.classList.add('zc-order-page');
+    const formCard = form.closest('.card');
+    formCard?.classList.add('zc-order-form');
+    const sidebar = section.querySelector('.col-lg-4');
+    const cartPanel = sidebar?.querySelector('[aria-live="polite"]');
+    if (cartPanel) cartPanel.classList.add('zc-cart');
+    const style = document.createElement('style');
+    style.id = 'zc-order-polish';
+    style.textContent = `
+      .zc-order-page>.text-center {position:relative;isolation:isolate;overflow:hidden;
+        padding:42px 24px!important;border-radius:22px;margin-bottom:30px!important;
+        background:#30251e;color:#fff}
+      .zc-order-page>.text-center:before {content:'';position:absolute;inset:0;z-index:-2;
+        background:url('images/zc-new-barista.jpg') center 48%/cover}
+      .zc-order-page>.text-center:after {content:'';position:absolute;inset:0;z-index:-1;
+        background:linear-gradient(100deg,#211812ed,#2118128a)}
+      .zc-order-page>.text-center h2 {font-weight:800;color:#fff}
+      .zc-order-page>.text-center p {color:#f9ead8!important}
+      .zc-order-page .zc-order-form,.zc-order-page .zc-cart {border:1px solid #e6d8c7!important;
+        border-radius:19px!important;background:#fffdf9;box-shadow:0 12px 34px #35291d16!important}
+      .zc-order-page .zc-order-form {overflow:hidden;border-top:5px solid #9e7655!important}
+      .zc-order-page .zc-order-form .card-body {padding:clamp(20px,3vw,32px)!important}
+      .zc-order-page .zc-order-form fieldset {background:#fffaf4;border:1px solid #eee0d1!important;border-radius:15px;padding:18px!important;margin-bottom:16px}
+      .zc-order-page .zc-order-form .form-check {padding-top:8px;padding-bottom:8px}
+      .zc-order-page .zc-order-form legend {font-weight:800;color:#30251e;
+        padding-bottom:12px;border-bottom:1px solid #e9dfd2}
+      .zc-order-page .zc-order-form fieldset>div.mb-4 {padding-bottom:12px}
+      .zc-order-page .form-control,.zc-order-page .form-select {min-height:44px;border-radius:10px;
+        border-color:#d9cbb9;background-color:#fff}
+      .zc-order-page .form-control:focus,.zc-order-page .form-select:focus {border-color:#a57c57;
+        box-shadow:0 0 0 .2rem #a57c5733}
+      .zc-order-page .btn {border-radius:10px;transition:transform .2s,box-shadow .2s}
+      .zc-order-page .btn:hover {transform:translateY(-2px);box-shadow:0 5px 15px #30201220}
+      .zc-order-page .zc-cart {position:sticky;top:20px;padding:23px!important;
+        border-top:5px solid #9e7655!important;min-height:200px}
+      .zc-order-page .zc-cart h3 {font-weight:800;font-size:1.25rem;margin-bottom:17px;color:#493324}
+      .zc-order-page .zc-cart .btn {font-weight:650}
+      .zc-order-page .zc-cart .list-group {border-radius:12px;overflow:hidden}
+      .zc-order-page .zc-order-form .form-label {font-weight:700;color:#493729}
+      .zc-order-page .zc-order-form button[type=submit] {font-weight:750;padding:12px 18px}
+      .zc-order-page .zc-cart .list-group-item {background:#f8f1e8;border-color:#e7d9c7;
+        border-radius:10px!important;margin-bottom:8px;padding:13px;flex-wrap:wrap}
+      .zc-order-page .zc-cart .fw-bold {border-top:1px solid #e6d7c7;
+        padding-top:15px;margin-top:14px;font-size:1.2rem;color:#503721}
+      .zc-order-page .zc-order-form:before {content:'';display:block;height:72px;
+        background:url('images/zc-new-latte.jpg') center 53%/cover}
+      @media(max-width:991px){.zc-order-page .zc-cart{position:static;margin-top:12px}}
+      @media(prefers-reduced-motion:reduce){.zc-order-page .btn{transition:none}}
+    `;
+    document.head.append(style);
+});

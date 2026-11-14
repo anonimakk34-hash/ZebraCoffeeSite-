@@ -229,7 +229,7 @@ $(function () {
                 $button.text($(this).css('display') === 'none' ? 'Show sizes' : 'Hide sizes');
             });
         })
-        .on('click', '.drink-card', function (event) {
+        .on('click', '.rd', function (event) {
             // Clicks on the button or the "Order this" link have their own job.
             if ($(event.target).closest('a, button').length > 0) {
                 return;

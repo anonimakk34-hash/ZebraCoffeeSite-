@@ -19,6 +19,59 @@ $(function () {
         return;
     }
 
+    // Keep the existing HTML unchanged: the interactive finder replaces the
+    // long static menu display (tables, quick jumps and repeated explanations).
+    $section.children().not('h2, p.lead').hide();
+
+    // Card photos and overlay styles are applied by JavaScript only.
+    const $photoStyles = $('<style>', { text: `
+        .drink-card { position:relative; overflow:hidden; isolation:isolate;
+            background-color:#30251e; background-position:center; background-size:cover;
+            color:#fff; border-color:rgba(255,255,255,.2); }
+        .drink-card::before { content:''; position:absolute; inset:0; z-index:-1;
+            background:linear-gradient(90deg,rgba(17,13,11,.85),rgba(17,13,11,.60)); }
+        .drink-card .card-title,.drink-card .fw-semibold,.drink-card .drink-sizes { color:#fff!important;text-shadow:0 2px 6px #000c; }
+        .drink-card .toggle-sizes { color:#f7e5cd!important; }
+        .drink-card .btn-outline-dark { color:#fff; border-color:#fff; }
+        .drink-card .btn-outline-dark:hover,.drink-card .btn-outline-dark:focus {
+            background:#fff; color:#1c1713; }
+        .drink-card .badge { background:rgba(0,0,0,.75)!important; }
+        .drink-card.selected { outline:2px solid #c7a47c; }
+    ` });
+    $photoStyles.text($photoStyles.text() + `
+      .zc-menu-hero {position:relative;isolation:isolate;border-radius:20px;overflow:hidden;
+        padding:35px 32px;margin-bottom:24px;color:#fff;background:#30251e}
+      .zc-menu-hero:before {content:'';position:absolute;inset:0;z-index:-2;
+        background:url('images/zc-new-latte.jpg') center 53%/cover}
+      .zc-menu-hero:after {content:'';position:absolute;inset:0;z-index:-1;
+        background:linear-gradient(95deg,rgba(29,22,17,.9),rgba(29,22,17,.45))}
+      .zc-menu-hero h2,.zc-menu-hero p {color:#fff!important}
+      .zc-menu-hero p {margin-bottom:0!important;max-width:620px}
+      .zc-menu-finder {border:1px solid #e5d8c9;border-radius:20px;overflow:hidden;
+        box-shadow:0 15px 35px #38281914!important;background:#fffdf9}
+      .zc-menu-finder>.card-body {padding:clamp(18px,3vw,30px)}
+      .zc-menu-finder input,.zc-menu-finder select {border-radius:10px;min-height:44px}
+      .zc-menu-finder input:focus,.zc-menu-finder select:focus {border-color:#a57e58;box-shadow:0 0 0 .2rem #a57e5833}
+      .drink-card {min-height:285px;transition:transform .22s,box-shadow .22s;
+        border-radius:14px; background-position:center!important;box-shadow:inset 0 0 0 1px #ffffff22}
+      .drink-card:hover {transform:translateY(-4px);box-shadow:0 13px 28px #241a1740!important}
+      .drink-card::before {background:linear-gradient(90deg,rgba(18,13,10,.58),rgba(18,13,10,.06))}
+      .drink-card .btn-outline-dark {background:#251b15d9;backdrop-filter:blur(3px);font-weight:700}
+      .drink-card .toggle-sizes {font-weight:750;text-shadow:0 2px 5px #000}
+      .drink-card .card-body {display:flex;flex-direction:column;justify-content:space-between}
+      .drink-card:hover {background-size:cover}
+      .zc-menu-finder .form-label {font-weight:700;color:#493729}
+      .zc-menu-finder .btn {border-radius:10px}
+      @media(prefers-reduced-motion:reduce){.drink-card{transition:none}}
+    `);
+    $('head').append($photoStyles);
+    // Each drink has its own local photo; all assets work offline.
+    const PHOTO_BY_DRINK = new Set([
+        'latte','cappuccino','americano','raf','mocaccino','flat-white','espresso',
+        'frappe','ice-latte','ice-cappuccino','bumble','espresso-tonic',
+        'nitro-tea','green-matcha','sakura-matcha','blue-matcha'
+    ]);
+
     const SORT_OPTIONS = [
         { value: 'default', label: 'Menu order' },
         { value: 'price-asc', label: 'Price: low to high' },
@@ -80,6 +133,7 @@ $(function () {
     function createDrinkCard(drink) {
         const $column = $('<div>', { 'class': 'col' });
         const $card = $('<div>', { 'class': 'card h-100 shadow-sm drink-card' })
+            .css('background-image', `url("${PHOTO_BY_DRINK.has(drink.id) ? `images/drinks/${drink.id}.jpg` : 'images/coffee.jpg'}")`)
             .attr('data-id', drink.id)
             .appendTo($column);
         const $body = $('<div>', { 'class': 'card-body d-flex flex-column' }).appendTo($card);
@@ -121,7 +175,7 @@ $(function () {
     }
 
     function buildFinder() {
-        const $card = $('<div>', { 'class': 'card shadow-sm mb-4' });
+        const $card = $('<div>', { 'class': 'card shadow-sm mb-4 zc-menu-finder' });
         const $body = $('<div>', { 'class': 'card-body' }).appendTo($card);
         const $controls = $('<div>', { 'class': 'row g-3 align-items-end mb-3' });
 
@@ -199,9 +253,12 @@ $(function () {
 
     const $finderCard = buildFinder();
     const $lead = $section.find('p.lead').first();
+    $section.children('h2, p.lead').wrapAll('<div class="zc-menu-hero"></div>');
+    $section.find('.zc-menu-hero h2').text('Find your perfect drink');
+    $section.find('.zc-menu-hero p').text('From classic espresso to colourful matcha — explore all 16 drinks and find your favourite.');
 
     if ($lead.length > 0) {
-        $lead.after($finderCard);
+        $section.find('.zc-menu-hero').after($finderCard);
     } else {
         $section.prepend($finderCard);
     }
